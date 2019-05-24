@@ -1,19 +1,29 @@
 // Here, you can define all custom functions, you want to use and initialize some variables
 
-// add additional attribute to obects vignettes
+// add additional attribute to obects vignettes and return only one out of the test questions
 function add_complete_test_question (vign){
   console.log("malins function wird aufgerufen");
   let test;
   for (var i = 0; i < vign.length; i++) {
-    console.log(vign[i]);
+    //console.log(vign[i]);
     vign[i].allQ = [vign[i].test_true1, vign[i].test_true2, vign[i].test_false1, vign[i].test_false2, vign[i].test_uncertain1, vign[i].test_uncertain2];
     //let all_test_questions = {vign[i].test_true1, vign[i].test_true2, vign[i].test_false1, vign[i].test_false2, vign[i].test_uncertain1, vign[i].test_uncertain2}
       // console.log(all_test_questions);
-  }
-console.log(vign);
+    console.log(vign[i].allQ);
+    //var chosen_test_q = _.sample(vign.allQ);
+    //var story_chosen.name = _.sample(vign.name);
+    //console.log("this"+story_chosen.name)
+    //var chosen_test_q = vign[i].allQ[Math.floor(Math.random()*vign[i].allQ.length)];
 
+  }
+  //var chosen_test_q = story_chosen[i].allQ[Math.floor(Math.random()*story_chosen[i].allQ.length)];
+
+console.log("vign "+vign);
+//  console.log(chosen_test_q);
     return (vign);
+
 }
+
 
 
 

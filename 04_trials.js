@@ -19,7 +19,7 @@ const trial_info = {
         }
     ]
 };
-const eight_stories = []
+
 
 const vignettes = [
    {"name"          : "Mrs Gibbs' worry",
@@ -456,12 +456,18 @@ const vignettes = [
   }
 ];
 
+
+const all_stories = [];
+all_stories.fill("x");
+console.log("all stories "+all_stories);
+
+const eight_stories = [];
 // add one attribute with all test questions
 //vignettes = _.map(vignettes, add_complete_test_question);
 console.log(vignettes);
 console.log("hallo");
 let allTest = add_complete_test_question(vignettes);
-console.log(allTest);
+console.log("here " + allTest);
 
 //make a deep copy of the vignettes object for all different blocks
 var comp = _.cloneDeep(vignettes);
