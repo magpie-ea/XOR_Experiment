@@ -1,8 +1,8 @@
 // Here, you can define all custom functions, you want to use and initialize some variables
 
-// add additional attribute to obects vignettes and return only one out of the test questions
+// add additional attribute to obects vignettes containing all 6 test questions
 function add_complete_test_question (vign){
-  console.log("malins function wird aufgerufen");
+  console.log("function wird aufgerufen");
   let test;
   for (var i = 0; i < vign.length; i++) {
     //console.log(vign[i]);
@@ -17,8 +17,6 @@ function add_complete_test_question (vign){
 
   }
   //var chosen_test_q = story_chosen[i].allQ[Math.floor(Math.random()*story_chosen[i].allQ.length)];
-
-console.log("vign "+vign);
 //  console.log(chosen_test_q);
     return (vign);
 
@@ -110,11 +108,10 @@ function create_xor_block(a) {
 // function to create hook to show second question in same view
 // only for competence
 
-//function show2ndquestion(data,next){
+//show2ndquestion = function(data,next){
+
 //  comp_block.test_true1
 //}
-
-
 
 
 

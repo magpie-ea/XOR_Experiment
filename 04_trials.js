@@ -21,7 +21,7 @@ const trial_info = {
 };
 
 
-const vignettes = [
+let vignettes = [
    {"name"          : "Mrs Gibbs' worry",
    "author"         : "micha",
    "thoughts"       : "",
@@ -456,10 +456,13 @@ const vignettes = [
   }
 ];
 
+vignettes = add_complete_test_question(vignettes);
+console.log("is allQ in here?" + vignettes);
+
 
 const all_stories = [];
 all_stories.fill("x");
-console.log("all stories "+all_stories);
+console.log("all stories "+ all_stories);
 
 const eight_stories = [];
 // add one attribute with all test questions
@@ -484,11 +487,8 @@ const comp_block = _.map(comp, create_comp_block);
 const pri1_block =   _.map(pri1, create_prior1_block);
 // main questions for pripr 2 block
 const pri2_block =   _.map(pri2, create_prior2_block);
-
 // main questions for relevance block
 const rel_block = _.map(rel, create_rel_block);
-
-
 // main questions for xor block
 const xor_block =   _.map(xor, create_xor_block);
 console.log(xor_block);
