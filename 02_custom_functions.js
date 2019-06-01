@@ -23,10 +23,7 @@ function add_complete_test_question (vign){
 }
 
 
-
-
-// create competence block
-function create_comp_block(a) {
+function create_block_template(a) {
           var b = a;
           b.title = b.name;
           b.QUD = '<font size="6">'+ b.title + '</font>  <br /> <br />' + b.background;
@@ -37,69 +34,88 @@ function create_comp_block(a) {
           information in the background story?</font> <br/>
           ------------------------------- <br/>`
           + _.sample(b.allQ);
-          /*b.question_comp;*/
           return(b);
 }
 
-// creating new prior 1 block
-function create_prior1_block(a) {
-      var b = a;
-      b.title = b.name;
-      b.QUD = '<font size="6">'+ b.title + '</font>  <br /> <br />' + b.background;
-      b.optionLeft = "certainly false";
-      b.optionRight  = "certainly true";
-      b.question = `------------------------------- <br/> <font size="2">
-      How likely do you think it is that the statement is true, given the
-      information in the background story?</font> <br/>
-      ------------------------------- <br/>`
-      +_.sample(b.allQ);
-      return(b);
-}
-
-// creating prior two block
-function create_prior2_block(a) {
-         var b = a;
-         b.title = b.name;
-         b.QUD = '<font size="6">'+ b.title + '</font>  <br /> <br />' + b.background;
-         b.optionLeft = "certainly false";
-         b.optionRight  = "certainly true";
-         b.question = `------------------------------- <br/> <font size="2">
-         How likely do you think it is that the statement is true, given the
-         information in the background story?</font> <br/> ------------------------------- <br/>`
-         +_.sample(b.allQ);
-         return(b);
-}
-
-// create relevance block
-function create_rel_block(a) {
-         var b = a;
-         b.title = b.name;
-         b.QUD = '<font size="6">'+ b.title + '</font>  <br /> <br />' + b.background;
-         b.optionLeft = "certainly false";
-         b.optionRight  = "certainly true";
-         b.question = `------------------------------- <br/> <font size="2">
-         How likely do you think it is that the statement is true, given the
-         information in the background story?</font> <br/> ------------------------------- <br/>`
-         + _.sample(b.allQ);
-         return(b);
-}
-
-
-
-//creating new xor block-based trial info
-function create_xor_block(a) {
-      var b = a;
-      b.title = b.name;
-      b.QUD = '<font size="6">'+ b.title + '</font>  <br /> <br />' + b.background;
-      b.optionLeft = "certainly false";
-      b.optionRight  = "certainly true";
-      b.question = `------------------------------- <br/> <font size="2">
-      How likely do you think it is that the statement is true, given the
-      information in the background story?</font> <br/> ------------------------------- <br/>`
-      +_.sample(b.allQ);
-      return(b);
-}
-
+// in the following approach, I tried to have the different  question for everywhere
+// block as a separate b.question, but as I have a random test question, which chan
+// be the same in every block, maybe I only need different hooks, but not different functions
+// in order to create each block
+// // create competence block
+// const create_comp_block(a) {
+//           var b = a;
+//           b.title = b.name;
+//           b.QUD = '<font size="6">'+ b.title + '</font>  <br /> <br />' + b.background;
+//           b.optionLeft = "certainly false";
+//           b.optionRight  = "certainly true";
+//           b.question =   `------------------------------- <br/> <font size="2">
+//           How likely do you think it is that the statement is true, given the
+//           information in the background story?</font> <br/>
+//           ------------------------------- <br/>`
+//           + _.sample(b.allQ);
+//           /*b.question_comp;*/
+//           return(b);
+// }
+//
+// // creating new prior 1 block
+// function create_prior1_block(a) {
+//       var b = a;
+//       b.title = b.name;
+//       b.QUD = '<font size="6">'+ b.title + '</font>  <br /> <br />' + b.background;
+//       b.optionLeft = "certainly false";
+//       b.optionRight  = "certainly true";
+//       b.question = `------------------------------- <br/> <font size="2">
+//       How likely do you think it is that the statement is true, given the
+//       information in the background story?</font> <br/>
+//       ------------------------------- <br/>`
+//       +_.sample(b.allQ);
+//       return(b);
+// }
+//
+// // creating prior two block
+// function create_prior2_block(a) {
+//          var b = a;
+//          b.title = b.name;
+//          b.QUD = '<font size="6">'+ b.title + '</font>  <br /> <br />' + b.background;
+//          b.optionLeft = "certainly false";
+//          b.optionRight  = "certainly true";
+//          b.question = `------------------------------- <br/> <font size="2">
+//          How likely do you think it is that the statement is true, given the
+//          information in the background story?</font> <br/> ------------------------------- <br/>`
+//          +_.sample(b.allQ);
+//          return(b);
+// }
+//
+// // create relevance block
+// function create_rel_block(a) {
+//          var b = a;
+//          b.title = b.name;
+//          b.QUD = '<font size="6">'+ b.title + '</font>  <br /> <br />' + b.background;
+//          b.optionLeft = "certainly false";
+//          b.optionRight  = "certainly true";
+//          b.question = `------------------------------- <br/> <font size="2">
+//          How likely do you think it is that the statement is true, given the
+//          information in the background story?</font> <br/> ------------------------------- <br/>`
+//          + _.sample(b.allQ);
+//          return(b);
+// }
+//
+//
+//
+// //creating new xor block-based trial info
+// function create_xor_block(a) {
+//       var b = a;
+//       b.title = b.name;
+//       b.QUD = '<font size="6">'+ b.title + '</font>  <br /> <br />' + b.background;
+//       b.optionLeft = "certainly false";
+//       b.optionRight  = "certainly true";
+//       b.question = `------------------------------- <br/> <font size="2">
+//       How likely do you think it is that the statement is true, given the
+//       information in the background story?</font> <br/> ------------------------------- <br/>`
+//       +_.sample(b.allQ);
+//       return(b);
+// }
+//
 
 // function to create hook to show second question in same view
 // only for competence, b.question_comp is the question needed here;

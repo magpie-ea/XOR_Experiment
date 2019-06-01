@@ -439,36 +439,31 @@ let vignettes = [
 // add additional attribute to each item, which includes all 6 test questions
 vignettes = add_complete_test_question(vignettes);
 
-const all_stories = [];
-all_stories.fill("x");
-console.log("all stories "+ all_stories);
-
-const eight_stories = [];
-// add one attribute with all test questions
-//vignettes = _.map(vignettes, add_complete_test_question);
-console.log(vignettes);
-console.log("hallo");
-let allTest = add_complete_test_question(vignettes);
-console.log("here " + allTest);
-
-//make a deep copy of the vignettes object for all different blocks
-var comp = _.cloneDeep(vignettes);
-var pri1 = _.cloneDeep(vignettes);
-var pri2 = _.cloneDeep(vignettes);
-var rel = _.cloneDeep(vignettes);
-var xor = _.cloneDeep(vignettes);
+//chose randomly 8 stories, for each participant new
+let eight_stories = _.sampleSize(vignettes, 8);
+console.log(eight_stories);
 
 
+let comp_block = _.map(eight_stories, create_block_template);
+let pri_block = _.map(eight_stories, create_block_template);
+let rel_block = _.map(eight_stories, create_block_template);
+let xor_block = _.map(eight_stories, create_block_template);
 
-// main questions for competence block
-const comp_block = _.map(comp, create_comp_block);
-// main questions for prior 1 block
-const pri1_block =   _.map(pri1, create_prior1_block);
-// main questions for pripr 2 block
-const pri2_block =   _.map(pri2, create_prior2_block);
-// main questions for relevance block
-const rel_block = _.map(rel, create_rel_block);
-// main questions for xor block
-const xor_block =   _.map(xor, create_xor_block);
-console.log(xor_block);
-console.log(vignettes);
+//make a deep copy of the 8 stories for all different blocks
+// in new apprach maybe not needed anymore
+// var comp = _.cloneDeep(eight_stories);
+// var pri1 = _.cloneDeep(eight_stories);
+// var pri2 = _.cloneDeep(eight_stories);
+// var rel = _.cloneDeep(eight_stories);
+// var xor = _.cloneDeep(eight_stories);
+
+// // main questions for competence block
+// const comp_block = _.map(comp, create_block_template);
+// // main questions for prior 1 block
+// const pri1_block =   _.map(pri1, create_prior1_block);
+// // main questions for pripr 2 block
+// const pri2_block =   _.map(pri2, create_prior2_block);
+// // main questions for relevance block
+// const rel_block = _.map(rel, create_rel_block);
+// // main questions for xor block
+// const xor_block =   _.map(xor, create_xor_block);

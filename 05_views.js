@@ -123,14 +123,14 @@ const pri_trial = babeViews.view_generator("slider_rating", {
     //title: pri1_block.title,
     name: 'prior_probability_question',
     trial_type: 'prior_slider',
-    data: _.shuffle(pri2_block, pri1_block) //pri2_block
+    data: _.shuffle(pri_block) 
 });
 
 
 const rel_trial = babeViews.view_generator("slider_rating",{
   trials: 1,
   name: 'rel_question',
-  trial_type:'comp_slider',
+  trial_type:'rel_slider',
   data: _.shuffle(rel_block),
   //hook: {
   //      after_response_enabled: show2ndquestion
