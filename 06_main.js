@@ -18,7 +18,6 @@ $("document").ready(function() {
             //intro,
             //instructions,
             _.shuffle([comp_trial,pri_trial,rel_trial]),
-            //comp_trial,
             xor_trial,
             post_test,
             thanks,

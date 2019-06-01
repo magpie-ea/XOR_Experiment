@@ -443,12 +443,18 @@ vignettes = add_complete_test_question(vignettes);
 let eight_stories = _.sampleSize(vignettes, 8);
 console.log(eight_stories);
 
+// create random order of 8 stories, different for each block
+let comp_block = _.shuffle(_.map(eight_stories, create_block_template));
+let pri_block = _.shuffle(_.map(eight_stories, create_block_template));
+let rel_block = _.shuffle(_.map(eight_stories, create_block_template));
+let xor_block = _.shuffle(_.map(eight_stories, create_block_template));
 
-let comp_block = _.map(eight_stories, create_block_template);
-let pri_block = _.map(eight_stories, create_block_template);
-let rel_block = _.map(eight_stories, create_block_template);
-let xor_block = _.map(eight_stories, create_block_template);
 
+
+console.log(comp_block)
+console.log(pri_block)
+console.log(rel_block)
+console.log(xor_block)
 //make a deep copy of the 8 stories for all different blocks
 // in new apprach maybe not needed anymore
 // var comp = _.cloneDeep(eight_stories);
