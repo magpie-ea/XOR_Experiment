@@ -36,8 +36,8 @@ function create_comp_block(a) {
           How likely do you think it is that the statement is true, given the
           information in the background story?</font> <br/>
           ------------------------------- <br/>`
-          + b.question_comp;
-          b.test_true1 = b.test_true1;
+          + _.sample(b.allQ)
+          /*b.question_comp;*/
           return(b);
 }
 
@@ -68,7 +68,6 @@ function create_prior2_block(a) {
          How likely do you think it is that the statement is true, given the
          information in the background story?</font> <br/> ------------------------------- <br/>`
          +b.question_pri2;
-         b.test_true1 = b.test_true1;
          return(b);
 }
 
@@ -82,8 +81,7 @@ function create_rel_block(a) {
          b.question = `------------------------------- <br/> <font size="2">
          How likely do you think it is that the statement is true, given the
          information in the background story?</font> <br/> ------------------------------- <br/>`
-         + b.question_rel;
-         b.test_true1 = b.test_true1;
+         + _.sample(b.allQ)
          return(b);
 }
 
@@ -100,17 +98,16 @@ function create_xor_block(a) {
       How likely do you think it is that the statement is true, given the
       information in the background story?</font> <br/> ------------------------------- <br/>`
       +b.question_xor;
-      b.test_true1 = b.test_true1;
       return(b);
 }
 
 
 // function to create hook to show second question in same view
-// only for competence
+// only for competence, b.question_comp is the question needed here;
 
 //show2ndquestion = function(data,next){
 
-//  comp_block.test_true1
+
 //}
 
 
