@@ -50,7 +50,11 @@ function create_prior1_block(a) {
       b.QUD = '<font size="6">'+ b.title + '</font>  <br /> <br />' + b.background;
       b.optionLeft = "certainly false";
       b.optionRight  = "certainly true";
-      b.question = `How likely do you think it is that the statement is true, given the information in the background story? <br/> <br/> ------------------------------- <br/>`  +b.question_pri1;
+      b.question = `------------------------------- <br/> <font size="2">
+      How likely do you think it is that the statement is true, given the
+      information in the background story?</font> <br/>
+      ------------------------------- <br/>`
+      +b.question_pri1;
       b.test_true1 = b.test_true1;
       return(b);
 }
@@ -62,7 +66,10 @@ function create_prior2_block(a) {
          b.QUD = '<font size="6">'+ b.title + '</font>  <br /> <br />' + b.background;
          b.optionLeft = "certainly false";
          b.optionRight  = "certainly true";
-         b.question = `How likely do you think it is that the statement is true, given the information in the background story? <br/> <br/> ------------------------------- <br/>`  +b.question_pri2;
+         b.question = `------------------------------- <br/> <font size="2">
+         How likely do you think it is that the statement is true, given the
+         information in the background story?</font> <br/> ------------------------------- <br/>`
+         +b.question_pri2;
          b.test_true1 = b.test_true1;
          return(b);
 }
@@ -74,10 +81,10 @@ function create_rel_block(a) {
          b.QUD = '<font size="6">'+ b.title + '</font>  <br /> <br />' + b.background;
          b.optionLeft = "certainly false";
          b.optionRight  = "certainly true";
-         b.question = `How likely do you think it is that the statement is true,
-          given the information in the background story? <br/> <br/>
-          ------------------------------- <br/>`  +
-          b.question_rel;
+         b.question = `------------------------------- <br/> <font size="2">
+         How likely do you think it is that the statement is true, given the
+         information in the background story?</font> <br/> ------------------------------- <br/>`
+         + b.question_rel;
          b.test_true1 = b.test_true1;
          return(b);
 }
@@ -91,7 +98,10 @@ function create_xor_block(a) {
       b.QUD = '<font size="6">'+ b.title + '</font>  <br /> <br />' + b.background;
       b.optionLeft = "certainly false";
       b.optionRight  = "certainly true";
-      b.question = `------------------------------- <br/> <font size="2"> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/> ------------------------------- <br/>`  +b.question_xor;
+      b.question = `------------------------------- <br/> <font size="2">
+      How likely do you think it is that the statement is true, given the
+      information in the background story?</font> <br/> ------------------------------- <br/>`
+      +b.question_xor;
       b.test_true1 = b.test_true1;
       return(b);
 }
