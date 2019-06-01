@@ -36,7 +36,7 @@ function create_comp_block(a) {
           How likely do you think it is that the statement is true, given the
           information in the background story?</font> <br/>
           ------------------------------- <br/>`
-          + _.sample(b.allQ)
+          + _.sample(b.allQ);
           /*b.question_comp;*/
           return(b);
 }
@@ -52,8 +52,7 @@ function create_prior1_block(a) {
       How likely do you think it is that the statement is true, given the
       information in the background story?</font> <br/>
       ------------------------------- <br/>`
-      +b.question_pri1;
-      b.test_true1 = b.test_true1;
+      +_.sample(b.allQ);
       return(b);
 }
 
@@ -67,7 +66,7 @@ function create_prior2_block(a) {
          b.question = `------------------------------- <br/> <font size="2">
          How likely do you think it is that the statement is true, given the
          information in the background story?</font> <br/> ------------------------------- <br/>`
-         +b.question_pri2;
+         +_.sample(b.allQ);
          return(b);
 }
 
@@ -81,7 +80,7 @@ function create_rel_block(a) {
          b.question = `------------------------------- <br/> <font size="2">
          How likely do you think it is that the statement is true, given the
          information in the background story?</font> <br/> ------------------------------- <br/>`
-         + _.sample(b.allQ)
+         + _.sample(b.allQ);
          return(b);
 }
 
@@ -97,7 +96,7 @@ function create_xor_block(a) {
       b.question = `------------------------------- <br/> <font size="2">
       How likely do you think it is that the statement is true, given the
       information in the background story?</font> <br/> ------------------------------- <br/>`
-      +b.question_xor;
+      +_.sample(b.allQ);
       return(b);
 }
 
