@@ -1,7 +1,7 @@
 // Here, you can define all custom functions, you want to use and initialize some variables
 
 // add additional attribute to obects vignettes containing all 6 test questions
-function add_complete_test_question (vign){
+function add_complete_control_question (vign){
   let test;
   for (var i = 0; i < vign.length; i++) {
     vign[i].allQ = [vign[i].test_true1, vign[i].test_true2, vign[i].test_false1, vign[i].test_false2, vign[i].test_uncertain1, vign[i].test_uncertain2];
@@ -10,7 +10,7 @@ function add_complete_test_question (vign){
 }
 
 // takes in six test questions for each story and randomly chooses which one to ask in which block
-function choose_test_question (eight_stories){
+function choose_control_question (eight_stories){
   //let four_questions;  /*_.sampleSize(vign[i].allQ, 4);*/
   for (var i = 0; i < eight_stories.length; i++) {
     let four_questions = _.sampleSize(eight_stories[i].allQ, 4);

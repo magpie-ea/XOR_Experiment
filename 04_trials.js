@@ -437,7 +437,7 @@ let vignettes = [
 ];
 
 // add additional attribute to each item, which includes all 6 test questions
-vignettes = add_complete_test_question(vignettes);
+vignettes = add_complete_control_question(vignettes);
 
 //chose randomly 8 stories, for each participant new
 let eight_stories = _.sampleSize(vignettes, 8);
@@ -455,7 +455,7 @@ pri_block = _.map(eight_stories, create_block_template);
 rel_block = _.map(eight_stories, create_block_template);
 xor_block = _.map(eight_stories, create_block_template);
 
-choose_test_question(eight_stories);
+choose_control_question(eight_stories);
 
 _.shuffle(comp_block);
 _.shuffle(pri_block);

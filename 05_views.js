@@ -55,7 +55,7 @@ const instructions = babeViews.view_generator("instructions",{
     title: 'General Instructions',
     text:  `In the following, you will be presented with 8 short stories.
             Please read them very carefully, even if they appear to be repeated and you think that you remember them well enough.
-            We ask you to rate statements about each short story.
+            We ask you to rate 2 or 3 statements about each short story.
             Please indicate, using an adjustable slider bar, how likely you think a statement
             is true based on the story you read.
             <br />
@@ -123,7 +123,7 @@ const pri_trial = babeViews.view_generator("slider_rating", {
     //title: pri1_block.title,
     name: 'prior_probability_question',
     trial_type: 'prior_slider',
-    data: _.shuffle(pri_block) 
+    data: _.shuffle(pri_block)
 });
 
 
