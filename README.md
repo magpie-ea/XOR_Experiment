@@ -1,33 +1,31 @@
-# Departure Point
+# XOR Experiment Exclusive 'Or': what matters?
 
-This repository contains a minimal example of a _babe experiment. It can be used as a quick-start departure point when programming a new _babe experiment from scratch.
 
-## Online demo
+## Goal
+Our goal is to get insights into the factors that determine the strength/availability of exclusive readings of 'or'. Textbook accounts (Gricean, neo-Gricean or grammatical) see a role for relevance, and Gricean accounts would also predict that presumptions about the speaker's competence matter. Another possibility is that exclusive readings arise from exhaustifying each individual disjunct. Integrative or holistic approaches (that could be built on top of Gricean, grammaticalist or exhaustification-based accounts) would also acknowledge a role of prior expectations.
 
-You can have a look at the experiment [here](https://departure-point.netlify.com/) 
+Much theoretical work tacitly assumes that exclusive readings of 'or' are scalar implicatures, arising from comparison of 'or' with 'and' and that exclusive readings are readily available. We want to put this received wisdom to the test. Our working hypothesis, to be tested here, is that various contextual factors matter to the availability of exclusive readings.
 
-## How to set up an experiment with _babe (quick start quide)
+Previous experimental work on exclusive 'or' has almost entirely (check this) focused on recording truth-judgements of disjunctive sentences with critical conditions comprised of situations in which a corresponding conjunctive sentence would be true. This is an arguably unnaturally artificial test of disjunctive sentences, as they usually suggest some form of speaker uncertainty. We would therefore like to present short contexts for utterances of disjunction so as to manipulate different factors that different theoretical positions would emphasize as more or less relevant:
 
-### Obtaining the `departure point`
+1. **relevance** : how likely is it that the listener is interested in whether both disjuncts are true
+2. **competence** : how likely is it that the speaker knows whether both disjuncts are true
+3. **prior** : how likely is it *a priori* (from the point of view of the interpreter/observer of a dialogue) that given that one disjunct is true, the other is also true
+4. **exhaustivity** : how strongly would an utterance of just one disjunct convey that the other disjunct is not true
 
-1. install npm by following these [instructions](https://www.npmjs.com/get-npm)
-2. download or clone this github repository: https://github.com/babe-project/departure-point
-   - e.g. type `git clone https://github.com/babe-project/departure-point.git`
-3. change the folder name `departure-point` to whatever you like
-   - let's say you call is `my-exp`, e.g. by typing `mv departure-point my-exp`
-4. go to your folder `my-exp`, e.g., by typing `cd my-exp`
-5. now type `npm install`; this will download the Javascript packages with the most current version of _babe
-6. you can have a look at the example experiment by opening the file `index.html` now
-7. you can now start editing to create your own experiment
+## Experiment initialisation
 
-### Changing the `departure point` to your own experiment
+The information about the vignettes is in `js/vignettes_or.js` and `js/vignettes_some.js`.
 
-- Usually, you might just want to manipulate the following files:
-    - `01_custom_styles.css` :: (optional) contains custom styles
-	- `02_custom_functions.js` :: (optional) contains custom functions, variables and hooks (e.g. a global coin flip)
-	- `03_custom_views_templates.js` :: (optional) contains user-defined special-purpose view templates (only needed, if the provided view templates are not enough for your experiment)
-	- `04_trials.js` :: (optional) contains the data of different trials of a task (e.g., names of pictures, test sentences, questions, etc.)
-	- `05_views.js` :: defines the different kinds of tasks, or, more generally, anything users will engage with on the screen
-	- `06_main.js` :: contains the experiment structure and general information about deployment
-- The numbering of the files is important, you can use the functions defined in `01` in `04`, but you can't use some variable from `05` in `02`
+Each vignette is an object that contains all the info needed to generate the experiment (background story, statements, control questions, utterances and so on).
 
+There are 16 vignettes overall, two for every type.
+
+The code that generates the experiment is in `js/exp.js`. What it does:
+1) Randomly picks 4 vignettes of different type form `js/vignettes_or.js` and 4 from `vignettes_some.js`. The 8 chosen vignettes are all of different type.
+2) Randomly picks 4 control questions (out of 6) for each vignette.
+3) the order of the first 3 blocks is decided at random (relevance, competence, prior prob.). xor is always last.
+4) the vignettes in each block are shuffled so that in every block they are shown in different order.
+
+Every time the page is loaded, the experiment is initialised.
+The generated data for each experiment can be seen by typing `rcp.exp.data` in the browser console.
