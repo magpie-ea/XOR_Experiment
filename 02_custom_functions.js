@@ -2,40 +2,62 @@
 
 // add additional attribute to obects vignettes containing all 6 test questions
 function add_complete_test_question (vign){
-  console.log("function wird aufgerufen");
   let test;
   for (var i = 0; i < vign.length; i++) {
-    //console.log(vign[i]);
     vign[i].allQ = [vign[i].test_true1, vign[i].test_true2, vign[i].test_false1, vign[i].test_false2, vign[i].test_uncertain1, vign[i].test_uncertain2];
-    //let all_test_questions = {vign[i].test_true1, vign[i].test_true2, vign[i].test_false1, vign[i].test_false2, vign[i].test_uncertain1, vign[i].test_uncertain2}
-      // console.log(all_test_questions);
-    console.log(vign[i].allQ);
-    //var chosen_test_q = _.sample(vign.allQ);
-    //var story_chosen.name = _.sample(vign.name);
-    //console.log("this"+story_chosen.name)
-    //var chosen_test_q = vign[i].allQ[Math.floor(Math.random()*vign[i].allQ.length)];
-
   }
-  //var chosen_test_q = story_chosen[i].allQ[Math.floor(Math.random()*story_chosen[i].allQ.length)];
-//  console.log(chosen_test_q);
     return (vign);
+}
 
+// takes in six test questions for each story and randomly chooses which one to ask in which block
+function choose_test_question (eight_stories){
+  //let four_questions;  /*_.sampleSize(vign[i].allQ, 4);*/
+  for (var i = 0; i < eight_stories.length; i++) {
+    let four_questions = _.sampleSize(eight_stories[i].allQ, 4);
+    console.log(four_questions[0]);
+    console.log(four_questions[1]);
+    comp_block[i].question = four_questions[0];
+    pri_block[i].question = four_questions[1];
+    rel_block[i].question = four_questions[2];
+    xor_block[i].question = four_questions[3];
+
+    console.log(comp_block[0].question);
+    console.log(pri_block[0].question);
+  }
+    console.log(comp_block[0].question);
+    console.log(pri_block[0].question);
+    console.log(rel_block[0].question);
+    console.log(pri_block);
+
+  return (eight_stories);
 }
 
 
+// takes in vignettes and makes it usable for new format
 function create_block_template(a) {
           var b = a;
           b.title = b.name;
           b.QUD = '<font size="6">'+ b.title + '</font>  <br /> <br />' + b.background;
           b.optionLeft = "certainly false";
           b.optionRight  = "certainly true";
-          b.question =   `------------------------------- <br/> <font size="2">
+          /*b.question =  /choose_test_question(); ------------------------------- <br/> <font size="2">
           How likely do you think it is that the statement is true, given the
           information in the background story?</font> <br/>
           ------------------------------- <br/>`
-          + _.sample(b.allQ);
+          + _.sample(b.allQ);*/
           return(b);
 }
+
+
+
+
+
+
+
+//var chosen_test_q = story_chosen[i].allQ[Math.floor(Math.random()*story_chosen[i].allQ.length)];
+
+
+
 
 // in the following approach, I tried to have the different  question for everywhere
 // block as a separate b.question, but as I have a random test question, which chan
