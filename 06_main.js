@@ -15,11 +15,12 @@ $("document").ready(function() {
     window.babe_monitor = babeInit({
         // You have to specify all views you want to use in this experiment and the order of them
         views_seq: [
-            intro,
-            instructions,
+            //intro,
+            //instructions,
             //_.shuffle([comp_trial,pri_trial,rel_trial]),
             //rel_trial,
-            xor_trial,
+            comp_trial,
+            //xor_trial,
             post_test,
             thanks,
         ],

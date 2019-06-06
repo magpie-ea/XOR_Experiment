@@ -17,10 +17,18 @@ function choose_control_question (eight_stories){
     var four_questions = _.sampleSize(eight_stories[i].allQ, 4);
 
 
-    comp_block[i].question = four_questions[0];
-    pri_block[i].question = four_questions[1];
-    rel_block[i].question = four_questions[2];
-    xor_block[i].question = four_questions[3];
+    comp_block[i].question = `<br> ------------------------------- <br/>` + four_questions[0] + `<br> ------------------------------- <br/> <font size="2"">
+    How likely do you think it is that the statement is true, given the
+    information in the background story?</font> <br/>`;
+    pri_block[i].question = four_questions[1]+ `<br> ------------------------------- <br/> <font size="2"">
+    How likely do you think it is that the statement is true, given the
+    information in the background story?</font> <br/>`;
+    rel_block[i].question = four_questions[2]+ `<br> ------------------------------- <br/> <font size="2"">
+    How likely do you think it is that the statement is true, given the
+    information in the background story?</font> <br/>`;
+    xor_block[i].question = four_questions[3]+ `<br> ------------------------------- <br/> <font size="2"">
+    How likely do you think it is that the statement is true, given the
+    information in the background story?</font> <br/>`;
 
   }
 
