@@ -108,7 +108,7 @@ const thanks = babeViews.view_generator("thanks", {
 //my own objects
 
 const comp_trial = babeViews.view_generator("slider_rating",{
-  trials: 1,
+  trials: comp_block.length, //1,
   name: 'comp_question',
   trial_type:'comp_slider',
   data: _.shuffle(comp_block),
@@ -119,7 +119,7 @@ const comp_trial = babeViews.view_generator("slider_rating",{
 })
 
 const pri_trial = babeViews.view_generator("slider_rating", {
-    trials:1, //xor_trial_block.slider_rating.length,
+    trials:pri_block.length, //1,
     //title: pri1_block.title,
     name: 'prior_probability_question',
     trial_type: 'prior_slider',
@@ -127,7 +127,7 @@ const pri_trial = babeViews.view_generator("slider_rating", {
 });
 
 const rel_trial = babeViews.view_generator("slider_rating",{
-  trials: 2,
+  trials: rel_block.length, //2,
   name: 'rel_question',
   trial_type:'rel_slider',
   data: _.shuffle(rel_block),
@@ -138,7 +138,7 @@ const rel_trial = babeViews.view_generator("slider_rating",{
 })
 
 const xor_trial = babeViews.view_generator("slider_rating", {
-    trials:1, //xor_trial_block.slider_rating.length,
+    trials: xor_block.length,
     //title: xor_block.title,
     name: 'xor_question',
     trial_type: 'xor_slider',

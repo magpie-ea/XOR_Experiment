@@ -453,24 +453,30 @@ let rel2_block;
 
 // create random order of 8 stories, different for each block
 comp_block = _.cloneDeep(eight_stories);
-console.log(comp_block);
-comp_block =  create_block_template(comp_block);
-console.log(comp_block);
-pri_block = _.cloneDeep(eight_stories, create_block_template);
-rel_block = _.cloneDeep(eight_stories, create_block_template);
-xor_block = _.cloneDeep(eight_stories, create_block_template);
-rel2_block = _.cloneDeep(eight_stories);
+rel_block = _.cloneDeep(eight_stories);
+pri_block = _.cloneDeep(eight_stories);
+xor_block = _.cloneDeep(eight_stories),
 
-rel2_block = create_block_template(rel2_block);
+rel2_block =  _.cloneDeep(eight_stories);
+
+console.log(comp_block);
+comp_block = _.map(comp_block, create_block_template);
+pri_block = _.map(pri_block, create_block_template);
+rel_block = _.map(rel_block, create_block_template);
+xor_block = _.map(xor_block, create_block_template);
+
+rel2_block = _.map(rel2_block, create_block_template);
+
+//rel2_block = create_block_template(rel2_block);
 rel2_block.question = "Klappts?";
 console.log(rel2_block.question);
 
 choose_control_question(eight_stories);
 
-_.shuffle(comp_block);
-_.shuffle(pri_block);
-_.shuffle(rel_block);
-_.shuffle(xor_block);
+// _.shuffle(comp_block);
+// _.shuffle(pri_block);
+// _.shuffle(rel_block);
+// _.shuffle(xor_block);
 
 // old approach: differnt functions for each block
 //make a deep copy of the 8 stories for all different blocks
