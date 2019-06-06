@@ -126,15 +126,14 @@ const pri_trial = babeViews.view_generator("slider_rating", {
     data: _.shuffle(pri_block)
 });
 
-
 const rel_trial = babeViews.view_generator("slider_rating",{
-  trials: 1,
+  trials: 2,
   name: 'rel_question',
   trial_type:'rel_slider',
   data: _.shuffle(rel_block),
-  //hook: {
-  //      after_response_enabled: show2ndquestion
-  //    }
+  hook: {
+       after_response_enabled: show2ndquestion
+     }
 
 })
 

@@ -11,32 +11,29 @@ function add_complete_control_question (vign){
 
 // takes in six test questions for each story and randomly chooses which one to ask in which block
 function choose_control_question (eight_stories){
+  console.log(eight_stories);
   //let four_questions;  /*_.sampleSize(vign[i].allQ, 4);*/
   for (var i = 0; i < eight_stories.length; i++) {
-    let four_questions = _.sampleSize(eight_stories[i].allQ, 4);
-    console.log(four_questions[0]);
-    console.log(four_questions[1]);
+    var four_questions = _.sampleSize(eight_stories[i].allQ, 4);
+
+
     comp_block[i].question = four_questions[0];
     pri_block[i].question = four_questions[1];
     rel_block[i].question = four_questions[2];
     xor_block[i].question = four_questions[3];
 
-    console.log(comp_block[0].question);
-    console.log(pri_block[0].question);
   }
-    console.log(comp_block[0].question);
-    console.log(pri_block[0].question);
-    console.log(rel_block[0].question);
-    console.log(pri_block);
+
 
   return (eight_stories);
 }
 
 
 // takes in vignettes and makes it usable for new format
-function create_block_template(a) {
-          var b = a;
+function create_block_template(b) {
+          //var b = a;
           b.title = b.name;
+          console.log(b.title);
           b.QUD = '<font size="6">'+ b.title + '</font>  <br /> <br />' + b.background;
           b.optionLeft = "certainly false";
           b.optionRight  = "certainly true";
@@ -45,6 +42,7 @@ function create_block_template(a) {
           information in the background story?</font> <br/>
           ------------------------------- <br/>`
           + _.sample(b.allQ);*/
+          console.log(b);
           return(b);
 }
 
@@ -211,6 +209,16 @@ check_response = function(data, next) {
     })
 }
 
+show2ndquestion = function (data, next){
+  console.log("show2ndquestion");
+  babeViews.view_generator("slider_rating",{
+    trials: 1,
+    name: 'rel_question',
+    trial_type:'rel_slider',
+    data: _.shuffle(rel2_block),
+
+  })
+}
 // Declare your hooks here
 
 
