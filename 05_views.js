@@ -111,7 +111,7 @@ const comp_trial = babeViews.view_generator("slider_rating",{
   trials: comp_block.length, //1,
   name: 'comp_question',
   trial_type:'comp_slider',
-  data: _.shuffle(comp_block),
+  data: comp_block,
   //hook: {
   //      after_response_enabled: show2ndquestion
   //    }
@@ -123,14 +123,14 @@ const pri_trial = babeViews.view_generator("slider_rating", {
     //title: pri1_block.title,
     name: 'prior_probability_question',
     trial_type: 'prior_slider',
-    data: _.shuffle(pri_block)
+    data: pri_block
 });
 
 const rel_trial = babeViews.view_generator("slider_rating",{
   trials: rel_block.length, //2,
   name: 'rel_question',
   trial_type:'rel_slider',
-  data: _.shuffle(rel_block),
+  data: rel_block,
   hook: {
        after_response_enabled: show2ndquestion
      }
@@ -142,7 +142,7 @@ const xor_trial = babeViews.view_generator("slider_rating", {
     //title: xor_block.title,
     name: 'xor_question',
     trial_type: 'xor_slider',
-    data: _.shuffle(xor_block)
+    data: xor_block
 });
 
 
