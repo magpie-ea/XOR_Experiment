@@ -38,36 +38,16 @@ function choose_control_question (eight_stories){
 
   return (eight_stories);
 }
-<<<<<<< HEAD
-//console.log(comp_block[0].question);
-//console.log(pri_block[0].question);
-=======
 
 const block_mapper = {"comp" : 0,
                       "rel" : 1,
                       "xor" : 2,
                       "pri" : 3 };
->>>>>>> 4fa8331799d744bc732c890d6791bd48b3d364c5
+
 
 // takes in vignettes and makes it usable for new format
 function create_block_template(b, blockString) {
 
-<<<<<<< HEAD
-          //var b = a;
-          b.title = b.name;
-          console.log(b.title);
-          b.QUD = '<font size="6">'+ b.title + '</font>  <br /> <br />' + b.background;
-          b.optionLeft = "certainly false";
-          b.optionRight  = "certainly true";
-          b.question = blockString == "comp" ? question_comp
-          /*b.question =  /choose_test_question(); ------------------------------- <br/> <font size="2">
-          How likely do you think it is that the statement is true, given the
-          information in the background story?</font> <br/>
-          ------------------------------- <br/>`
-          + _.sample(b.allQ);*/
-          console.log(b);
-          return(b);
-=======
     let utterance = blockString == "xor" ? '<br>' + b.utterance_or : '';
 
     let t1 = {};
@@ -106,7 +86,6 @@ function create_block_template(b, blockString) {
     //     return([t1,t2]);
     // }
     return([t1,t2]);
->>>>>>> 4fa8331799d744bc732c890d6791bd48b3d364c5
 }
 
 

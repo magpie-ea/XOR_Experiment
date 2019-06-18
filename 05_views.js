@@ -130,17 +130,7 @@ const rel_trial = babeViews.view_generator("slider_rating",{
   trials: rel_block.length, //2,
   name: 'rel_question',
   trial_type:'rel_slider',
-<<<<<<< HEAD
-  data: _.shuffle(rel_block),
-  // hook: {
-  //      after_response_enabled: show2ndquestion
-  //    }
-=======
   data: rel_block,
-  hook: {
-       after_response_enabled: show2ndquestion
-     }
->>>>>>> 4fa8331799d744bc732c890d6791bd48b3d364c5
 
 })
 
