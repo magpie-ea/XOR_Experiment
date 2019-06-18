@@ -46,13 +46,16 @@ const block_mapper = {"comp" : 0,
 
 
 // takes in vignettes and makes it usable for new format
+// t1 and t2 are used in every block, t3 is only used for prior block
+// utterance is only used for xor block
+
 function create_block_template(b, blockString) {
 
     let utterance = blockString == "xor" ? '<br>' + b.utterance_or : '';
 
     let t1 = {};
     t1.title = b.name;
-    t1.QUD = '<font size="6">'+ b.title + '</font>  <br /> <br />' + b.background;
+    t1.QUD = '<font size="6">'+ t1.title + '</font>  <br /> <br />' + b.background;
     t1.optionLeft = "certainly false";
     t1.optionRight  = "certainly true";
     t1.condition = "test";
@@ -61,46 +64,35 @@ function create_block_template(b, blockString) {
 
     let t2 = {};
     t2.title = b.name;
-    t2.QUD = '<font size="6">'+ b.title + '</font>  <br /> <br />' + b.background + utterance;
+    t2.QUD = '<font size="6">'+ t2.title + '</font>  <br /> <br />' + b.background + utterance;
     t2.optionLeft = "certainly false";
     t2.optionRight  = "certainly true";
     t2.condition = "critical";
     t2.block = blockString;
     t2.question =  `<br> ------------------------------- <br/>` +  b.critical_question[block_mapper[blockString]] + `<br> ------------------------------- <br/> <font size="2""> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/>`;
 
-    // let t3 = {};
+     let t3 = {};
 
-    // if (blockString == "pri") {
-    //     t3.title = b.name;
-    //     t3.QUD = '<font size="6">'+ b.title + '</font>  <br /> <br />' + b.background;
-    //     t3.optionLeft = "certainly false";
-    //     t3.optionRight  = "certainly true";
-    //     t2.condition = "critical";
-    //     t2.block = blockString;
-    //     t3.question =  `<br> ------------------------------- <br/>` +     b.critical_question[block_mapper[blockString]+1] + `<br> ------------------------------- <br/> <font size="2""> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/>`;
-    // }
+     if (blockString == "pri") {
+        t3.title = b.name;
+        t3.QUD = '<font size="6">'+ t3.title + '</font>  <br /> <br />' + b.background;
+        t3.optionLeft = "certainly false";
+        t3.optionRight  = "certainly true";
+        t2.condition = "critical";
+        t2.block = blockString;
+        t3.question =  `<br> ------------------------------- <br/>` +     b.critical_question[block_mapper[blockString]+1] + `<br> ------------------------------- <br/> <font size="2""> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/>`;
+    }
 
-    // if (blockString == "pri") {
-    //     return([t1,t2, t3]);
-    // } else {
-    //     return([t1,t2]);
-    // }
+    if (blockString == "pri") {
+        return([t1,t2,t3]);
+    } else {
+        return([t1,t2]);
+    }
     return([t1,t2]);
 }
 
 
 
-
-show2ndquestion = function (data, next){
-  console.log("show2ndquestion");
-  babeViews.view_generator("slider_rating",{
-    trials: 1,
-    name: 'rel_question',
-    trial_type:'rel_slider',
-    data: _.shuffle(rel2_block),
-
-  })
-}
 
 
 //var chosen_test_q = story_chosen[i].allQ[Math.floor(Math.random()*story_chosen[i].allQ.length)];
