@@ -16,35 +16,38 @@ function choose_control_question (eight_stories){
   for (var i = 0; i < eight_stories.length; i++) {
     var four_questions = _.sampleSize(eight_stories[i].allQ, 4);
 
+  console.log(four_questions);
 
     comp_block[i].question = `<br> ------------------------------- <br/>` + four_questions[0] + `<br> ------------------------------- <br/> <font size="2"">
     How likely do you think it is that the statement is true, given the
     information in the background story?</font> <br/>`;
-    pri_block[i].question = four_questions[1]+ `<br> ------------------------------- <br/> <font size="2"">
+    pri_block[i].question = `<br> ------------------------------- <br/>`+ four_questions[1]+ `<br> ------------------------------- <br/> <font size="2"">
     How likely do you think it is that the statement is true, given the
     information in the background story?</font> <br/>`;
-    rel_block[i].question = four_questions[2]+ `<br> ------------------------------- <br/> <font size="2"">
+    rel_block[i].question = `<br> ------------------------------- <br/>` + four_questions[2]+ `<br> ------------------------------- <br/> <font size="2"">
     How likely do you think it is that the statement is true, given the
     information in the background story?</font> <br/>`;
-    xor_block[i].question = four_questions[3]+ `<br> ------------------------------- <br/> <font size="2"">
+    xor_block[i].question = `<br> ------------------------------- <br/>` + four_questions[3]+ `<br> ------------------------------- <br/> <font size="2"">
     How likely do you think it is that the statement is true, given the
     information in the background story?</font> <br/>`;
 
   }
 
-
   return (eight_stories);
 }
-
+//console.log(comp_block[0].question);
+//console.log(pri_block[0].question);
 
 // takes in vignettes and makes it usable for new format
-function create_block_template(b) {
+function create_block_template(b, blockString) {
+
           //var b = a;
           b.title = b.name;
           console.log(b.title);
           b.QUD = '<font size="6">'+ b.title + '</font>  <br /> <br />' + b.background;
           b.optionLeft = "certainly false";
           b.optionRight  = "certainly true";
+          b.question = blockString == "comp" ? question_comp
           /*b.question =  /choose_test_question(); ------------------------------- <br/> <font size="2">
           How likely do you think it is that the statement is true, given the
           information in the background story?</font> <br/>
@@ -57,7 +60,16 @@ function create_block_template(b) {
 
 
 
+show2ndquestion = function (data, next){
+  console.log("show2ndquestion");
+  babeViews.view_generator("slider_rating",{
+    trials: 1,
+    name: 'rel_question',
+    trial_type:'rel_slider',
+    data: _.shuffle(rel2_block),
 
+  })
+}
 
 
 //var chosen_test_q = story_chosen[i].allQ[Math.floor(Math.random()*story_chosen[i].allQ.length)];
@@ -217,16 +229,7 @@ check_response = function(data, next) {
     })
 }
 
-show2ndquestion = function (data, next){
-  console.log("show2ndquestion");
-  babeViews.view_generator("slider_rating",{
-    trials: 1,
-    name: 'rel_question',
-    trial_type:'rel_slider',
-    data: _.shuffle(rel2_block),
 
-  })
-}
 // Declare your hooks here
 
 

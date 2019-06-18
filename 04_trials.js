@@ -449,6 +449,7 @@ let pri_block;
 let rel_block;
 let xor_block;
 
+// trial to make extra block for second/experimental question
 let rel2_block;
 
 // create random order of 8 stories, different for each block
@@ -461,6 +462,7 @@ rel2_block =  _.cloneDeep(eight_stories);
 
 console.log(comp_block);
 comp_block = _.map(comp_block, create_block_template);
+comp_block = _.map(comp_block, function(x) {create_block_template(x, "comp")});
 pri_block = _.map(pri_block, create_block_template);
 rel_block = _.map(rel_block, create_block_template);
 xor_block = _.map(xor_block, create_block_template);

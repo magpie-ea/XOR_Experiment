@@ -131,9 +131,9 @@ const rel_trial = babeViews.view_generator("slider_rating",{
   name: 'rel_question',
   trial_type:'rel_slider',
   data: _.shuffle(rel_block),
-  hook: {
-       after_response_enabled: show2ndquestion
-     }
+  // hook: {
+  //      after_response_enabled: show2ndquestion
+  //    }
 
 })
 
