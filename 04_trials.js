@@ -460,20 +460,27 @@ xor_block = _.cloneDeep(eight_stories),
 
 rel2_block =  _.cloneDeep(eight_stories);
 
+//old approach
+// comp_block = _.map(comp_block, create_block_template);
+// comp_block = _.map(comp_block, function(x) {create_block_template(x, "comp")});
+// pri_block = _.map(pri_block, create_block_template);
+// rel_block = _.map(rel_block, create_block_template);
+// xor_block = _.map(xor_block, create_block_template);
+
+
+comp_block = _.flatten(_.map(eight_stories, function(x){return(create_block_template(x, "comp"));}));
+pri_block =  _.flatten(_.map(eight_stories, function(x){return(create_block_template(x, "pri"));}));
+rel_block =  _.flatten(_.map(eight_stories, function(x){return(create_block_template(x, 'rel'));}));
+xor_block =  _.flatten(_.map(eight_stories, function(x){return(create_block_template(x, 'xor'));}));
+
 console.log(comp_block);
-comp_block = _.map(comp_block, create_block_template);
-comp_block = _.map(comp_block, function(x) {create_block_template(x, "comp")});
-pri_block = _.map(pri_block, create_block_template);
-rel_block = _.map(rel_block, create_block_template);
-xor_block = _.map(xor_block, create_block_template);
 
-rel2_block = _.map(rel2_block, create_block_template);
+console.log("test");
+// //rel2_block = create_block_template(rel2_block);
+// rel2_block.question = "Klappts?";
+// console.log(rel2_block.question);
 
-//rel2_block = create_block_template(rel2_block);
-rel2_block.question = "Klappts?";
-console.log(rel2_block.question);
-
-choose_control_question(eight_stories);
+// choose_control_question(eight_stories);
 
 // _.shuffle(comp_block);
 // _.shuffle(pri_block);
