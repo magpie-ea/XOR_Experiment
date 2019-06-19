@@ -468,10 +468,10 @@ rel2_block =  _.cloneDeep(eight_stories);
 // xor_block = _.map(xor_block, create_block_template);
 
 
-comp_block = _.flatten(_.map(eight_stories, function(x){return(create_block_template(x, "comp"));}));
-pri_block =  _.flatten(_.map(eight_stories, function(x){return(create_block_template(x, "pri"));}));
-rel_block =  _.flatten(_.map(eight_stories, function(x){return(create_block_template(x, 'rel'));}));
-xor_block =  _.flatten(_.map(eight_stories, function(x){return(create_block_template(x, 'xor'));}));
+comp_block = _.flatten(_.map(_.shuffle(eight_stories), function(x){return(create_block_template(x, "comp"));}));
+pri_block =  _.flatten(_.map(_.shuffle(eight_stories), function(x){return(create_block_template(x, "pri"));}));
+rel_block =  _.flatten(_.map(_.shuffle(eight_stories), function(x){return(create_block_template(x, 'rel'));}));
+xor_block =  _.flatten(_.map(_.shuffle(eight_stories), function(x){return(create_block_template(x, 'xor'));}));
 
 console.log(comp_block);
 

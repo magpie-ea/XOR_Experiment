@@ -51,7 +51,7 @@ const block_mapper = {"comp" : 0,
 
 function create_block_template(b, blockString) {
 
-    let utterance = blockString == "xor" ? '<br>' + b.utterance_or : '';
+    let utterance = blockString == "xor" ? '<br /> <br />' + b.utterance_or : '';
 
     let t1 = {};
     t1.title = b.name;
@@ -64,7 +64,7 @@ function create_block_template(b, blockString) {
 
     let t2 = {};
     t2.title = b.name;
-    t2.QUD = '<font size="6">'+ t2.title + '</font>  <br /> <br />' + b.background + utterance;
+    t2.QUD = '<font size="6">'+ t2.title + '</font>  <br /> <br />' + b.background + '<br /> <br /> <b>' + utterance + '</b>';
     t2.optionLeft = "certainly false";
     t2.optionRight  = "certainly true";
     t2.condition = "critical";
