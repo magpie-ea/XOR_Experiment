@@ -469,7 +469,7 @@ const explanations = ["The background story implies this statement, so we rate i
 
 const trials_practice = [ {
   title: 'Joe´s shopping',
-  QUD: '<font size="6">'+ 'Joe´s shopping' + '</font>  <br /> ' + "<br /> Joe went shopping yesterday, while his wife Sue was at home with the kids. He bought flowers for his wife on the way home.",
+  QUD: '<font size="4" color= "#00BFFF"> EXAMPLE </font>  <br><br> <font size="6"> Joe´s shopping </font>  <br /> ' + "<br /> Joe went shopping yesterday, while his wife Sue was at home with the kids. He bought flowers for his wife on the way home.",
   optionLeft: "certainly false",
   optionRight: "certainly true",
   condition: "example",
@@ -477,7 +477,7 @@ const trials_practice = [ {
 } ,
 {
   title: 'Joe´s shopping',
-  QUD: '<font size="6">'+ 'Joe´s shopping' + '</font>  <br /> ' + "<br /> Joe went shopping yesterday, while his wife Sue was at home with the kids. He bought flowers for his wife on the way home.",
+  QUD: '<font size="4" color= "#00BFFF"> EXAMPLE </font>  <br><br> <font size="6"> Joe´s shopping </font>  <br /> ' + "<br /> Joe went shopping yesterday, while his wife Sue was at home with the kids. He bought flowers for his wife on the way home.",
   optionLeft: "certainly false",
   optionRight: "certainly true",
   condition: "example",
@@ -485,7 +485,7 @@ const trials_practice = [ {
 } ,
 {
   title: 'Joe´s shopping',
-  QUD: '<font size="6">'+ 'Joe´s shopping' + '</font>  <br /> ' + "<br /> Joe went shopping yesterday, while his wife Sue was at home with the kids. He bought flowers for his wife on the way home.",
+  QUD: '<font size="4" color= "#00BFFF"> EXAMPLE </font>  <br><br> <font size="6"> Joe´s shopping </font>  <br /> ' + "<br /> Joe went shopping yesterday, while his wife Sue was at home with the kids. He bought flowers for his wife on the way home.",
   optionLeft: "certainly false",
   optionRight: "certainly true",
   condition: "example",
@@ -493,7 +493,7 @@ const trials_practice = [ {
 } ,
 {
   title: 'Joe´s shopping',
-  QUD: '<font size="6">'+ 'Joe´s shopping' + '</font>  <br /> ' + "<br /> Joe went shopping yesterday, while his wife Sue was at home with the kids. He bought flowers for his wife on the way home.",
+  QUD: '<font size="4" color= "#00BFFF"> EXAMPLE </font>  <br><br> <font size="6"> Joe´s shopping </font>  <br /> ' + "<br /> Joe went shopping yesterday, while his wife Sue was at home with the kids. He bought flowers for his wife on the way home.",
   optionLeft: "certainly false",
   optionRight: "certainly true",
   condition: "example",

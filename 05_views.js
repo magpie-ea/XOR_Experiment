@@ -140,7 +140,6 @@ const thanks = babeViews.view_generator("thanks", {
 });
 
 
-
 //views for trial blocks
 const comp_trial = babeViews.view_generator("slider_rating",{
   trials: 2,//comp_block.length,
@@ -174,11 +173,10 @@ const xor_trial = babeViews.view_generator("slider_rating", {
 
 
 const ex_trial = babeViews.view_generator("slider_rating", {
-    trials: 4, //xor_block.length,
-    //title: xor_block.title,
+    trials: 4,
     name: 'example',
     trial_type: 'example_slider',
-    data: trials_practice
+    data: _.shuffle(trials_practice)
 });
 
 
