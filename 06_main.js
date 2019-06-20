@@ -17,7 +17,10 @@ $("document").ready(function() {
         views_seq: [
             intro,
             instructions,
-            _.shuffle([comp_trial,pri_trial,rel_trial]),
+            //make test trials
+            begin_experiment,
+            _.flatten(_.shuffle([[comp_trial,after_block1],[pri_trial, after_block2],[rel_trial, after_block3]])),
+            //_.shuffle([comp_trial, pri_trial, rel_trial]),
             //rel_trial,
             //comp_trial,
             //pri_trial,

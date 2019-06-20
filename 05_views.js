@@ -72,6 +72,42 @@ const instructions = babeViews.view_generator("instructions",{
     buttonText: 'next'
 });
 
+const begin_experiment = babeViews.view_generator("instructions",{
+    trials: 1,
+    name: 'begin_experiment',
+    title: 'Begin Experiment',
+    text:  `The exact rating is a matter of taste and you might want to give a higher or lower rating. Just follow your intuition. Good luck!`,
+    buttonText: 'Begin experiment'
+});
+
+
+// blocks to show after each block is over
+const after_block1 = babeViews.view_generator("instructions",{
+    trials: 1,
+    name: 'mid_instrucions1',
+    title: 'This block is finished!',
+    text:  `To move to the next block, press the 'next' button.`,
+    buttonText: 'next'
+});
+
+const after_block2 = babeViews.view_generator("instructions",{
+    trials: 1,
+    name: 'mid_instrucions2',
+    title: 'This block is finished!',
+    text:  `To move to the next block, press the 'next' button.`,
+    buttonText: 'next'
+});
+
+const after_block3 = babeViews.view_generator("instructions",{
+    trials: 1,
+    name: 'mid_instrucions3',
+    title: 'This block is finished!',
+    text:  `To move to the next block, press the 'next' button.`,
+    buttonText: 'next'
+});
+
+
+
 
 // In the post test questionnaire you can ask your participants addtional questions
 const post_test = babeViews.view_generator("post_test",{
@@ -108,18 +144,14 @@ const thanks = babeViews.view_generator("thanks", {
 //my own objects
 
 const comp_trial = babeViews.view_generator("slider_rating",{
-  trials: comp_block.length, //1,
+  trials: 2,//comp_block.length,
   name: 'comp_question',
   trial_type:'comp_slider',
   data: comp_block,
-  //hook: {
-  //      after_response_enabled: show2ndquestion
-  //    }
-
 })
 
 const pri_trial = babeViews.view_generator("slider_rating", {
-    trials:pri_block.length, //1,
+    trials:2, //pri_block.length,
     //title: pri1_block.title,
     name: 'prior_probability_question',
     trial_type: 'prior_slider',
@@ -127,7 +159,7 @@ const pri_trial = babeViews.view_generator("slider_rating", {
 });
 
 const rel_trial = babeViews.view_generator("slider_rating",{
-  trials: rel_block.length, //2,
+  trials: 2, //rel_block.length, //2,
   name: 'rel_question',
   trial_type:'rel_slider',
   data: rel_block,
@@ -135,7 +167,7 @@ const rel_trial = babeViews.view_generator("slider_rating",{
 })
 
 const xor_trial = babeViews.view_generator("slider_rating", {
-    trials: xor_block.length,
+    trials: 2, //xor_block.length,
     //title: xor_block.title,
     name: 'xor_question',
     trial_type: 'xor_slider',
