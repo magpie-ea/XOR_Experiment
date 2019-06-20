@@ -1,7 +1,9 @@
 // Here, you can define all custom functions, you want to use and initialize some variables
 
-// add additional attribute to obects vignettes containing all 6 test questions
-function add_complete_control_question (vign){
+// function to handle what value goes into attribute question at what time
+// add additional attribute allQ to obects vignettes containing all 6 test questions
+// add additional attribute critical_question, with critical question for all 4 blocks
+function assign_questions (vign){
     let test;
     let pri_question;
   for (var i = 0; i < vign.length; i++) {
@@ -12,32 +14,6 @@ function add_complete_control_question (vign){
     return (vign);
 }
 
-// takes in six test questions for each story and randomly chooses which one to ask in which block
-function choose_control_question (eight_stories){
-  console.log(eight_stories);
-  //let four_questions;  /*_.sampleSize(vign[i].allQ, 4);*/
-  for (var i = 0; i < eight_stories.length; i++) {
-    var four_questions = _.sampleSize(eight_stories[i].allQ, 4);
-
-  console.log(four_questions);
-
-    comp_block[i].question = `<br> ------------------------------- <br/>` + four_questions[0] + `<br> ------------------------------- <br/> <font size="2"">
-    How likely do you think it is that the statement is true, given the
-    information in the background story?</font> <br/>`;
-    pri_block[i].question = `<br> ------------------------------- <br/>`+ four_questions[1]+ `<br> ------------------------------- <br/> <font size="2"">
-    How likely do you think it is that the statement is true, given the
-    information in the background story?</font> <br/>`;
-    rel_block[i].question = `<br> ------------------------------- <br/>` + four_questions[2]+ `<br> ------------------------------- <br/> <font size="2"">
-    How likely do you think it is that the statement is true, given the
-    information in the background story?</font> <br/>`;
-    xor_block[i].question = `<br> ------------------------------- <br/>` + four_questions[3]+ `<br> ------------------------------- <br/> <font size="2"">
-    How likely do you think it is that the statement is true, given the
-    information in the background story?</font> <br/>`;
-
-  }
-
-  return (eight_stories);
-}
 
 const block_mapper = {"comp" : 0,
                       "rel" : 1,
@@ -49,7 +25,7 @@ const block_mapper = {"comp" : 0,
 // t1 and t2 are used in every block, t3 is only used for prior block
 // utterance is only used for xor block
 
-function create_block_template(b, blockString) {
+function create_block(b, blockString) {
 
     let utterance = blockString == "xor" ? '<br /> <br />' + b.utterance_or : '';
 
@@ -88,105 +64,12 @@ function create_block_template(b, blockString) {
     } else {
         return([t1,t2]);
     }
-    return([t1,t2]);
+    //do I need this?
+    //return([t1,t2]);
 }
 
 
 
-
-
-//var chosen_test_q = story_chosen[i].allQ[Math.floor(Math.random()*story_chosen[i].allQ.length)];
-
-
-
-
-// in the following approach, I tried to have the different  question for everywhere
-// block as a separate b.question, but as I have a random test question, which chan
-// be the same in every block, maybe I only need different hooks, but not different functions
-// in order to create each block
-// // create competence block
-// const create_comp_block(a) {
-//           var b = a;
-//           b.title = b.name;
-//           b.QUD = '<font size="6">'+ b.title + '</font>  <br /> <br />' + b.background;
-//           b.optionLeft = "certainly false";
-//           b.optionRight  = "certainly true";
-//           b.question =   `------------------------------- <br/> <font size="2">
-//           How likely do you think it is that the statement is true, given the
-//           information in the background story?</font> <br/>
-//           ------------------------------- <br/>`
-//           + _.sample(b.allQ);
-//           /*b.question_comp;*/
-//           return(b);
-// }
-//
-// // creating new prior 1 block
-// function create_prior1_block(a) {
-//       var b = a;
-//       b.title = b.name;
-//       b.QUD = '<font size="6">'+ b.title + '</font>  <br /> <br />' + b.background;
-//       b.optionLeft = "certainly false";
-//       b.optionRight  = "certainly true";
-//       b.question = `------------------------------- <br/> <font size="2">
-//       How likely do you think it is that the statement is true, given the
-//       information in the background story?</font> <br/>
-//       ------------------------------- <br/>`
-//       +_.sample(b.allQ);
-//       return(b);
-// }
-//
-// // creating prior two block
-// function create_prior2_block(a) {
-//          var b = a;
-//          b.title = b.name;
-//          b.QUD = '<font size="6">'+ b.title + '</font>  <br /> <br />' + b.background;
-//          b.optionLeft = "certainly false";
-//          b.optionRight  = "certainly true";
-//          b.question = `------------------------------- <br/> <font size="2">
-//          How likely do you think it is that the statement is true, given the
-//          information in the background story?</font> <br/> ------------------------------- <br/>`
-//          +_.sample(b.allQ);
-//          return(b);
-// }
-//
-// // create relevance block
-// function create_rel_block(a) {
-//          var b = a;
-//          b.title = b.name;
-//          b.QUD = '<font size="6">'+ b.title + '</font>  <br /> <br />' + b.background;
-//          b.optionLeft = "certainly false";
-//          b.optionRight  = "certainly true";
-//          b.question = `------------------------------- <br/> <font size="2">
-//          How likely do you think it is that the statement is true, given the
-//          information in the background story?</font> <br/> ------------------------------- <br/>`
-//          + _.sample(b.allQ);
-//          return(b);
-// }
-//
-//
-//
-// //creating new xor block-based trial info
-// function create_xor_block(a) {
-//       var b = a;
-//       b.title = b.name;
-//       b.QUD = '<font size="6">'+ b.title + '</font>  <br /> <br />' + b.background;
-//       b.optionLeft = "certainly false";
-//       b.optionRight  = "certainly true";
-//       b.question = `------------------------------- <br/> <font size="2">
-//       How likely do you think it is that the statement is true, given the
-//       information in the background story?</font> <br/> ------------------------------- <br/>`
-//       +_.sample(b.allQ);
-//       return(b);
-// }
-//
-
-// function to create hook to show second question in same view
-// only for competence, b.question_comp is the question needed here;
-
-//show2ndquestion = function(data,next){
-
-
-//}
 
 
 
