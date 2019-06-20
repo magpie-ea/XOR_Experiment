@@ -142,14 +142,14 @@ const thanks = babeViews.view_generator("thanks", {
 
 //views for trial blocks
 const comp_trial = babeViews.view_generator("slider_rating",{
-  trials: 2,//comp_block.length,
+  trials:comp_block.length,
   name: 'comp_question',
   trial_type:'comp_slider',
   data: comp_block,
 });
 
 const pri_trial = babeViews.view_generator("slider_rating", {
-    trials:4, //pri_block.length,
+    trials:pri_block.length,
     //title: pri1_block.title,
     name: 'prior_probability_question',
     trial_type: 'prior_slider',
@@ -157,14 +157,14 @@ const pri_trial = babeViews.view_generator("slider_rating", {
 });
 
 const rel_trial = babeViews.view_generator("slider_rating",{
-  trials: 2, //rel_block.length, //2,
+  trials: rel_block.length, //2,
   name: 'rel_question',
   trial_type:'rel_slider',
   data: rel_block,
 });
 
 const xor_trial = babeViews.view_generator("slider_rating", {
-    trials: 2, //xor_block.length,
+    trials: xor_block.length,
     //title: xor_block.title,
     name: 'xor_question',
     trial_type: 'xor_slider',
