@@ -34,7 +34,47 @@ function create_block(b, blockString) {
     t1.optionRight  = "certainly true";
     t1.condition = "test";
     t1.block = blockString;
-    t1.question =  `<br> ------------------------------- <br/>` +  b.allQ[block_mapper[blockString]] + `<br> ------------------------------- <br/> <font size="2""> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/>`;
+    t1.question =  `<br> ------------------------------- <br/>` +  b.allQ[block_mapper[blockString]] + `<br> ------------------------------- <br/> <font size="2"> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/>`;
+    switch (b) {
+      case b.allQ[block_mapper[blockString]] == b.test_true1:
+        t1.test_question = 'test_true1';
+        break;
+      case b.allQ[block_mapper[blockString]] == b.test_true2:
+        t1.test_question = 'test_true2';
+        break;
+      case b.allQ[block_mapper[blockString]] == b.test_false1:
+        t1.test_question = 'test_false1';
+        break;
+      case b.allQ[block_mapper[blockString]] == b.test_false2:
+        t1.test_question = 'test_false2';
+        break;
+      case b.allQ[block_mapper[blockString]] == b.test_uncertain1:
+        t1.test_question = 'test_uncertain1';
+        break;
+      case b.allQ[block_mapper[blockString]] == b.test_uncertain2:
+        t1.test_question = 'test_true2';
+        break;
+    }
+    // switch (b, blockString) {
+    //   case 0:
+    //     t1.test_question = 'test_true1';
+    //     break;
+    //   case 1:
+    //     t1.test_question = 'test_true2';
+    //     break;
+    //   case 2:
+    //     t1.test_question = 'test_false1';
+    //     break;
+    //   case 3:
+    //     t1.test_question = 'test_false2';
+    //     break;
+    //   case 4:
+    //     t1.test_question = 'test_uncertain1';
+    //     break;
+    //   case 5:
+    //     t1.test_question = 'test_true2';
+    // }
+//console.log(t1.test_question);
 
     let t2 = {};
     t2.title = b.name;
@@ -44,6 +84,7 @@ function create_block(b, blockString) {
     t2.condition = "critical";
     t2.block = blockString;
     t2.question =  `<br> ------------------------------- <br/>` +  b.critical_question[block_mapper[blockString]] + `<br> ------------------------------- <br/> <font size="2""> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/>`;
+    t2.critical_question = b.critical_question[block_mapper[blockString]];
 
      let t3 = {};
      if (blockString == "pri") {
@@ -56,10 +97,19 @@ function create_block(b, blockString) {
         t3.question =  `<br> ------------------------------- <br/>` + b.critical_question[block_mapper[blockString]+1] + `<br> ------------------------------- <br/> <font size="2""> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/>`;
     }
 
+
     if (blockString == "pri") {
-        return([t1,t2,t3]);
+        if (b.critical_question[block_mapper[blockString]] == b.question_pri1 ){
+          t2.prior_used = 'question_pri1';
+          t3.prior_used = 'question_pri2';
+        } else {
+          t2.prior_used = 'question_pri2';
+          t3.prior_used = 'question_pri1';
+        }
+
+          return([t1,t2,t3]);
     } else {
-        return([t1,t2]);
+      return([t1,t2]);
     }
 }
 

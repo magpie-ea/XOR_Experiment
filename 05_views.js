@@ -45,27 +45,27 @@ const intro = babeViews.view_generator("intro",{
             <br />
             Your anonymity is assured; the researchers who have requested your
             participation will not receive any personal information about you.`,
-   buttonText: 'Begin the experiment'
+   buttonText: 'to the experiment'
 });
 
 // For most tasks, you need instructions views
 const instructions = babeViews.view_generator("instructions",{
     trials: 1,
     name: 'instrucions',
-    title: 'General Instructions',
-    text:  `In the following, you will be presented with 8 short stories.
+    title: 'Instructions',
+    text:  `In the following, you will be presented with <b> 8 short stories </b>.
             Please read them very carefully, even if they appear to be repeated and you think that you remember them well enough.
-            We ask you to rate 2 or 3 statements about each short story.
-            Please indicate, using an adjustable slider bar, how likely you think a statement
-            is true based on the story you read.
+            We ask you to <b> rate statements about each short short story</b>.
+            Please indicate, using an adjustable slider bar, <b> how likely you think a statement
+            is true based on the story </b> you read.
             <br />
             <br />
             The experiment consists of 4 blocks with pauses between.
             Within each block you are asked to rate different kinds of statements.
             <br />
             <br />
-            The background story is in a grey box.
-            The statements to be rated are preceded by ?
+            The background story is given at the top.
+            The statements to be rated are given within dashed lines (-------------------------------).
             <br />
             <br />
             An example is provided next.`,
@@ -113,7 +113,7 @@ const post_test = babeViews.view_generator("post_test",{
     trials: 1,
     name: 'post_test',
     title: 'Additional information',
-    text: 'Answering the following questions is optional, but your answers will help us analyze our results.'
+    text: 'Answering the following questions is optional, but your answers will help us analyze our results.',
 
     // You can change much of what appears here, e.g., to present it in a different language, as follows:
     // buttonText: 'Weiter',
@@ -147,10 +147,10 @@ const comp_trial = babeViews.view_generator("slider_rating",{
   name: 'comp_question',
   trial_type:'comp_slider',
   data: comp_block,
-})
+});
 
 const pri_trial = babeViews.view_generator("slider_rating", {
-    trials:2, //pri_block.length,
+    trials:4, //pri_block.length,
     //title: pri1_block.title,
     name: 'prior_probability_question',
     trial_type: 'prior_slider',
@@ -162,8 +162,7 @@ const rel_trial = babeViews.view_generator("slider_rating",{
   name: 'rel_question',
   trial_type:'rel_slider',
   data: rel_block,
-
-})
+});
 
 const xor_trial = babeViews.view_generator("slider_rating", {
     trials: 2, //xor_block.length,
@@ -174,7 +173,13 @@ const xor_trial = babeViews.view_generator("slider_rating", {
 });
 
 
-
+const ex_trial = babeViews.view_generator("slider_rating", {
+    trials: 4, //xor_block.length,
+    //title: xor_block.title,
+    name: 'example',
+    trial_type: 'example_slider',
+    data: trials_practice
+});
 
 
 

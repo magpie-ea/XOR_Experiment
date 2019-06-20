@@ -438,22 +438,68 @@ let vignettes = [
 ];
 
 // create 4 trail blocks
-var comp_block;
+let comp_block;
 let pri_block;
 let rel_block;
 let xor_block;
+let example;
 
 // add additional attribute to each item, which includes all 6 test questions,
 vignettes = assign_questions(vignettes);
 
 //chose randomly 8 stories, for each participant new
-let eight_stories = _.sampleSize(vignettes, 8);
+let chosen_stories = _.sampleSize(vignettes, 9);
+
+let eight_stories = chosen_stories.slice(0,8);
+//let example_trial = chosen_stories.slice(8,9);
+
+console.log(eight_stories);
+
 
 // create random order of 8 stories, different for each block
 comp_block = _.cloneDeep(eight_stories);
 rel_block = _.cloneDeep(eight_stories);
 pri_block = _.cloneDeep(eight_stories);
-xor_block = _.cloneDeep(eight_stories),
+xor_block = _.cloneDeep(eight_stories);
+
+
+const questions = ["Joe went shopping without his wife Sue.", "Sue was very happy about the flowers.","Joe and Sue are divorced.","Joe and Sue have no children."];
+const explanations = ["The background story implies this statement, so we rate it as certainly true.","The background story makes this very likely, but we cannot be sure.","The background story suggests the contrary, but we cannot be sure.", "The background story implies the contrary, so we rate this as certainly false."];
+
+
+const trials_practice = [ {
+  title: 'Joe´s shopping',
+  QUD: '<font size="6">'+ 'Joe´s shopping' + '</font>  <br /> ' + "<br /> Joe went shopping yesterday, while his wife Sue was at home with the kids. He bought flowers for his wife on the way home.",
+  optionLeft: "certainly false",
+  optionRight: "certainly true",
+  condition: "example",
+  question: `<br> ------------------------------- <br/>` + questions[0] + ' <br /> ------------------------------- <br/> <font size="2"> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[0]+ '</i> </font>',
+} ,
+{
+  title: 'Joe´s shopping',
+  QUD: '<font size="6">'+ 'Joe´s shopping' + '</font>  <br /> ' + "<br /> Joe went shopping yesterday, while his wife Sue was at home with the kids. He bought flowers for his wife on the way home.",
+  optionLeft: "certainly false",
+  optionRight: "certainly true",
+  condition: "example",
+  question: `<br> ------------------------------- <br/>` + questions[1] + ' <br /> ------------------------------- <br/> <font size="2"> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[1]+ '</i></font>'
+} ,
+{
+  title: 'Joe´s shopping',
+  QUD: '<font size="6">'+ 'Joe´s shopping' + '</font>  <br /> ' + "<br /> Joe went shopping yesterday, while his wife Sue was at home with the kids. He bought flowers for his wife on the way home.",
+  optionLeft: "certainly false",
+  optionRight: "certainly true",
+  condition: "example",
+  question: `<br> ------------------------------- <br/>` + questions[2] + '<br /> ------------------------------- <br/> <font size="2"> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[2]+ '</i></font>'
+} ,
+{
+  title: 'Joe´s shopping',
+  QUD: '<font size="6">'+ 'Joe´s shopping' + '</font>  <br /> ' + "<br /> Joe went shopping yesterday, while his wife Sue was at home with the kids. He bought flowers for his wife on the way home.",
+  optionLeft: "certainly false",
+  optionRight: "certainly true",
+  condition: "example",
+  question: `<br> ------------------------------- <br/>` + questions[3] + ' <br /> ------------------------------- <br/> <font size="2"> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[3] + '</i></font>'
+} ];
+
 
 // call function to create each block with the shuffled 8 eight_stories and the correct string
 // flatten the array, as it is encapusulated
