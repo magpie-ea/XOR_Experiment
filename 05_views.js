@@ -108,7 +108,6 @@ const after_block3 = babeViews.view_generator("instructions",{
 
 
 
-
 // In the post test questionnaire you can ask your participants addtional questions
 const post_test = babeViews.view_generator("post_test",{
     trials: 1,
@@ -141,8 +140,8 @@ const thanks = babeViews.view_generator("thanks", {
 });
 
 
-//my own objects
 
+//views for trial blocks
 const comp_trial = babeViews.view_generator("slider_rating",{
   trials: 2,//comp_block.length,
   name: 'comp_question',
