@@ -4,7 +4,6 @@
 // add additional attribute allQ to obects vignettes containing all 6 test questions
 // add additional attribute critical_question, with critical question for all 4 blocks
 function assign_questions (vign){
-    let test;
     let pri_question;
   for (var i = 0; i < vign.length; i++) {
       vign[i].allQ = _.shuffle([vign[i].test_true1, vign[i].test_true2, vign[i].test_false1, vign[i].test_false2, vign[i].test_uncertain1, vign[i].test_uncertain2]);
@@ -14,17 +13,16 @@ function assign_questions (vign){
     return (vign);
 }
 
-
+// construct help to map what position in array corresponds to what block
 const block_mapper = {"comp" : 0,
                       "rel" : 1,
                       "xor" : 2,
                       "pri" : 3 };
 
 
-// takes in vignettes and makes it usable for new format
+// takes in the eight stories and makes the info usable for new format
 // t1 and t2 are used in every block, t3 is only used for prior block
 // utterance is only used for xor block
-
 function create_block(b, blockString) {
 
     let utterance = blockString == "xor" ? '<br /> ' + b.utterance_or : '';
@@ -48,7 +46,6 @@ function create_block(b, blockString) {
     t2.question =  `<br> ------------------------------- <br/>` +  b.critical_question[block_mapper[blockString]] + `<br> ------------------------------- <br/> <font size="2""> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/>`;
 
      let t3 = {};
-
      if (blockString == "pri") {
         t3.title = b.name;
         t3.QUD = '<font size="6">'+ t3.title + '</font>  <br /> ' + b.background;
@@ -64,12 +61,7 @@ function create_block(b, blockString) {
     } else {
         return([t1,t2]);
     }
-    //do I need this?
-    //return([t1,t2]);
 }
-
-
-
 
 
 

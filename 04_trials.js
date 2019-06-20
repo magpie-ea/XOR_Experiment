@@ -1,6 +1,7 @@
 // In this file you can specify the trial data for your experiment
 // info important to create tirals
 
+// vignettes is an object which contains all necessary information for the trials
 let vignettes = [
    {"name"          : "Mrs Gibbs' worry",
    "author"         : "micha",
@@ -436,17 +437,17 @@ let vignettes = [
   }
 ];
 
+// create 4 trail blocks
+var comp_block;
+let pri_block;
+let rel_block;
+let xor_block;
+
 // add additional attribute to each item, which includes all 6 test questions,
 vignettes = assign_questions(vignettes);
 
 //chose randomly 8 stories, for each participant new
 let eight_stories = _.sampleSize(vignettes, 8);
-
-// create 4 blocks
-var comp_block;
-let pri_block;
-let rel_block;
-let xor_block;
 
 // create random order of 8 stories, different for each block
 comp_block = _.cloneDeep(eight_stories);
