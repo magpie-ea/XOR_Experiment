@@ -19,11 +19,11 @@
 */
 
 // Every experiment should start with an intro view. Here you can welcome your participants and tell them what the experiment is about
-const intro = babeViews.view_generator("intro",{
-    trials: 1,
-    name: 'intro',
-    // If you use JavaScripts Template String `I am a Template String`, you can use HTML <></> and javascript ${} inside
-    text:  `Welcome to an XPrag Experiment
+const intro = babeViews.view_generator("intro", {
+  trials: 1,
+  name: 'intro',
+  // If you use JavaScripts Template String `I am a Template String`, you can use HTML <></> and javascript ${} inside
+  text: `Welcome to an XPrag Experiment
             <br />
             <br />
             Thank you for your participation in our study!
@@ -45,15 +45,15 @@ const intro = babeViews.view_generator("intro",{
             <br />
             Your anonymity is assured; the researchers who have requested your
             participation will not receive any personal information about you.`,
-   buttonText: 'to the experiment'
+  buttonText: 'to the experiment'
 });
 
 // For most tasks, you need instructions views
-const instructions = babeViews.view_generator("instructions",{
-    trials: 1,
-    name: 'instrucions',
-    title: 'Instructions',
-    text:  `In the following, you will be presented with <b> 8 short stories </b>.
+const instructions = babeViews.view_generator("instructions", {
+  trials: 1,
+  name: 'instrucions',
+  title: 'Instructions',
+  text: `In the following, you will be presented with <b> 8 short stories </b>.
             Please read them very carefully, even if they appear to be repeated and you think that you remember them well enough.
             We ask you to <b> rate statements about each short short story</b>.
             Please indicate, using an adjustable slider bar, <b> how likely you think a statement
@@ -69,114 +69,114 @@ const instructions = babeViews.view_generator("instructions",{
             <br />
             <br />
             An example is provided next.`,
-    buttonText: 'next'
+  buttonText: 'next'
 });
 
-const begin_experiment = babeViews.view_generator("instructions",{
-    trials: 1,
-    name: 'begin_experiment',
-    title: 'Begin Experiment',
-    text:  `The exact rating is a matter of taste and you might want to give a higher or lower rating. Just follow your intuition. Good luck!`,
-    buttonText: 'Begin experiment'
+const begin_experiment = babeViews.view_generator("instructions", {
+  trials: 1,
+  name: 'begin_experiment',
+  title: 'Begin Experiment',
+  text: `The exact rating is a matter of taste and you might want to give a higher or lower rating. Just follow your intuition. Good luck!`,
+  buttonText: 'Begin experiment'
 });
 
 
 // blocks to show after each block is over
-const after_block1 = babeViews.view_generator("instructions",{
-    trials: 1,
-    name: 'mid_instrucions1',
-    title: 'This block is finished!',
-    text:  `To move to the next block, press the 'next' button.`,
-    buttonText: 'next'
+const after_block1 = babeViews.view_generator("instructions", {
+  trials: 1,
+  name: 'mid_instrucions1',
+  title: 'This block is finished!',
+  text: `To move to the next block, press the 'next' button.`,
+  buttonText: 'next'
 });
 
-const after_block2 = babeViews.view_generator("instructions",{
-    trials: 1,
-    name: 'mid_instrucions2',
-    title: 'This block is finished!',
-    text:  `To move to the next block, press the 'next' button.`,
-    buttonText: 'next'
+const after_block2 = babeViews.view_generator("instructions", {
+  trials: 1,
+  name: 'mid_instrucions2',
+  title: 'This block is finished!',
+  text: `To move to the next block, press the 'next' button.`,
+  buttonText: 'next'
 });
 
-const after_block3 = babeViews.view_generator("instructions",{
-    trials: 1,
-    name: 'mid_instrucions3',
-    title: 'This block is finished!',
-    text:  `To move to the next block, press the 'next' button.`,
-    buttonText: 'next'
+const after_block3 = babeViews.view_generator("instructions", {
+  trials: 1,
+  name: 'mid_instrucions3',
+  title: 'This block is finished!',
+  text: `To move to the next block, press the 'next' button.`,
+  buttonText: 'next'
 });
 
 
 
 // In the post test questionnaire you can ask your participants addtional questions
-const post_test = babeViews.view_generator("post_test",{
-    trials: 1,
-    name: 'post_test',
-    title: 'Additional information',
-    text: 'Answering the following questions is optional, but your answers will help us analyze our results.',
+const post_test = babeViews.view_generator("post_test", {
+  trials: 1,
+  name: 'post_test',
+  title: 'Additional information',
+  text: 'Answering the following questions is optional, but your answers will help us analyze our results.',
 
-    // You can change much of what appears here, e.g., to present it in a different language, as follows:
-    // buttonText: 'Weiter',
-    // age_question: 'Alter',
-    // gender_question: 'Geschlecht',
-    // gender_male: 'männlich',
-    // gender_female: 'weiblich',
-    // gender_other: 'divers',
-    // edu_question: 'Höchster Bildungsabschluss',
-    // edu_graduated_high_school: 'Abitur',
-    // edu_graduated_college: 'Hochschulabschluss',
-    // edu_higher_degree: 'Universitärer Abschluss',
-    // languages_question: 'Muttersprache',
-    // languages_more: '(in der Regel die Sprache, die Sie als Kind zu Hause gesprochen haben)',
-    // comments_question: 'Weitere Kommentare'
+  // You can change much of what appears here, e.g., to present it in a different language, as follows:
+  // buttonText: 'Weiter',
+  // age_question: 'Alter',
+  // gender_question: 'Geschlecht',
+  // gender_male: 'männlich',
+  // gender_female: 'weiblich',
+  // gender_other: 'divers',
+  // edu_question: 'Höchster Bildungsabschluss',
+  // edu_graduated_high_school: 'Abitur',
+  // edu_graduated_college: 'Hochschulabschluss',
+  // edu_higher_degree: 'Universitärer Abschluss',
+  // languages_question: 'Muttersprache',
+  // languages_more: '(in der Regel die Sprache, die Sie als Kind zu Hause gesprochen haben)',
+  // comments_question: 'Weitere Kommentare'
 });
 
 // The 'thanks' view is crucial; never delete it; it submits the results!
 const thanks = babeViews.view_generator("thanks", {
-    trials: 1,
-    name: 'thanks',
-    title: 'Thank you for taking part in this experiment!',
-    prolificConfirmText: 'Press the button'
+  trials: 1,
+  name: 'thanks',
+  title: 'Thank you for taking part in this experiment!',
+  prolificConfirmText: 'Press the button'
 });
 
 
 //views for trial blocks
-const comp_trial = babeViews.view_generator("slider_rating",{
-  trials:comp_block.length,
+const comp_trial = babeViews.view_generator("slider_rating", {
+  trials: comp_block.length,
   name: 'comp_question',
-  trial_type:'comp_slider',
+  trial_type: 'comp_slider',
   data: comp_block,
 });
 
 const pri_trial = babeViews.view_generator("slider_rating", {
-    trials:pri_block.length,
-    //title: pri1_block.title,
-    name: 'prior_probability_question',
-    trial_type: 'prior_slider',
-    data: pri_block
+  trials: pri_block.length,
+  //title: pri1_block.title,
+  name: 'prior_probability_question',
+  trial_type: 'prior_slider',
+  data: pri_block
 });
 
-const rel_trial = babeViews.view_generator("slider_rating",{
+const rel_trial = babeViews.view_generator("slider_rating", {
   trials: rel_block.length, //2,
   name: 'rel_question',
-  trial_type:'rel_slider',
+  trial_type: 'rel_slider',
   data: rel_block,
 });
 
 const xor_trial = babeViews.view_generator("slider_rating", {
-    trials: xor_block.length,
-    //title: xor_block.title,
-    name: 'xor_question',
-    trial_type: 'xor_slider',
-    data: xor_block
+  trials: 4, //xor_block.length,
+  //title: xor_block.title,
+  name: 'xor_question',
+  trial_type: 'xor_slider',
+  data: xor_block
 });
 
 
 const ex_trial = babeViews.view_generator("slider_rating", {
-    trials: 4,
-    name: 'example',
-    trial_type: 'example_slider',
-    data: _.shuffle(trials_practice)
+  trials: 4,
+  name: 'example',
+  trial_type: 'example_slider',
+  data: _.shuffle(trials_practice)
 });
 
 
