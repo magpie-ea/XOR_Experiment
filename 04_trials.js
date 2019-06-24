@@ -484,6 +484,7 @@ const trials_practice = [{
     optionRight: "certainly true",
     condition: "example",
     question: `<br> ------------------------------- <br/>` + questions[0] + ' <br /> ------------------------------- <br/> <font size="2"> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[0] + '</i> </font>',
+    block: 'practice'
 },
   {
     title: 'Joe´s shopping',
@@ -491,7 +492,8 @@ const trials_practice = [{
     optionLeft: "certainly false",
     optionRight: "certainly true",
     condition: "example",
-    question: `<br> ------------------------------- <br/>` + questions[1] + ' <br /> ------------------------------- <br/> <font size="2"> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[1] + '</i></font>'
+    question: `<br> ------------------------------- <br/>` + questions[1] + ' <br /> ------------------------------- <br/> <font size="2"> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[1] + '</i></font>',
+    block: 'practice'
 },
   {
     title: 'Joe´s shopping',
@@ -499,7 +501,8 @@ const trials_practice = [{
     optionLeft: "certainly false",
     optionRight: "certainly true",
     condition: "example",
-    question: `<br> ------------------------------- <br/>` + questions[2] + '<br /> ------------------------------- <br/> <font size="2"> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[2] + '</i></font>'
+    question: `<br> ------------------------------- <br/>` + questions[2] + '<br /> ------------------------------- <br/> <font size="2"> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[2] + '</i></font>',
+    block: 'practice'
 },
   {
     title: 'Joe´s shopping',
@@ -507,7 +510,8 @@ const trials_practice = [{
     optionLeft: "certainly false",
     optionRight: "certainly true",
     condition: "example",
-    question: `<br> ------------------------------- <br/>` + questions[3] + ' <br /> ------------------------------- <br/> <font size="2"> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[3] + '</i></font>'
+    question: `<br> ------------------------------- <br/>` + questions[3] + ' <br /> ------------------------------- <br/> <font size="2"> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[3] + '</i></font>',
+    block: 'practice'
 }];
 
 
