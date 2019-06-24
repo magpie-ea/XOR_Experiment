@@ -21,7 +21,6 @@ const block_mapper = {
   "pri": 3
 };
 
-
 // takes in the eight stories and makes the info usable for new format
 // t1 and t2 are used in every block, t3 is only used for prior block
 // utterance is only used for xor block
@@ -67,32 +66,6 @@ function create_block(b, blockString) {
     break;
   }
 
-  div > h1
-
-  console.log(t1.test_question)
-
-
-  // switch (b, blockString) {
-  //   case 0:
-  //     t1.test_question = 'test_true1';
-  //     break;
-  //   case 1:
-  //     t1.test_question = 'test_true2';
-  //     break;
-  //   case 2:
-  //     t1.test_question = 'test_false1';
-  //     break;
-  //   case 3:
-  //     t1.test_question = 'test_false2';
-  //     break;
-  //   case 4:
-  //     t1.test_question = 'test_uncertain1';
-  //     break;
-  //   case 5:
-  //     t1.test_question = 'test_true2';
-  // }
-  //console.log(t1.test_question);
-
   let t2 = {};
   t2.title = b.name;
   t2.QUD = '<font size="6">' + t2.title + '</font>  <br /> <br /> ' + b.background + '<br />  <b>' + utterance;
@@ -101,7 +74,7 @@ function create_block(b, blockString) {
   t2.condition = "critical";
   t2.block = blockString;
   t2.question = `<br> ------------------------------- <br/>` + b.critical_question[block_mapper[blockString]] + `<br> ------------------------------- <br/> <font size="2""> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/>`;
-  t2.critical_question = b.critical_question[block_mapper[blockString]];
+  t2.test_question = "no";
 
   let t3 = {};
   if (blockString == "pri") {
@@ -109,8 +82,8 @@ function create_block(b, blockString) {
     t3.QUD = '<font size="6">' + t3.title + '</font>  <br /> <br />' + b.background;
     t3.optionLeft = "certainly false";
     t3.optionRight = "certainly true";
-    t2.condition = "critical";
-    t2.block = blockString;
+    t3.condition = "critical";
+    t3.test_question = "no"
     t3.question = `<br> ------------------------------- <br/>` + b.critical_question[block_mapper[blockString] + 1] + `<br> ------------------------------- <br/> <font size="2""> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/>`;
   }
 
@@ -131,7 +104,6 @@ function create_block(b, blockString) {
 
 
 
-
 /* Variables
  *
  *
@@ -140,12 +112,10 @@ const coin = _.sample(["head", "tail"]); // You can determine global (random) pa
 // Declare your variables here
 
 
-
 /* Helper functions
  *
  *
  */
-
 
 /* For generating random participant IDs */
 // https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript

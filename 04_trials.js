@@ -464,13 +464,7 @@ let example;
 vignettes = assign_questions(vignettes);
 
 //chose randomly 8 stories, for each participant new
-let chosen_stories = _.sampleSize(vignettes, 9);
-
-let eight_stories = chosen_stories.slice(0, 8);
-//let example_trial = chosen_stories.slice(8,9);
-
-console.log(eight_stories);
-
+let eight_stories = _.sampleSize(vignettes, 8);
 
 // create random order of 8 stories, different for each block
 comp_block = _.cloneDeep(eight_stories);
@@ -482,7 +476,7 @@ xor_block = _.cloneDeep(eight_stories);
 const questions = ["Joe went shopping without his wife Sue.", "Sue was very happy about the flowers.", "Joe and Sue are divorced.", "Joe and Sue have no children."];
 const explanations = ["The background story implies this statement, so we rate it as certainly true.", "The background story makes this very likely, but we cannot be sure.", "The background story suggests the contrary, but we cannot be sure.", "The background story implies the contrary, so we rate this as certainly false."];
 
-
+// hardcoded practice trials
 const trials_practice = [{
     title: 'Joe´s shopping',
     QUD: '<font size="4" color= "#00BFFF"> EXAMPLE </font>  <br><br> <font size="6"> Joe´s shopping </font>  <br /> ' + "<br /> Joe went shopping yesterday, while his wife Sue was at home with the kids. He bought flowers for his wife on the way home.",

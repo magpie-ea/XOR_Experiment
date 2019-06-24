@@ -17,9 +17,9 @@ $("document")
       // You have to specify all views you want to use in this experiment and the order of them
       views_seq: [
             intro,
-            //instructions,
-            //ex_trial,
-            //begin_experiment,
+            instructions,
+            ex_trial,
+            begin_experiment,
             _.flatten(_.shuffle([[comp_trial, after_block1], [pri_trial, after_block2], [rel_trial, after_block3]])),
             xor_trial,
             post_test,
@@ -41,9 +41,9 @@ $("document")
       progress_bar: {
         in: [
                 // list the view-names of the views for which you want a progress bar
-                comp_trial.name,
                 pri_trial.name,
                 rel_trial.name,
+                comp_trial.name,
                 xor_trial.name,
             ],
         // Possible styles are "default", "separate" and "chunks"

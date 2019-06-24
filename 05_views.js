@@ -107,7 +107,6 @@ const after_block3 = babeViews.view_generator("instructions", {
 });
 
 
-
 // In the post test questionnaire you can ask your participants addtional questions
 const post_test = babeViews.view_generator("post_test", {
   trials: 1,
@@ -157,15 +156,14 @@ const pri_trial = babeViews.view_generator("slider_rating", {
 });
 
 const rel_trial = babeViews.view_generator("slider_rating", {
-  trials: rel_block.length, //2,
+  trials: rel_block.length,
   name: 'rel_question',
   trial_type: 'rel_slider',
   data: rel_block,
 });
 
 const xor_trial = babeViews.view_generator("slider_rating", {
-  trials: 4, //xor_block.length,
-  //title: xor_block.title,
+  trials: xor_block.length,
   name: 'xor_question',
   trial_type: 'xor_slider',
   data: xor_block
@@ -178,8 +176,6 @@ const ex_trial = babeViews.view_generator("slider_rating", {
   trial_type: 'example_slider',
   data: _.shuffle(trials_practice)
 });
-
-
 
 /** trial (babe's Trial Type Views) below
 
