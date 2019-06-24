@@ -83,7 +83,8 @@ function create_block(b, blockString) {
     t3.optionLeft = "certainly false";
     t3.optionRight = "certainly true";
     t3.condition = "critical";
-    t3.test_question = "no"
+    t3.test_question = "no";
+    t3.block = blockString;
     t3.question = `<br> ------------------------------- <br/>` + b.critical_question[block_mapper[blockString] + 1] + `<br> ------------------------------- <br/> <font size="2""> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/>`;
   }
 
