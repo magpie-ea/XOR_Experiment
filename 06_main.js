@@ -23,8 +23,9 @@ $("document")
             _.flatten(_.shuffle([[comp_trial, after_block1], [pri_trial, after_block2], [rel_trial, after_block3]])),
             xor_trial,
             post_test,
-            thanks,
+            thanks
         ],
+
 
       // Here, you can specify all information for the deployment
       deploy: {
@@ -41,14 +42,16 @@ $("document")
       progress_bar: {
         in: [
                 // list the view-names of the views for which you want a progress bar
+                xor_trial.name,
                 pri_trial.name,
                 rel_trial.name,
-                comp_trial.name,
-                xor_trial.name,
+                comp_trial.name
+
             ],
         // Possible styles are "default", "separate" and "chunks"
-        style: "chunks",
+        style: "separate",
         width: 100
       }
     });
+
   });

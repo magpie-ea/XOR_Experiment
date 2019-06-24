@@ -35,7 +35,7 @@ function create_block(b, blockString) {
   t1.optionRight = "certainly true";
   t1.condition = "test";
   t1.block = blockString;
-  t1.question = `<br> ------------------------------- <br/>` + b.allQ[block_mapper[blockString]] + `<br> ------------------------------- <br/> <font size="2"> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/>`;
+  t1.question = `<br> ------------------------------- <br/> <b>` + b.allQ[block_mapper[blockString]] + `</b><br> ------------------------------- <br/> <font size="2"> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/>`;
 
 
   switch (true) {
@@ -73,7 +73,7 @@ function create_block(b, blockString) {
   t2.optionRight = "certainly true";
   t2.condition = "critical";
   t2.block = blockString;
-  t2.question = `<br> ------------------------------- <br/>` + b.critical_question[block_mapper[blockString]] + `<br> ------------------------------- <br/> <font size="2""> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/>`;
+  t2.question = `<br> ------------------------------- <br/><b>` + b.critical_question[block_mapper[blockString]] + `</b><br> ------------------------------- <br/> <font size="2""> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/>`;
   t2.test_question = "no";
 
   let t3 = {};
@@ -85,7 +85,7 @@ function create_block(b, blockString) {
     t3.condition = "critical";
     t3.test_question = "no";
     t3.block = blockString;
-    t3.question = `<br> ------------------------------- <br/>` + b.critical_question[block_mapper[blockString] + 1] + `<br> ------------------------------- <br/> <font size="2""> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/>`;
+    t3.question = `<br> ------------------------------- <br/><b>` + b.critical_question[block_mapper[blockString] + 1] + `</b><br> ------------------------------- <br/> <font size="2""> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/>`;
   }
 
   if (blockString == "pri") {
