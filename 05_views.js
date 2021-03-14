@@ -55,7 +55,7 @@ const instructions = magpieViews.view_generator("instructions", {
   title: 'Instructions',
   text: `In the following, you will be presented with <b> 8 short stories </b>.
             Please read them very carefully, even if they appear to be repeated and you think that you remember them well enough.
-            We ask you to <b> rate statements about each short short story</b>.
+            We ask you to <b> rate statements about each short story</b>.
             Please indicate, using an adjustable slider bar, <b> how likely you think a statement
             is true based on the story </b> you read.
             <br />
@@ -140,27 +140,27 @@ const thanks = magpieViews.view_generator("thanks", {
 
 
 //views for trial blocks
-const comp_trial = magpieViews.view_generator("slider_rating", {
-  trials: comp_block.length,
-  name: 'comp_question',
-  trial_type: 'comp_slider',
-  data: comp_block,
-});
-
-const pri_trial = magpieViews.view_generator("slider_rating", {
-  trials: pri_block.length,
-  //title: pri1_block.title,
-  name: 'prior_probability_question',
-  trial_type: 'prior_slider',
-  data: pri_block
-});
-
-const rel_trial = magpieViews.view_generator("slider_rating", {
-  trials: rel_block.length,
-  name: 'rel_question',
-  trial_type: 'rel_slider',
-  data: rel_block,
-});
+// const comp_trial = magpieViews.view_generator("slider_rating", {
+//   trials: comp_block.length,
+//   name: 'comp_question',
+//   trial_type: 'comp_slider',
+//   data: comp_block,
+// });
+//
+// const pri_trial = magpieViews.view_generator("slider_rating", {
+//   trials: pri_block.length,
+//   //title: pri1_block.title,
+//   name: 'prior_probability_question',
+//   trial_type: 'prior_slider',
+//   data: pri_block
+// });
+//
+// const rel_trial = magpieViews.view_generator("slider_rating", {
+//   trials: rel_block.length,
+//   name: 'rel_question',
+//   trial_type: 'rel_slider',
+//   data: rel_block,
+// });
 
 const xor_trial = magpieViews.view_generator("slider_rating", {
   trials: xor_block.length,
