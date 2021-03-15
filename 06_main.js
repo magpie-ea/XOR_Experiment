@@ -18,7 +18,7 @@ $("document")
       views_seq: [
             intro,
             instructions,
-            // ex_trial,
+            ex_trial,
             begin_experiment,
             // _.flatten(_.shuffle([[comp_trial, after_block1], [pri_trial, after_block2], [rel_trial, after_block3]])),
             xor_trial,

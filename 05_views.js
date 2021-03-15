@@ -163,15 +163,15 @@ const thanks = magpieViews.view_generator("thanks", {
 // });
 
 const xor_trial = magpieViews.view_generator("slider_rating", {
-  trials: xor_block.length,
+  trials: main_block.length,
   name: 'xor_question',
   trial_type: 'xor_slider',
-  data: xor_block
+  data: main_block//xor_block
 });
 
 
 const ex_trial = magpieViews.view_generator("slider_rating", {
-  trials: 4,
+  trials: 3, // 4
   name: 'example',
   trial_type: 'example_slider',
   data: _.shuffle(trials_practice)

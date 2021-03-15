@@ -2017,21 +2017,20 @@ let rel_block;
 let xor_block;
 let example;
 
-// add additional attribute to each item, which includes all 6 test questions,
-// vignettes = assign_questions(vignettes);
-
-//chose randomly 8 stories, for each participant new
-// let eight_stories = _.sampleSize(vignettes, 8);
-
 ///////////////////
 // sample one story of each kind, from the four stories per condition
-const conditions = ["hhh", "hhl", "hll", "hlh", "lhh", "lhl", "llh", "lll"];
-let chosen_conditions = _.map(conditions, function(x) {return _.sample(vignettes_or[x], 1) })
-console.log(chosen_conditions)
+// for 8 trials in total, use 4 xor + 4 some items of unique conditions
+
+// TWEAK HERE TO CHANGE NR OF TRIALS
+
+const conditions = _.shuffle(["hhh", "hhl", "hll", "hlh", "lhh", "lhl", "llh", "lll"]);
+let chosen_items_or = _.map(_.slice(conditions, 0, 4), function(x) {return _.sample(vignettes_or[x], 1) });
+let chosen_items_some = _.map(_.slice(conditions, 4, 8), function(x) {return _.sample(vignettes_some[x], 1)});
+// console.log(chosen_items_or)
 // add attributes to each item
-let eight_stories = assign_questions(chosen_conditions);
-// console.log("full vignettes")
-// console.log(full_vignettes)
+let or_stories = assign_questions(chosen_items_or);
+let some_stories = assign_questions_some(chosen_items_some);
+
 //////////////////
 
 // create random order of 8 stories, different for each block
@@ -2041,8 +2040,8 @@ let eight_stories = assign_questions(chosen_conditions);
 // xor_block = _.cloneDeep(eight_stories);
 
 
-const questions = ["Joe went shopping without his wife Sue.", "Sue was very happy about the flowers.", "Joe and Sue are divorced.", "Joe and Sue have no children."];
-const explanations = ["The background story implies this statement, so we rate it as certainly true.", "The background story makes this very likely, but we cannot be sure.", "The background story suggests the contrary, but we cannot be sure.", "The background story implies the contrary, so we rate this as certainly false."];
+const questions = ["Joe went shopping without his wife Sue.", "Sue was very happy about the flowers.", "Joe and Sue have no children."]; // "Joe and Sue are divorced.",
+const explanations = ["The background story implies this statement, so we rate it as certainly true.", "The background story makes this very likely, but we cannot be sure.", "The background story implies the contrary, so we rate this as certainly false."]; // "The background story suggests the contrary, but we cannot be sure.",
 
 // hardcoded practice trials
 const trials_practice = [{
@@ -2056,7 +2055,7 @@ const trials_practice = [{
 },
   {
     title: 'Joe´s shopping',
-    QUD: '<font size="4" color= "#00BFFF"> EXAMPLE </font>  <br><br> <font size="6"> Joe´s shopping </font>  <br /> ' + "<br /> Joe went shopping yesterday, while his wife Sue was at home with the kids. He bought flowers for his wife on the way home.",
+    QUD: '<font size="4" color= "#00BFFF"> EXAMPLE </font>  <br><br> <font size="6"> Joe\'s shopping </font>  <br /> ' + "<br /> Joe went shopping yesterday, while his wife Sue was at home with the kids. He bought flowers for his wife on the way home.",
     optionLeft: "certainly false",
     optionRight: "certainly true",
     condition: "example",
@@ -2065,22 +2064,23 @@ const trials_practice = [{
 },
   {
     title: 'Joe´s shopping',
-    QUD: '<font size="4" color= "#00BFFF"> EXAMPLE </font>  <br><br> <font size="6"> Joe´s shopping </font>  <br /> ' + "<br /> Joe went shopping yesterday, while his wife Sue was at home with the kids. He bought flowers for his wife on the way home.",
+    QUD: '<font size="4" color= "#00BFFF"> EXAMPLE </font>  <br><br> <font size="6"> Joe\'s shopping </font>  <br /> ' + "<br /> Joe went shopping yesterday, while his wife Sue was at home with the kids. He bought flowers for his wife on the way home.",
     optionLeft: "certainly false",
     optionRight: "certainly true",
     condition: "example",
     question: `<br> ------------------------------- <br/>` + questions[2] + '<br /> ------------------------------- <br/> <font size="2"> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[2] + '</i></font>',
     block: 'practice'
-},
-  {
-    title: 'Joe´s shopping',
-    QUD: '<font size="4" color= "#00BFFF"> EXAMPLE </font>  <br><br> <font size="6"> Joe´s shopping </font>  <br /> ' + "<br /> Joe went shopping yesterday, while his wife Sue was at home with the kids. He bought flowers for his wife on the way home.",
-    optionLeft: "certainly false",
-    optionRight: "certainly true",
-    condition: "example",
-    question: `<br> ------------------------------- <br/>` + questions[3] + ' <br /> ------------------------------- <br/> <font size="2"> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[3] + '</i></font>',
-    block: 'practice'
-}];
+}
+//   {
+//     title: 'Joe´s shopping',
+//     QUD: '<font size="4" color= "#00BFFF"> EXAMPLE </font>  <br><br> <font size="6"> Joe\'s shopping </font>  <br /> ' + "<br /> Joe went shopping yesterday, while his wife Sue was at home with the kids. He bought flowers for his wife on the way home.",
+//     optionLeft: "certainly false",
+//     optionRight: "certainly true",
+//     condition: "example",
+//     question: `<br> ------------------------------- <br/>` + questions[3] + ' <br /> ------------------------------- <br/> <font size="2"> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[3] + '</i></font>',
+//     block: 'practice'
+// }
+];
 
 
 // call function to create each block with the shuffled 8 eight_stories and the correct string
@@ -2094,7 +2094,14 @@ const trials_practice = [{
 // rel_block = _.flatten(_.map(_.shuffle(eight_stories), function (x) {
 //   return (create_block(x, 'rel'));
 // }));
-xor_block = _.flatten(_.map(_.shuffle(eight_stories), function (x) {
-  return create_block(x); // 'xor'
+xor_block = _.flatten(_.map(_.shuffle(or_stories), function (x) {
+  return create_block(x, "xor"); // 'xor'
 }));
 console.log(xor_block)
+
+some_block = _.flatten(_.map(_.shuffle(some_stories), function (x) {
+  return create_block(x, "some"); // 'xor'
+}));
+console.log(some_block)
+
+var main_block = _.shuffle(_.concat(xor_block, some_block));
