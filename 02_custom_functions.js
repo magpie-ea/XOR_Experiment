@@ -111,7 +111,7 @@ function create_block(b, type) { // blockString
 
   // first comprehension question block
   let t1 = {};
-  t1.condition = b.type;
+  t1.exp_condition = b.type;
   t1.relevance = b.relevance;
   t1.competence = b.competence;
   t1.prior = b.prior;
@@ -130,11 +130,12 @@ function create_block(b, type) { // blockString
 
 // relevance question block
   let t2 = {};
-  t2.condition = b.type;
+  t2.exp_condition = b.type;
   t2.relevance = b.relevance;
   t2.competence = b.competence;
   t2.prior = b.prior;
   t2.ID = b.ID;
+  t2.main_type = type;
   t2.title = b.name;
   t2.QUD = '<font size="6">' + t2.title + '</font>  <br /> <br /> ' + b.background + '<br />  <b>' + utterance_mapper[blockString[0]];
   t2.optionLeft = "certainly false";
@@ -146,11 +147,12 @@ function create_block(b, type) { // blockString
 
 // competence question block
   let t3 = {};
-  t3.condition = b.type;
+  t3.exp_condition = b.type;
   t3.relevance = b.relevance;
   t3.competence = b.competence;
   t3.prior = b.prior;
   t3.ID = b.ID;
+  t3.main_type = type;
   t3.title = b.name;
   t3.QUD = '<font size="6">' + t3.title + '</font>  <br /> <br /> ' + b.background + '<br />  <b>' + utterance_mapper[blockString[1]];
   t3.optionLeft = "certainly false";
@@ -162,11 +164,12 @@ function create_block(b, type) { // blockString
 
 // first prior question block
   let t4 = {};
-  t4.condition = b.type;
+  t4.exp_condition = b.type;
   t4.relevance = b.relevance;
   t4.competence = b.competence;
   t4.prior = b.prior;
   t4.ID = b.ID;
+  t4.main_type = type;
   t4.title = b.name;
   t4.QUD = '<font size="6">' + t4.title + '</font>  <br /> <br />' + b.background+ '<br />  <b>' + utterance_mapper[blockString[1]];
   t4.optionLeft = "certainly false";
@@ -178,11 +181,12 @@ function create_block(b, type) { // blockString
 
   // Second prior question block (only used for xor)
   let t5 = {};
-  t5.condition = b.type;
+  t5.exp_condition = b.type;
   t5.relevance = b.relevance;
   t5.competence = b.competence;
   t5.prior = b.prior;
   t5.ID = b.ID;
+  t5.main_type = type;
   t5.title = b.name;
   t5.QUD = '<font size="6">' + t5.title + '</font>  <br /> <br />' + b.background+ '<br />  <b>' + utterance_mapper[blockString[1]];
   t5.optionLeft = "certainly false";
@@ -194,11 +198,12 @@ function create_block(b, type) { // blockString
 
   // more test questions used as fillers before the inference question
   let t6 = {};
-  t6.condition = b.type;
+  t6.exp_condition = b.type;
   t6.relevance = b.relevance;
   t6.competence = b.competence;
   t6.prior = b.prior;
   t6.ID = b.ID;
+  t6.main_type = type;
   t6.title = b.name;
   t6.QUD = '<font size="6">' + t6.title + '</font>  <br /> <br />' + b.background + '<br />  <b>' + utterance_mapper[blockString[0]];
   t6.optionLeft = "certainly false";
@@ -211,11 +216,12 @@ function create_block(b, type) { // blockString
 
   // second filler question
   let t7 = {};
-  t7.condition = b.type;
+  t7.exp_condition = b.type;
   t7.relevance = b.relevance;
   t7.competence = b.competence;
   t7.prior = b.prior;
   t7.ID = b.ID;
+  t7.main_type = type;
   t7.title = b.name;
   t7.QUD = '<font size="6">' + t7.title + '</font>  <br /> <br />' + b.background + '<br />  <b>' + utterance_mapper[blockString[0]];
   t7.optionLeft = "certainly false";
@@ -229,11 +235,12 @@ function create_block(b, type) { // blockString
 
 // third filler question
   let t8 = {};
-  t8.condition = b.type;
+  t8.exp_condition = b.type;
   t8.relevance = b.relevance;
   t8.competence = b.competence;
   t8.prior = b.prior;
   t8.ID = b.ID;
+  t8.main_type = type;
   t8.title = b.name;
   t8.QUD = '<font size="6">' + t8.title + '</font>  <br /> <br />' + b.background + '<br />  <b>' + utterance_mapper[blockString[0]];
   t8.optionLeft = "certainly false";
@@ -249,19 +256,20 @@ function create_block(b, type) { // blockString
   // inference question
   // an information statement in blue appears above the context drawing subjects' attention to the new sentence
   let t9 = {};
-  t9.condition = b.type;
+  t9.exp_condition = b.type;
   t9.relevance = b.relevance;
   t9.competence = b.competence;
   t9.prior = b.prior;
   t9.ID = b.ID;
+  t9.main_type = type;
   t9.title = b.name;
-  // use correct utterance 
+  // use correct utterance
   switch(true) {
     case (type == "some"):
-      t9.QUD = '<font size="6">' + t9.title + '</font>  <br /> <br /> ' + '<font color="#00BFFF">Please note the additional sentence of this trial. Please answer the following questions by taking into account the additional inforamtion provided in this sentence.</font>' + '<br /> <br />' + b.background + '<br /> <br/> <b>' + utterance_mapper["some"];
+      t9.QUD = '<font size="6">' + t9.title + '</font>  <br /> <br /> ' + '<font color="#00BFFF">Please note the additional sentence of this trial. Please answer the following questions by taking into account the additional information provided in this sentence.</font>' + '<br /> <br />' + b.background + '<br /> <br/> <b>' + utterance_mapper["some"];
       break;
     default:
-      t9.QUD = '<font size="6">' + t9.title + '</font>  <br /> <br /> ' + '<font color="#00BFFF">Please note the additional sentence of this trial. Please answer the following questions by taking into account the additional inforamtion provided in this sentence.</font>' + '<br /> <br />' + b.background + '<br /> <br/> <b>' + utterance_mapper[blockString[3]];
+      t9.QUD = '<font size="6">' + t9.title + '</font>  <br /> <br /> ' + '<font color="#00BFFF">Please note the additional sentence of this trial. Please answer the following questions by taking into account the additional information provided in this sentence.</font>' + '<br /> <br />' + b.background + '<br /> <br/> <b>' + utterance_mapper[blockString[3]];
   }
   t9.optionLeft = "certainly false";
   t9.optionRight = "certainly true";
@@ -273,11 +281,12 @@ function create_block(b, type) { // blockString
   // second round of rel and comp
   // rel
   let t10 = {};
-  t10.condition = b.type;
+  t10.exp_condition = b.type;
   t10.relevance = b.relevance;
   t10.competence = b.competence;
   t10.prior = b.prior;
   t10.ID = b.ID;
+  t10.main_type = type;
   t10.title = b.name;
   switch (true) {
     case (type == "some"):
@@ -295,11 +304,12 @@ function create_block(b, type) { // blockString
 
   //comp
   let t11 = {};
-  t11.condition = b.type;
+  t11.exp_condition = b.type;
   t11.relevance = b.relevance;
   t11.competence = b.competence;
   t11.prior = b.prior;
   t11.ID = b.ID;
+  t11.main_type = type;
   t11.title = b.name;
   switch(true) {
     case (type == "some"):
@@ -318,7 +328,7 @@ function create_block(b, type) { // blockString
 
   // return both prior question blocks for xor, and make only one prior question for some
   if (type == "xor") {
-    return (_.flattenDeep([t1, _.shuffle([t2, t3, _.shuffle([t4, t5])]), t6, t7, t8, t9, _.shuffle([t10, t11]) ]));
+    return (_.flattenDeep([t1, _.shuffle([t2, t3, t4]), t6, t7, t8, t9, _.shuffle([t10, t11]) ])); // _.shuffle([t4, t5])
   } else {
     return (_.flattenDeep([t1, _.shuffle([t2, t3, t4]), t6, t7, t8, t9, _.shuffle([t10, t11]) ]));
 

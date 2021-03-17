@@ -3,8 +3,7 @@
 
 // vignettes is an object which contains all necessary information for the trials
 let vignettes_or = {
-  lll: [
- {
+  lll: [{
    "ID": 7,
    "name": "Jimmy's trip",
    "author": "micha",
@@ -144,8 +143,7 @@ let vignettes_or = {
    "test_uncertain1": "Sandra likes Sandra Bullock.",
    "test_uncertain2": "Susie has watched many movies with Will Smith."
  }],
- llh: [
- {
+llh: [ {
    "ID": 6,
    "name": "Joshua's delay",
    "author": "micha",
@@ -262,19 +260,19 @@ let vignettes_or = {
    "relevance": 0,
    "competence": 0,
    "prior": 1,
-   "background": "Fiona just got off a video call with her daughter Alissa who recently re-painted the walls in her apartment. Alissa had to re-paint with a tight budget. Fiona tells her brother Butch about it.",
-   "utterance_or": "Fiona says to Butch: 'She used creme-white for the bedroom or the guest room.'",
-   "utterance_disj1": "Fiona says to Butch: 'She used creme-white for the bedroom.'",
-   "utterance_disj2": "Fiona says to Butch: 'She used creme-white for the guest room.'",
-   "question_rel": "It is important for Butch to know whether Alissa used creme-white for both the bedroom and the guest room.",
-   "question_comp": "Fiona knows whether Alissa used creme-white for both the bedroom and the guest room.",
-   "question_pri1": "If Alissa used creme-white for the bedroom, it is likely that she used creme-white for the guest room as well.",
-   "question_pri2": "If Alissa used creme-white for the guest room, it is likely that she used creme-white for the bedroom as well.",
-   "question_pri_and": "It is likely that Alissa used creme-white for both the bedroom and the guest room. ",
-   "question_xor": "From what Fiona said we may conclude that Alissa did not use creme-white for both the bedroom and the guest room.",
-   "question_xorI": "Fiona wants to convey that Alissa did not use creme-white for both the bedroom and the guest room.",
-   "question_exh1": "From what Fiona said we may conclude that Alissa did not use creme-white for the guest room as well.",
-   "question_exh2": "From what Fiona said we may conclude that Alissa did not use creme-white for the bedroom as well.",
+   "background": "Fiona just got off a video call with her daughter Alissa who recently re-painted the walls in her apartment. Alissa had to re-paint her apartment with a tight budget. Fiona tells her brother Butch about it.",
+   "utterance_or": "Fiona says to Butch: 'She used off-white for the bedroom or the guest room.'",
+   "utterance_disj1": "Fiona says to Butch: 'She used off-white for the bedroom.'",
+   "utterance_disj2": "Fiona says to Butch: 'She used off-white for the guest room.'",
+   "question_rel": "It is important for Butch to know whether Alissa used off-white for both the bedroom and the guest room.",
+   "question_comp": "Fiona knows whether Alissa used off-white for both the bedroom and the guest room.",
+   "question_pri1": "If Alissa used off-white for the bedroom, it is likely that she used off-white for the guest room as well.",
+   "question_pri2": "If Alissa used off-white for the guest room, it is likely that she used off-white for the bedroom as well.",
+   "question_pri_and": "It is likely that Alissa used off-white for both the bedroom and the guest room. ",
+   "question_xor": "From what Fiona said we may conclude that Alissa did not use off-white for both the bedroom and the guest room.",
+   "question_xorI": "Fiona wants to convey that Alissa did not use off-white for both the bedroom and the guest room.",
+   "question_exh1": "From what Fiona said we may conclude that Alissa did not use off-white for the guest room as well.",
+   "question_exh2": "From what Fiona said we may conclude that Alissa did not use off-white for the bedroom as well.",
    "test_true": "Alissa has an apartment.",
    "test_false": "Fiona is Alissa's sister.",
    "test_uncertain": "Alissa painted the living room pale blue.",
@@ -285,8 +283,7 @@ let vignettes_or = {
    "test_uncertain1": "Fiona wants to re-paint her apartment now, too.",
    "test_uncertain2": "Alissa also got new furniture."
  }],
- lhl: [
- {
+lhl: [ {
    "ID": 5,
    "name": "Tony's clubbing",
    "author": "micha",
@@ -358,7 +355,7 @@ let vignettes_or = {
  },
  {
    "ID": 39,
-   "name": "rumors",
+   "name": "Rumors",
    "author": "neele",
    "polina’s comments": "agreed with MF",
    "thoughts": "MF: prior low?, comp high? Bob: I agree about Competence. Prior might indeed be problematic because it sounds like John and his wife haven't had time to watch TV or listen to the radio. True1 isn't true because it's just a rumour right?",
@@ -393,7 +390,7 @@ let vignettes_or = {
  },
  {
    "ID": 40,
-   "name": "hippies",
+   "name": "Hippies",
    "author": "bob",
    "polina’s comments": "I like this one more than the previous hippies item (see my comment). Adjust the questions respectively",
    "thoughts": "Bob: This is one of the few (the only?) items where 'or' conjoins whole sentences. Maybe have something like a 'broken headlight or tail light' instead?",
@@ -425,9 +422,8 @@ let vignettes_or = {
    "test_false2": "The couple's van is registered as a stolen vehicle.",
    "test_uncertain1": "Paul is having a coffee at the gas station.",
    "test_uncertain2": "Paul has a green car."
- } ],
- lhh: [
- {
+ }],
+ lhh: [{
    "ID": 4,
    "name": "Bill's order",
    "author": "micha",
@@ -499,7 +495,7 @@ let vignettes_or = {
  },
  {
    "ID": 31,
-   "name": "school",
+   "name": "School",
    "author": "elisa",
    "polina’s comments": "I would write “does not excel” in the inference question for consistency, otherwise it’s fine",
    "thoughts": "NA",
@@ -534,7 +530,7 @@ let vignettes_or = {
  },
  {
    "ID": 38,
-   "name": "grandma",
+   "name": "Grandma",
    "author": "neele",
    "polina’s comments": "isn’t “coffee and cake” kind of conventionalized? (or is it German intuition coming through?;-)) also the wording that Gretchen is “visiting” her mother suggests that the mother is e.g. at home, making the following part of the utterance a little weird to me. Maybe “meets”?",
    "thoughts": "Bob: We should probably add 'at Cafe Toscana' to the Prior questions.",
@@ -544,31 +540,30 @@ let vignettes_or = {
    "relevance": 0,
    "competence": 1,
    "prior": 1,
-   "background": "Gretchen is meeting her mother Elsa, who had just previously met her own mother, Gretchen's grandmother, at the Cafe Toscana in the city center. Elsa tells Gretchen about it.",
-   "utterance_or": "Elsa tells Gretchen: 'I just had coffee or cake with your grandma in the Cafe Toscana.'",
-   "utterance_disj1": "Elsa tells Gretchen: 'I just had coffee with your grandma in the Cafe Toscana.'",
-   "utterance_disj2": "Elsa tells Gretchen: 'I just had cake with your grandma in the Cafe Toscana.'",
-   "question_rel": "It is important for Gretchen to know whether Elsa had both coffee and cake with her grandmother at the Cafe Toscana.",
-   "question_comp": "Elsa knows whether she had both coffee and cake with her mother at the Cafe Toscana.",
-   "question_pri1": "If Elsa had coffee, it is likely that she also had cake at the Cafe Toscana.",
-   "question_pri2": "If Elsa had cake, it is likely that she also had coffee at the Cafe Toscana.",
-   "question_pri_and": "It is likely that Elsa had both coffee and cake at the Cafe Toscana.",
-   "question_xor": "From what Elsa said we may conclude that she did not have both coffee and cake at the Cafe Toscana.",
-   "question_xorI": "Elsa wants to convey that she did not have both coffee and cake at the Cafe Toscana.",
-   "question_exh1": "From what Elsa said we may conclude that she did not have coffee at the Cafe Toscana as well.",
-   "question_exh2": "From what Elsa said we may conclude that she did not have cake at the Cafe Toscana as well.",
+   "background": "Gretchen is meeting her mother Elsa, who had just previously met her own mother, Gretchen's grandmother, at Cafe Toscana in the city center. Elsa tells Gretchen about it.",
+   "utterance_or": "Elsa tells Gretchen: 'I just had coffee or cake with your grandma at Cafe Toscana.'",
+   "utterance_disj1": "Elsa tells Gretchen: 'I just had coffee with your grandma at Cafe Toscana.'",
+   "utterance_disj2": "Elsa tells Gretchen: 'I just had cake with your grandma at Cafe Toscana.'",
+   "question_rel": "It is important for Gretchen to know whether Elsa had both coffee and cake with her grandmother at Cafe Toscana.",
+   "question_comp": "Elsa knows whether she had both coffee and cake with her mother at Cafe Toscana.",
+   "question_pri1": "If Elsa had coffee, it is likely that she also had cake at Cafe Toscana.",
+   "question_pri2": "If Elsa had cake, it is likely that she also had coffee at Cafe Toscana.",
+   "question_pri_and": "It is likely that Elsa had both coffee and cake at Cafe Toscana.",
+   "question_xor": "From what Elsa said we may conclude that she did not have both coffee and cake at Cafe Toscana.",
+   "question_xorI": "Elsa wants to convey that she did not have both coffee and cake at Cafe Toscana.",
+   "question_exh1": "From what Elsa said we may conclude that she did not have coffee at Cafe Toscana as well.",
+   "question_exh2": "From what Elsa said we may conclude that she did not have cake at Cafe Toscana as well.",
    "test_true": "Gretchen’s grandmother is Elsa’s mother.",
    "test_false": "Gretchen is meeting her father.",
    "test_uncertain": "Elsa plans to go to the hairdresser tomorrow.",
    "test_true1": "Elsa is Gretchen's mother.",
    "test_true2": "There's a cafe named Cafe Toscana.",
    "test_false1": "Gretchen is Elsa's grandmother.",
-   "test_false2": "Gretchen joined her mother and grandmother in the Cafe Toscana.",
+   "test_false2": "Gretchen joined her mother and grandmother at Cafe Toscana.",
    "test_uncertain1": "Gretchen's brother has been at Cafe Toscana too.",
    "test_uncertain2": "Gretchen has blond hair."
  }],
- hll: [
- {
+ hll: [{
    "ID": 3,
    "name": "Carl's party",
    "author": "micha",
@@ -640,7 +635,7 @@ let vignettes_or = {
  },
  {
    "ID": 32,
-   "name": "eyewitness",
+   "name": "Eyewitness",
    "author": "elisa",
    "polina’s comments": "the disjuncts are of different kind (attribute vs. piece of clothing), not sure if that’s an issue. Also the disjunction is embedded under a complementizer.",
    "thoughts": "maybe exchange 'wore high heels' by 'is brunette'",
@@ -675,7 +670,7 @@ let vignettes_or = {
  },
  {
    "ID": 36,
-   "name": "college",
+   "name": "College",
    "author": "neele",
    "polina’s comments": "the relevance depends a bit on the location of the hometown (i.e., if either of those colleges is close to home), or where she applied to college. The prior is not very salient but might be okay. I would also update the first comprehension question to “.. are friends” ",
    "thoughts": "Bob: Not sure about False1.",
@@ -708,8 +703,7 @@ let vignettes_or = {
    "test_uncertain1": "Alice wants to study languages.",
    "test_uncertain2": "Alice likes Michael Jackson."
  }],
- hlh: [
- {
+ hlh: [{
    "ID": 2,
    "name": "Brad's clothes",
    "author": "micha",
@@ -781,7 +775,7 @@ let vignettes_or = {
  },
  {
    "ID": 33,
-   "name": "rabbits",
+   "name": "Rabbits",
    "author": "elisa",
    "polina’s comments": "the disjunction is embedded in a modal, Bob commented that that might be problematic. Also, it might just be me but it’s somehow weird that Tim arrives in the morning and James isn’t home YET..?",
    "thoughts": "NA",
@@ -816,7 +810,7 @@ let vignettes_or = {
  },
  {
    "ID": 37,
-   "name": "crime",
+   "name": "Crime",
    "author": "neele",
    "polina’s comments": "is relevance really 1 here? Also “was” might be disadvantageous to an inclusive reading. Maybe the sentence could be something like “I heard that a crime involving.. happened”?",
    "thoughts": "MF: is the SAME event a robbery and an injury or are there two events; I massaged this into the former, but not sure this is what is best; what about 'I heard that'? Bob: Is a physical injury a type of crime? I'm not sure about Prior or Relevance.",
@@ -827,9 +821,9 @@ let vignettes_or = {
    "competence": 0,
    "prior": 1,
    "background": "Lynn and Sally are on their way home. They've been partying together until early morning. Sally is telling Lynn about a crime incident that happened in Lynn's neighborhood last night, where violence and theft are frequent.",
-   "utterance_or": "Sally says to Lynn: 'I heard that there was an incident involving an armed robbery or physical injury in Cornwall Street last night.'",
-   "utterance_disj1": "Sally says to Lynn: 'I heard that there was an incident involving an armed robbery in Cornwall Street last night.'",
-   "utterance_disj2": "Sally says to Lynn: 'I heard that there was an incident involving a physical injury in Cornwall Street last night.'",
+   "utterance_or": "Sally says to Lynn: 'I heard that there was an incident involving an armed robbery or physical injury last night.'",
+   "utterance_disj1": "Sally says to Lynn: 'I heard that there was an incident involving an armed robbery last night.'",
+   "utterance_disj2": "Sally says to Lynn: 'I heard that there was an incident involving a physical injury last night.'",
    "question_rel": "It is important for Lynn to know whether the incident that happened last night involved both, an armed robbery and a physical injury.",
    "question_comp": "Sally knows whether the incident that happened last night involved both an armed robbery and a physical injury.",
    "question_pri1": "If the incident involved an armed robbery, it is likely that it also involved a physical injury.",
@@ -849,8 +843,7 @@ let vignettes_or = {
    "test_uncertain1": "It's Sally's birthday.",
    "test_uncertain2": "Lynn has a dog."
  }],
- hhl: [
- {
+ hhl: [{
    "ID": 1,
    "name": "Mrs Sanders' son",
    "author": "micha",
@@ -957,7 +950,7 @@ let vignettes_or = {
  },
  {
    "ID": 35,
-   "name": "crush",
+   "name": "Crush",
    "author": "neele",
    "polina’s comments": "the relevance question is missing the second disjunct.",
    "thoughts": "Bob: The question for Rel is wrong. It's probably impossible to ask the Competence question without the utterance.",
@@ -990,8 +983,7 @@ let vignettes_or = {
    "test_uncertain1": "Jenny has a crush on Sam.",
    "test_uncertain2": "Jenny speaks Swedish."
  }],
- hhh: [
- {
+ hhh: [{
    "ID": 0,
    "name": "Mrs Gibbs' worry",
    "author": "micha",
@@ -1098,7 +1090,7 @@ let vignettes_or = {
  },
  {
    "ID": 34,
-   "name": "Tokyo Daigaku",
+   "name": "Semester abroad",
    "author": "neele",
    "polina’s comments": "not really sure about the prior or competence here. Also the exhaustive sentences are missing “as well”. Also note that the utterance is in future tense. ",
    "thoughts": "MF: massaged this heavily away from Neele's original which had an embedded disjunction. Bob: I'm not sure about Prior. Another issue is that the disjuncts are somehow overlapping, which isn't the case in the other vignettes.",
@@ -1108,36 +1100,36 @@ let vignettes_or = {
    "relevance": 1,
    "competence": 1,
    "prior": 1,
-   "background": "Matt and Frank are friends from college who just moved to Tokyo for a term abroad together. For the first evening of the semester, Tokyo University is organizing an evening with common activities so that people can get to know each other. Frank is uncertain about what to expect from this event, what to bring and what to prepare for. Matt has studied the invitation letter more carefully and tells Frank about the program.",
-   "utterance_or": "Matt says: 'It will be a sports activity or a board games night .'",
-   "utterance_disj1": "Matt says: 'It will be a board games night.’",
-   "utterance_disj2": "Matt says: 'It will be a sports activity.'",
-   "question_rel": "It is important for Frank to know whether it will be both a sports activity and a board games night.",
-   "question_comp": "Matt knows whether it will be both a sports activity and a board games night.",
-   "question_pri1": "If it will be a board games night, it is likely that it will also be a sports activity.",
-   "question_pri2": "If it will be a sports activity, it is likely that it will also be a board games night.",
-   "question_pri_and": "It is likely that it will be both a sports activity and a board games night.",
-   "question_xor": "From what Matt said we may conclude that it will not be both a sports activity and a board games night.",
-   "question_xorI": "Matt wants to convey that it will not be both a board games night and a sports activity.",
-   "question_exh1": "From what Matt said we may conclude that it will not be a sports activity as well.",
-   "question_exh2": "From what Matt said we may conclude that it will not be a sports activity as well.",
-   "test_true": "Matt and Frank are in the capital of Japan.",
-   "test_false": "Matt has lived in Tokyo since three years. ",
+   "background": "Matt and Frank are friends from college who just moved to another country for a term abroad together. For the first evening of the semester, the university is organizing an evening with common activities so that people can get to know each other. Frank is uncertain about what to expect from this event and what to bring. Matt has studied the invitation letter more carefully and tells Frank about the program.",
+   "utterance_or": "Matt says: 'There will be food or drinks.’",
+   "utterance_disj1": "Matt says: 'There will be food.’",
+   "utterance_disj2": "Matt says: ‘There will be drinks.’",
+   "question_rel": "It is important for Frank to know whether there will be both food and drinks.",
+   "question_comp": "Matt knows whether there will be both food and drinks.",
+   "question_pri1": "If there will be food, it is likely that there will also be drinks.",
+   "question_pri2": "If there will drinks, it is likely that there will also be food.",
+   "question_pri_and": "It is likely that there will be both food and drinks.",
+   "question_xor": "From what Matt said we may conclude that there will not be both food and drinks.",
+   "question_xorI": "Matt wants to convey that there will not be both food and drinks.",
+   "question_exh1": "From what Matt said we may conclude that there will not be food as well.",
+   "question_exh2": "From what Matt said we may conclude that there will not be drinks as well.",
+   "test_true": "Matt and Frank are at a new college.",
+   "test_false": "Matt has been studying at this university since three years. ",
    "test_uncertain": "Frank has never been abroad before.",
    "test_true1": "Matt and Frank are completing a semester abroad.",
    "test_true2": "The university is organizing some activity for newbies.",
    "test_false1": "Matt is Frank's sister.",
-   "test_false2": "Frank is taking a plane to the US that evening.",
+   "test_false2": "Frank is taking a plane to go visit his brother that evening.",
    "test_uncertain1": "Frank and Matt are engineers.",
    "test_uncertain2": "Frank has a girlfriend."
- }]
-};
+ }
+]};
 
 let vignettes_some = {
   hhh: [
  {
    "ID": 0,
-   "name": "youth hostel",
+   "name": "Youth hostel",
    "author": "neele",
    "polina’s comments": "agreed with Bob",
    "thoughts": "Bob: I'm not completely sure about Relevance, but we might as well test it.",
@@ -1164,7 +1156,7 @@ let vignettes_some = {
  },
  {
    "ID": 7,
-   "name": "hotel check",
+   "name": "Hotel check",
    "author": "micha",
    "polina’s comments": "fine",
    "thoughts": "NA",
@@ -1218,7 +1210,7 @@ let vignettes_some = {
  },
  {
    "ID": 33,
-   "name": "attendance",
+   "name": "Attendance",
    "author": "elisa",
    "polina’s comments": "fine, though not completely sure about the prior",
    "thoughts": "NA",
@@ -1243,10 +1235,9 @@ let vignettes_some = {
    "test_false1": "Mrs. Wu teaches in high school.",
    "test_uncertain1": "Professor Wu teaches Mathematics."
  }],
- hhl: [
- {
+ hhl: [{
    "ID": 1,
-   "name": "teacher problems",
+   "name": "Teacher problems",
    "author": "neele",
    "polina’s comments": "fine",
    "thoughts": "NA",
@@ -1273,7 +1264,7 @@ let vignettes_some = {
  },
  {
    "ID": 15,
-   "name": "tail-donkey blindfold",
+   "name": "Tail-donkey blindfold",
    "author": "bob",
    "polina’s comments": "fine",
    "thoughts": "NA",
@@ -1327,7 +1318,7 @@ let vignettes_some = {
  },
  {
    "ID": 31,
-   "name": "teacher",
+   "name": "Teacher",
    "author": "elisa",
    "polina’s comments": "fine; but maybe “nine-graders”??",
    "thoughts": "NA",
@@ -1337,7 +1328,7 @@ let vignettes_some = {
    "relevance": 1,
    "competence": 1,
    "prior": 0,
-   "background": "Mr Brown teaches biology to nine-graders. Since the Department of Education would like to understand which subject is the most difficult for students across the country, Mr Brown has to report to the superintendent when students fail the course.",
+   "background": "Mr Brown teaches biology to nineth-graders. Since the Department of Education would like to understand which subject is the most difficult for students across the country, Mr Brown has to report to the superintendent when students fail the course.",
    "utterance_imp": "Mr Brown says to the superintendent: 'Some of the students failed the course.'",
    "question_rel": "It is important for the superintendent to know whether all of the students failed the course.",
    "question_comp": "Mr Brown knows whether all of the students failed the course.",
@@ -1351,10 +1342,8 @@ let vignettes_some = {
    "test_true1": "Mr. Brown is a school teacher.",
    "test_false1": "Mr. Brown is a college professor.",
    "test_uncertain1": "The school Mr. Brown teaches at is the best one in the district."
- },
-],
- hlh: [
- {
+ }],
+ hlh: [{
    "ID": 5,
    "name": "The game",
    "author": "neele",
@@ -1437,7 +1426,7 @@ let vignettes_some = {
  },
  {
    "ID": 36,
-   "name": "violinist",
+   "name": "Violinist",
    "author": "elisa",
    "polina’s comments": "fine",
    "thoughts": "unmusical or tone-deaf?; I think prior is high...",
@@ -1462,8 +1451,7 @@ let vignettes_some = {
    "test_false1": "John is preparing for his first world tour.",
    "test_uncertain1": "Jason is a professional athlete."
  }],
- hll: [
- {
+ hll: [{
    "ID": 29,
    "name": "Mr. Carpenter's homework assignments",
    "author": "natalie",
@@ -1492,7 +1480,7 @@ let vignettes_some = {
  },
  {
    "ID": 2,
-   "name": "nuts",
+   "name": "Nuts",
    "author": "neele",
    "polina’s comments": "fine; maybe write “other guests”;",
    "thoughts": "NW: I'm not sure if competence is clearly 0 in this case",
@@ -1502,7 +1490,7 @@ let vignettes_some = {
    "relevance": 1,
    "competence": 0,
    "prior": 0,
-   "background": "Brian is invited to the fiftieth birthday party of his old friend Gary. At the party, Brian wants to get some cake for Gary. Several other guests brought a cake so there's a cake buffet which looks really good. But there might be a problem, because Brian knows that Gary is allergic to nuts.",
+   "background": "Brian is invited to the 50th birthday party of his old friend Gary. At the party, Brian wants to get some cake for Gary. Several other guests brought a cake so there's a cake buffet which looks really good. But there might be a problem, because Brian knows that Gary is allergic to nuts.",
    "utterance_imp": "Gary says to Brain: 'Some of the cakes contain nuts.'",
    "question_rel": "It is important for Brian to know whether all of the cakes contain nuts.",
    "question_comp": "Gary knows whether all of the cakes contain nuts.",
@@ -1519,7 +1507,7 @@ let vignettes_some = {
  },
  {
    "ID": 13,
-   "name": "rotten tomatoes",
+   "name": "Rotten tomatoes",
    "author": "micha",
    "polina’s comments": "not sure about competence here; i’d think that he is competent in his judgement of that one crate, so it might be not very salient that the intention is to contrast that one crate against possible others",
    "thoughts": "NA",
@@ -1546,7 +1534,7 @@ let vignettes_some = {
  },
  {
    "ID": 20,
-   "name": "schizophrenia talk",
+   "name": "Schizophrenia talk",
    "author": "bob",
    "polina’s comments": "fine; why is the question_true necessarily true though?",
    "thoughts": "NA",
@@ -1571,8 +1559,7 @@ let vignettes_some = {
    "test_false1": "Jacob was the only listener of Lucy’s talk.",
    "test_uncertain1": "Jacob is Lucy’s boyfriend."
  }],
- lhh: [
- {
+ lhh: [{
    "ID": 3,
    "name": "Harry Potter",
    "author": "neele",
@@ -1584,24 +1571,24 @@ let vignettes_some = {
    "relevance": 0,
    "competence": 1,
    "prior": 1,
-   "background": "Samantha is a huge fan of Harry Potter and is planning a Harry Potter weekend with a Harry Potter movie marathon, butterbeer, and fan costumes with her friends. ",
-   "utterance_imp": "She invites her friends and tells them: 'We will watch some of the Harry Potter movies.'",
-   "question_rel": "It is important for the friends to know whether they will watch all of the Harry Potter movies.",
-   "question_comp": "Samantha knows whether they will watch all of the Harry Potter movies.",
-   "question_pri": "They will watch all of the Harry Potter movies.",
-   "question_priC": "If at least some of the Harry Potter movies will be watched, then all of the Harry Potter movies will be watched.",
-   "question_imp": "From what Samantha said we may conclude that they will not watch all of the Harry Potter movies.",
-   "question_impI": "Samantha wants to convey that they will not watch all of the Harry Potter movies.",
+   "background": "Samantha is a huge fan of Harry Potter, and she organized a Harry Potter weekend with a Harry Potter movie marathon, butterbeer, and fan costumes with her friends. On Monday, Samantha tells her aunt about the weekend.",
+   "utterance_imp": "Samantha says to her aunt: 'We watched some of the Harry Potter movies.'",
+   "question_rel": "It is important for Samantha’s aunt to know whether they watched all of the Harry Potter movies.",
+   "question_comp": "Samantha knows whether they watched all of the Harry Potter movies.",
+   "question_pri": "Samantha and her friends watched all of the Harry Potter movies.",
+   "question_priC": "If at least some of the Harry Potter movies were watched, then all of the Harry Potter movies were watched.",
+   "question_imp": "From what Samantha said we may conclude that they did not watch all of the Harry Potter movies.",
+   "question_impI": "Samantha wants to convey that they did not watch all of the Harry Potter movies.",
    "test_true": "Samantha loves Harry Potter.",
-   "test_false": "Samantha doesn't want to invite anyone.",
+   "test_false": "Samantha didn’t want to invite anyone.",
    "test_uncertain": "Samantha's friends like Lord of the Rings.",
    "test_true1": "Samantha and her friends like to dress up.",
-   "test_false1": "Samantha plans a Disney movies themed weekend.",
-   "test_uncertain1": "Samantha’s friends will bring candy."
+   "test_false1": "Samantha planned a Disney movies themed weekend.",
+   "test_uncertain1": "Samantha’s friends brought candy."
  },
  {
    "ID": 9,
-   "name": "gift unwrapping",
+   "name": "Gift unwrapping",
    "author": "micha",
    "polina’s comments": "agreed with the prior considerations",
    "thoughts": "no longer so sure if this is high prior; Leonard may want to unwrap all, but it may be uncertain whether he was allowed to",
@@ -1655,7 +1642,7 @@ let vignettes_some = {
  },
  {
    "ID": 37,
-   "name": "restaurant",
+   "name": "Restaurant",
    "author": "elisa",
    "polina’s comments": "“still” might be disadvantageous for the “all” possibility? otherwise fine",
    "thoughts": "NA",
@@ -1680,10 +1667,9 @@ let vignettes_some = {
    "test_false1": "Jane was stuck in traffic jam on her way to the restaurant.",
    "test_uncertain1": "Jane wants to order a soup and a pizza."
  }],
- lhl: [
- {
+ lhl: [{
    "ID": 10,
-   "name": "van Gogh exhibition",
+   "name": "Van Gogh exhibition",
    "author": "micha",
    "polina’s comments": "fine",
    "thoughts": "NA",
@@ -1710,7 +1696,7 @@ let vignettes_some = {
  },
  {
    "ID": 18,
-   "name": "underage drinking",
+   "name": "Underage drinking",
    "author": "bob",
    "polina’s comments": "fine",
    "thoughts": "NA",
@@ -1764,7 +1750,7 @@ let vignettes_some = {
  },
  {
    "ID": 34,
-   "name": "health inspector",
+   "name": "Health inspector",
    "author": "elisa",
    "polina’s comments": "fine",
    "thoughts": "NA",
@@ -1789,10 +1775,9 @@ let vignettes_some = {
    "test_false1": "The health inspector only controls the cleanliness of the restaurant kitchen.",
    "test_uncertain1": "The health inspector’s name is Mr. Jones."
  }],
- llh: [
- {
+ llh: [{
    "ID": 4,
-   "name": "picnic pictures",
+   "name": "Picnic pictures",
    "author": "neele",
    "polina’s comments": "fine",
    "thoughts": "Bob: I've removed 'all' from the description'.",
@@ -1819,7 +1804,7 @@ let vignettes_some = {
  },
  {
    "ID": 12,
-   "name": "gourmet desserts",
+   "name": "Gourmet desserts",
    "author": "micha",
    "polina’s comments": "natalie’s comment makes sense, but she’s only been there twice, so she probably only tried two dessert; therefore, the competence might indeed be low?",
    "thoughts": "Natalie: 'type' says 'lhh', but values say 0/0/1. Is competence meant to be high or low here? (I'd think high?) And why is relevance labelled low? If Jeremy asks her for her opinion, I'd think it's relevant for him to know whether some of the deserts were not so good.",
@@ -1873,7 +1858,7 @@ let vignettes_some = {
  },
  {
    "ID": 39,
-   "name": "shelter",
+   "name": "Shelter",
    "author": "elisa",
    "polina’s comments": "the second sentence of the context feels a bit weird, also not sure about relevance",
    "thoughts": "NA",
@@ -1898,8 +1883,7 @@ let vignettes_some = {
    "test_false1": "Freddy is allergic to cats.",
    "test_uncertain1": "Freddy has an older sister."
  }],
- lll: [
- {
+ lll: [{
    "ID": 22,
    "name": "Martha's cookies",
    "author": "bob",
@@ -1928,7 +1912,7 @@ let vignettes_some = {
  },
  {
    "ID": 6,
-   "name": "champagne reception",
+   "name": "Champagne reception",
    "author": "neele",
    "polina’s comments": "fine",
    "thoughts": "Bob: I've changed 'don't drink alcohol' to 'like apple juice'. It's probably not a good idea to have a negation together with 'all'.",
@@ -1955,7 +1939,7 @@ let vignettes_some = {
  },
  {
    "ID": 14,
-   "name": "stand-up comedy show",
+   "name": "Stand-up comedy show",
    "author": "micha",
    "polina’s comments": "fine",
    "thoughts": "NA",
@@ -1982,7 +1966,7 @@ let vignettes_some = {
  },
  {
    "ID": 17,
-   "name": "emails from a broken laptop",
+   "name": "Emails from a broken laptop",
    "author": "bob",
    "polina’s comments": "agreed with Natalie; internet connection or email account issues might be better; minor, but: relevance might be high because Kate might want to know which emails he did not get so she can take of those accounts?",
    "thoughts": "Natalie: Why is prior rated low? Unless it's her e-mail program that is broken, Joshua should have received all of the e-mails. Maybe rather say that Kate is having problems with her internet connection?",
@@ -2009,6 +1993,7 @@ let vignettes_some = {
  }
 ]
 }
+
 
 // create 4 trail blocks
 let comp_block;
@@ -2041,7 +2026,7 @@ let some_stories = assign_questions_some(chosen_items_some);
 
 
 const questions = ["Joe went shopping without his wife Sue.", "Sue was very happy about the flowers.", "Joe and Sue have no children."]; // "Joe and Sue are divorced.",
-const explanations = ["The background story implies this statement, so we rate it as certainly true.", "The background story makes this very likely, but we cannot be sure.", "The background story implies the contrary, so we rate this as certainly false."]; // "The background story suggests the contrary, but we cannot be sure.",
+const explanations = ["The background story implies this statement, so we rate it as certainly true.", "The background story makes this rather likely, but we cannot be sure.", "The background story implies the contrary, so we rate this as certainly false."]; // "The background story suggests the contrary, but we cannot be sure.",
 
 // hardcoded practice trials
 const trials_practice = [{
@@ -2094,14 +2079,14 @@ const trials_practice = [{
 // rel_block = _.flatten(_.map(_.shuffle(eight_stories), function (x) {
 //   return (create_block(x, 'rel'));
 // }));
-xor_block = _.flatten(_.map(_.shuffle(or_stories), function (x) {
+xor_block = _.map(_.shuffle(or_stories), function (x) {
   return create_block(x, "xor"); // 'xor'
-}));
+});
 console.log(xor_block)
 
-some_block = _.flatten(_.map(_.shuffle(some_stories), function (x) {
+some_block = _.map(_.shuffle(some_stories), function (x) {
   return create_block(x, "some"); // 'xor'
-}));
+});
 console.log(some_block)
 
-var main_block = _.shuffle(_.concat(xor_block, some_block));
+var main_block = _.flatten(_.shuffle(_.concat(xor_block, some_block)));

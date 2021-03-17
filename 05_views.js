@@ -27,12 +27,12 @@ const intro = magpieViews.view_generator("intro", {
             <br />
             <br />
             Thank you for your participation in our study!
-            Your anonymous data makes an important contribution to our understanding of human learning and memory.
+            Your anonymous data makes an important contribution to our understanding of how humans use language.
             <br />
             <br />
             Legal information:
             By answering the following questions, you are participating in a study
-            being performed by scientists from the University of Osnabrueck.
+            being performed by scientists from the University of Osnabrück.
             <br />
             <br />
             You must be at least 18 years old to participate.
@@ -57,11 +57,7 @@ const instructions = magpieViews.view_generator("instructions", {
             Please read them very carefully, even if they appear to be repeated and you think that you remember them well enough.
             We ask you to <b> rate statements about each short story</b>.
             Please indicate, using an adjustable slider bar, <b> how likely you think a statement
-            is true based on the story </b> you read.
-            <br />
-            <br />
-            The experiment consists of 4 blocks with pauses between.
-            Within each block you are asked to rate different kinds of statements.
+            is true based on what you read.</b>
             <br />
             <br />
             The background story is given at the top.
@@ -71,6 +67,10 @@ const instructions = magpieViews.view_generator("instructions", {
             An example is provided next.`,
   buttonText: 'next'
 });
+// The experiment consists of 4 blocks with pauses between.
+// Within each block you are asked to rate different kinds of statements.
+// <br />
+// <br />
 
 const begin_experiment = magpieViews.view_generator("instructions", {
   trials: 1,
