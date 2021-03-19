@@ -1452,31 +1452,31 @@ let vignettes_some = {
    "test_uncertain1": "Jason is a professional athlete."
  }],
  hll: [{
-   "ID": 29,
-   "name": "Mr. Carpenter's homework assignments",
-   "author": "natalie",
-   "polina’s comments": "agreed with bob",
-   "thoughts": "Natalie: not quite sure how to rate competence - depends on whether, e.g., the secretary has a check list of all students. Bob: intuitively competence seems 1 --- it's likely the secretary knows whether or not all students passed.",
-   "final comments": "updated competence to 1 —> updated to 0 again to make this an ‘hll’ item instead of the chocolate one",
+   "ID": 40,
+   "name": "Final exam",
+   "author": "bob",
+   "polina’s comments": "",
+   "thoughts": "",
+   "final comments": "",
    "final_selection": 1,
    "type": "hll",
    "relevance": 1,
    "competence": 0,
    "prior": 0,
-   "background": "Mr. Carpenter teaches at a university and gave his students a homework assignment last week. The students are supposed to submit their homework by putting it in a dedicated post box. As the the deadline is over, he asks his secretary Mrs. Miller who just arrived to the office whether the students turned in their assignments.",
-   "utterance_imp": "Mrs. Miller says to Mr. Carpenter: ‘Some of the students turned in their assignments.'",
-   "question_rel": "It is important for Mr. Carpenter to know whether all of the students turned in their assignments.",
-   "question_comp": "Mrs. Miller knows whether all of the students turned in their assignments.",
-   "question_pri": "All of the students turned in their assignments.",
-   "question_priC": "If at least some of the students turned in their assignments, then all of the students turned in their assignments.",
-   "question_imp": "From what Mrs. Miller said we may conclude that not all of the students turned in their assignments.",
-   "question_impI": "Mrs. Miller wanted to convey that not all of the students turned in their assignments.",
-   "test_true": "The homework assignment was due this week.",
-   "test_false": "Mr. Carpenter teaches at a high school.",
-   "test_uncertain": "Mrs. Miller has been working for Mr. Carpenter for many years.",
-   "test_true1": "Mr. Carpenter is a college professor.",
-   "test_false1": "Mr. Carpenter collects the homework assignments himself during class.",
-   "test_uncertain1": "Mr. Carpenter teaches ‘Introduction to Neurobiology’."
+   "background": "Bernard just finished his final exam. He isn't the brightest student, but if he passes this one, he will be through to the next grade. During the break, he goes to the teacher's lounge to ask his teacher whether he passed. Bernard's teacher only just started correcting his exam.",
+   "utterance_imp": "Bernard's teacher says: 'Some of the answers you gave are correct.'",
+   "question_rel": "It is important for Bernard to know whether all of the answers he gave are correct.",
+   "question_comp": "Bernard's teacher knows whether all of the answers Bernard gave are correct.",
+   "question_pri": "All of the answers Bernard gave are correct.",
+   "question_priC": "If at least some of Bernard's answers are correct, then all of them are correct.",
+   "question_imp": "From what Bernard's teacher said we may conclude that not all of Bernard’s answers are correct.",
+   "question_impI": "Bernard's teacher wants to convey that not all of Bernard’s answers are correct.",
+   "test_true": "Bernard wants to get into the next grade.",
+   "test_false": "Bernard is about to finish school.",
+   "test_uncertain": "Bernard took a final exam in biology.",
+   "test_true1": "Bernard is not the best student of his class.",
+   "test_false1": "Bernard wants to know his grade for his college application.",
+   "test_uncertain1": "Bernard is athletic."
  },
  {
    "ID": 2,
@@ -2025,8 +2025,8 @@ let some_stories = assign_questions_some(chosen_items_some);
 // xor_block = _.cloneDeep(eight_stories);
 
 
-const questions = ["Joe went shopping without his wife Sue.", "Sue was very happy about the flowers.", "Joe and Sue have no children."]; // "Joe and Sue are divorced.",
-const explanations = ["The background story implies this statement, so we rate it as certainly true.", "The background story makes this rather likely, but we cannot be sure.", "The background story implies the contrary, so we rate this as certainly false."]; // "The background story suggests the contrary, but we cannot be sure.",
+const questions = ["Joe went shopping without his wife Sue.", "Sue was very happy about the flowers.", "Joe and Sue have no children.", "Joe had to wait in line at the check-out at some stores."]; // "Joe and Sue are divorced.",
+const explanations = ["The story implies this statement, so you should rate it as certainly true.", "The story makes this rather likely, but we cannot be sure.", "The story implies the contrary, so you should rate this as certainly false.", "The story and the utterance imply that there might have been a line at the check-out at the stores, so you should rate this as rather true, although we don't know for sure."]; // "The background story suggests the contrary, but we cannot be sure.",
 
 // hardcoded practice trials
 const trials_practice = [{
@@ -2035,7 +2035,9 @@ const trials_practice = [{
     optionLeft: "certainly false",
     optionRight: "certainly true",
     condition: "example",
-    question: `<br> ------------------------------- <br/>` + questions[0] + ' <br /> ------------------------------- <br/> <font size="2"> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[0] + '</i> </font>',
+    critical_question: ``,
+    prompt: questions[0],
+    question: '<font size="3"> How likely is it that the statement is true, given the story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[0] + '</i> </font>',
     block: 'practice'
 },
   {
@@ -2044,7 +2046,9 @@ const trials_practice = [{
     optionLeft: "certainly false",
     optionRight: "certainly true",
     condition: "example",
-    question: `<br> ------------------------------- <br/>` + questions[1] + ' <br /> ------------------------------- <br/> <font size="2"> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[1] + '</i></font>',
+    critical_question: ``,
+    prompt: questions[1],
+    question: '<font size="3"> How likely is it that the statement is true, given the story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[1] + '</i></font>',
     block: 'practice'
 },
   {
@@ -2053,8 +2057,21 @@ const trials_practice = [{
     optionLeft: "certainly false",
     optionRight: "certainly true",
     condition: "example",
-    question: `<br> ------------------------------- <br/>` + questions[2] + '<br /> ------------------------------- <br/> <font size="2"> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[2] + '</i></font>',
+    critical_question: ``,
+    prompt: questions[2],
+    question: '<font size="3"> How likely is it that the statement is true, given the story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[2] + '</i></font>',
     block: 'practice'
+},
+{
+  title: 'Joe´s shopping',
+  QUD: '<font size="4" color= "#00BFFF"> EXAMPLE </font>  <br><br> <font size="6"> Joe\'s shopping </font> <br/> <br /> ' + '<font color= "#00008B"> Note that on this example trial the story is the same, but there is an <font color="pink"><b>additional sentence in the pink box</b></font>. Please take this additional sentence into account when answering the question.</font> <br /> ' + "<br /> Joe went shopping yesterday, while his wife Sue was at home with the kids. He bought flowers for his wife on the way home.",
+  optionLeft: "certainly false",
+  optionRight: "certainly true",
+  condition: "example",
+  critical_question: `Joe says to his wife the next day: 'The stores were really crowded yesterday.'`,
+  prompt: questions[2],
+  question: '<font size="3"> How likely is it that the statement is true, given the story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[2] + '</i></font>',
+  block: 'practice'
 }
 //   {
 //     title: 'Joe´s shopping',

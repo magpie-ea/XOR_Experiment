@@ -55,16 +55,18 @@ const instructions = magpieViews.view_generator("instructions", {
   title: 'Instructions',
   text: `In the following, you will be presented with <b> 8 short stories </b>.
             Please read them very carefully, even if they appear to be repeated and you think that you remember them well enough.
-            We ask you to <b> rate statements about each short story</b>.
-            Please indicate, using an adjustable slider bar, <b> how likely you think a statement
-            is true based on what you read.</b>
+            We ask you to <b> rate <font color="lightblue">statements</font> about each short story</b>.
+            Please indicate, using an adjustable slider, <b> how likely you think a statement
+            is true based on what you've read.</b>
             <br />
             <br />
-            The background story is given at the top.
-            The statements to be rated are given within dashed lines (-------------------------------).
+            The story is given at the top.
+            The statement to be rated is given in a <font color="lightblue"><b>blue box</b></font> below.
+            On some trials, you will see an <font color="pink"><b>additional sentence</b></font> in a <font color="pink"><b>pink box</b></font>.
+            Please read this sentence carefully before rating the statements in the <font color="lightblue"><b>blue boxes</b></font>.
             <br />
             <br />
-            An example is provided next.`,
+            Some examples are provided next.`,
   buttonText: 'next'
 });
 // The experiment consists of 4 blocks with pauses between.
@@ -76,7 +78,7 @@ const begin_experiment = magpieViews.view_generator("instructions", {
   trials: 1,
   name: 'begin_experiment',
   title: 'Begin Experiment',
-  text: `The exact rating is a matter of taste and you might want to give a higher or lower rating. Just follow your intuition. Good luck!`,
+  text: `Next, the main part of the experiment will start. Please provide a rating of how likely the <font color="lightblue"><b>statement in the blue box</b></font> is true, given the provided story. The exact rating is a matter of taste and you might want to give a higher or lower rating. Just follow your intuition. Good luck!`,
   buttonText: 'Begin experiment'
 });
 
@@ -167,15 +169,41 @@ const xor_trial = magpieViews.view_generator("slider_rating", {
   name: 'xor_question',
   trial_type: 'xor_slider',
   data: main_block//xor_block
-});
+},
+{ // custom view allowing to add custom backgrounds of different view elements
+  stimulus_container_generator: function (config, CT) {
+            return `<div class='magpie-view'>
+                        <h1 class='magpie-view-title'>${config.title}</h1>
+                        <p class='magpie-view-question magpie-view-qud'>${config.data[CT].QUD}</p>
+
+                          <p class='magpie-view-question' id='critical-utterance'>${config.data[CT].critical_question}</p>
+
+                          <p class='magpie-view-question' id='prompt'>${config.data[CT].prompt}</p>
+
+            </div>`;} // <p class='magpie-view-question' id='question'>${config.data[CT].question}</p>
+}
+);
 
 
 const ex_trial = magpieViews.view_generator("slider_rating", {
-  trials: 3, // 4
+  trials: 4, // 4
   name: 'example',
   trial_type: 'example_slider',
-  data: _.shuffle(trials_practice)
-});
+  data: _.concat(_.shuffle(_.slice(trials_practice, 0, 3)), trials_practice[3])
+},
+{
+  stimulus_container_generator: function (config, CT) {
+            return `<div class='magpie-view'>
+                        <h1 class='magpie-view-title'>${config.title}</h1>
+                        <p class='magpie-view-question magpie-view-qud'>${config.data[CT].QUD}</p>
+
+                          <p class='magpie-view-question' id='critical-utterance'>${config.data[CT].critical_question}</p>
+
+                          <p class='magpie-view-question' id='prompt'>${config.data[CT].prompt}</p>
+
+            </div>`;}
+}
+);
 
 /** trial (magpie's Trial Type Views) below
 
