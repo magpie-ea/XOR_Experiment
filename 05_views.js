@@ -55,15 +55,15 @@ const instructions = magpieViews.view_generator("instructions", {
   title: 'Instructions',
   text: `In the following, you will be presented with <b> 8 short stories </b>.
             Please read them very carefully, even if they appear to be repeated and you think that you remember them well enough.
-            We ask you to <b> rate <font color="lightblue">statements</font> about each short story</b>.
+            We ask you to <b> rate <font color="steelblue">statements</font> about each short story</b>.
             Please indicate, using an adjustable slider, <b> how likely you think a statement
             is true based on what you've read.</b>
             <br />
             <br />
             The story is given at the top.
-            The statement to be rated is given in a <font color="lightblue"><b>blue box</b></font> below.
-            On some trials, you will see an <font color="pink"><b>additional sentence</b></font> in a <font color="pink"><b>pink box</b></font>.
-            Please read this sentence carefully before rating the statements in the <font color="lightblue"><b>blue boxes</b></font>.
+            The statement to be rated is given in a <font color="steelblue"><b>blue box</b></font> below.
+            On some trials, you will see an <font color="lightcoral"><b>additional sentence</b></font> in a <font color="lightcoral"><b>pink box</b></font>.
+            Please read this sentence carefully before rating the statements in the <font color="steelblue"><b>blue boxes</b></font>.
             <br />
             <br />
             Some examples are provided next.`,
@@ -78,7 +78,7 @@ const begin_experiment = magpieViews.view_generator("instructions", {
   trials: 1,
   name: 'begin_experiment',
   title: 'Begin Experiment',
-  text: `Next, the main part of the experiment will start. Please provide a rating of how likely the <font color="lightblue"><b>statement in the blue box</b></font> is true, given the provided story. The exact rating is a matter of taste and you might want to give a higher or lower rating. Just follow your intuition. Good luck!`,
+  text: `Next, the main part of the experiment will start. Please provide a rating of how likely the <font color="lightblue"><b>statement in the blue box</b></font> is true, given the provided story. The exact rating is a matter of taste and you might want to give a higher or lower rating. Just follow your intuition.`,
   buttonText: 'Begin experiment'
 });
 
@@ -173,8 +173,8 @@ const xor_trial = magpieViews.view_generator("slider_rating", {
 { // custom view allowing to add custom backgrounds of different view elements
   stimulus_container_generator: function (config, CT) {
             return `<div class='magpie-view'>
-                        <h1 class='magpie-view-title'>${config.title}</h1>
-                        <p class='magpie-view-question magpie-view-qud'>${config.data[CT].QUD}</p>
+                        <h1 class='magpie-view-title'>${config.data[CT].title}</h1>
+                        <p class='magpie-view-question magpie-view-qud' id='qud'>${config.data[CT].QUD}</p>
 
                           <p class='magpie-view-question' id='critical-utterance'>${config.data[CT].critical_question}</p>
 
@@ -194,8 +194,8 @@ const ex_trial = magpieViews.view_generator("slider_rating", {
 {
   stimulus_container_generator: function (config, CT) {
             return `<div class='magpie-view'>
-                        <h1 class='magpie-view-title'>${config.title}</h1>
-                        <p class='magpie-view-question magpie-view-qud'>${config.data[CT].QUD}</p>
+                        <h1 class='magpie-view-title'>${config.data[CT].title}</h1>
+                        <p class='magpie-view-question magpie-view-qud' id='qud'>${config.data[CT].QUD}</p>
 
                           <p class='magpie-view-question' id='critical-utterance'>${config.data[CT].critical_question}</p>
 
@@ -204,6 +204,23 @@ const ex_trial = magpieViews.view_generator("slider_rating", {
             </div>`;}
 }
 );
+
+// captcha
+// speaker and listeneers names to be sampled from for the botcaptcha
+var speaker = _.sample(["James", "John", "Robert", "Michael", "William", "David", "Richard", "Joseph", "Thomas", "Charles"]);
+var listener = _.sample(["Mary", "Patricia", "Jennifer", "Linda", "Elizabeth", "Barbara", "Susan", "Jessica", "Sarah", "Margaret"]);
+
+
+const botcaptcha = custom_botcaptcha({
+  name: 'botcaptcha',
+  trials: 1,
+  story: speaker + ' says to ' + listener + ': "It\'s a beautiful day, isn\'t it?"',
+  question: "Who is " + speaker + " talking to?",
+  speaker: speaker,
+  listener: listener
+
+});
+
 
 /** trial (magpie's Trial Type Views) below
 

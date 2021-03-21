@@ -17,6 +17,7 @@ $("document")
       // You have to specify all views you want to use in this experiment and the order of them
       views_seq: [
             intro,
+            botcaptcha,
             instructions,
             ex_trial,
             begin_experiment,

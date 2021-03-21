@@ -118,14 +118,14 @@ function create_block(b, type) { // blockString
   t1.ID = b.ID;
   t1.main_type = type;
   t1.title = b.name;
-  t1.QUD = '<font size="6">' + t1.title + '</font>  <br /> <br />' + b.background;
+  t1.QUD =  b.background;
   t1.critical_question = ``;
   t1.optionLeft = "certainly false";
   t1.optionRight = "certainly true";
   t1.condition = "test";
   t1.block = 'test_question1';
   t1.prompt = '<b>' + b.allQ[block_mapper[blockString[0]]] + '</b>';
-  t1.question = '<font size="3">' + "How likely is it that the statement in the blue box is true, given the story?" + '</font>';
+  t1.question = '<font size="3">' + "How likely is it that the statement in the blue box is true given the story?" + '</font>';
 
   test_Q_used(b, t1, type, 1);
 
@@ -138,7 +138,7 @@ function create_block(b, type) { // blockString
   t2.ID = b.ID;
   t2.main_type = type;
   t2.title = b.name;
-  t2.QUD = '<font size="6">' + t2.title + '</font>  <br /> <br /> ' + b.background;
+  t2.QUD = b.background;
   t2.critical_question = ``;
   t2.optionLeft = "certainly false";
   t2.optionRight = "certainly true";
@@ -146,7 +146,7 @@ function create_block(b, type) { // blockString
   t2.block = blockString[0];
   t2.prompt = '<b>' + b.critical_question[block_mapper[blockString[0]]] + '</b>';
   t2.test_question = "no";
-  t2.question = '<font size="3">' + "How likely is it that the statement in the blue box is true, given the story?" + '</font>';
+  t2.question = '<font size="3">' + "How likely is it that the statement in the blue box is true given the story?" + '</font>';
 
 // competence question block
   let t3 = {};
@@ -157,7 +157,7 @@ function create_block(b, type) { // blockString
   t3.ID = b.ID;
   t3.main_type = type;
   t3.title = b.name;
-  t3.QUD = '<font size="6">' + t3.title + '</font>  <br /> <br /> ' + b.background;
+  t3.QUD =  b.background;
   t3.critical_question = ``;
   t3.optionLeft = "certainly false";
   t3.optionRight = "certainly true";
@@ -165,7 +165,7 @@ function create_block(b, type) { // blockString
   t3.block = blockString[1];
   t3.prompt = `<b>` + b.critical_question[block_mapper[blockString[1]]] + `</b>`;
   t3.test_question = "no";
-  t3.question = '<font size="3">' + "How likely is it that the statement in the blue box is true, given the story?" + '</font>';
+  t3.question = '<font size="3">' + "How likely is it that the statement in the blue box is true given the story?" + '</font>';
 
 // first prior question block
   let t4 = {};
@@ -176,7 +176,7 @@ function create_block(b, type) { // blockString
   t4.ID = b.ID;
   t4.main_type = type;
   t4.title = b.name;
-  t4.QUD = '<font size="6">' + t4.title + '</font>  <br /> <br />' + b.background;
+  t4.QUD = b.background;
   t4.critical_question = ``;
   t4.optionLeft = "certainly false";
   t4.optionRight = "certainly true";
@@ -184,7 +184,7 @@ function create_block(b, type) { // blockString
   t4.test_question = "no";
   t4.block = blockString[2];
   t4.prompt = `<b>` + b.critical_question[block_mapper[blockString[2]]] + `</b>`;
-  t4.question = '<font size="3">' + "How likely is it that the statement in the blue box is true, given the story?" + '</font>';
+  t4.question = '<font size="3">' + "How likely is it that the statement in the blue box is true given the story?" + '</font>';
 
   // Second prior question block (only used for xor)
   let t5 = {};
@@ -195,7 +195,7 @@ function create_block(b, type) { // blockString
   t5.ID = b.ID;
   t5.main_type = type;
   t5.title = b.name;
-  t5.QUD = '<font size="6">' + t5.title + '</font>  <br /> <br />' + b.background;
+  t5.QUD =  b.background;
   t5.critical_question = ``;
   t5.optionLeft = "certainly false";
   t5.optionRight = "certainly true";
@@ -203,7 +203,7 @@ function create_block(b, type) { // blockString
   t5.test_question = "no";
   t5.block = blockString[2];
   t5.prompt = `<b>` + b.critical_question[block_mapper[blockString[2]] + 1] + `</b>`;
-  t5.question = '<font size="3">' + "How likely is it that the statement in the blue box is true, given the story?" + '</font>';
+  t5.question = '<font size="3">' + "How likely is it that the statement in the blue box is true given the story?" + '</font>';
 
   // more test questions used as fillers before the inference question
   let t6 = {};
@@ -214,14 +214,14 @@ function create_block(b, type) { // blockString
   t6.ID = b.ID;
   t6.main_type = type;
   t6.title = b.name;
-  t6.QUD = '<font size="6">' + t6.title + '</font>  <br /> <br />' + b.background;
+  t6.QUD =  b.background;
   t6.critical_question = ``;
   t6.optionLeft = "certainly false";
   t6.optionRight = "certainly true";
   t6.condition = "test";
   t6.block = 'test_question2';
   t6.prompt = `<b>` + b.allQ[0] + `</b>`;
-  t6.question = '<font size="3">' + "How likely is it that the statement in the blue box is true, given the story?" + '</font>';
+  t6.question = '<font size="3">' + "How likely is it that the statement in the blue box is true given the story?" + '</font>';
 
   test_Q_used(b, t6, type, 0);
 
@@ -234,14 +234,14 @@ function create_block(b, type) { // blockString
   t7.ID = b.ID;
   t7.main_type = type;
   t7.title = b.name;
-  t7.QUD = '<font size="6">' + t7.title + '</font>  <br /> <br />' + b.background;
+  t7.QUD =  b.background;
   t7.critical_question = ``;
   t7.optionLeft = "certainly false";
   t7.optionRight = "certainly true";
   t7.condition = "test";
   t7.block = 'test_question3';
   t7.prompt = `<b>` + b.allQ[2] + `</b>`;
-  t7.question = '<font size="3">' + "How likely is it that the statement in the blue box is true, given the story?" + '</font>';
+  t7.question = '<font size="3">' + "How likely is it that the statement in the blue box is true given the story?" + '</font>';
 
   test_Q_used(b, t7, type, 2);
 
@@ -255,14 +255,14 @@ function create_block(b, type) { // blockString
   t8.ID = b.ID;
   t8.main_type = type;
   t8.title = b.name;
-  t8.QUD = '<font size="6">' + t8.title + '</font>  <br /> <br />' + b.background;
+  t8.QUD =  b.background;
   t8.critical_question = ``;
   t8.optionLeft = "certainly false";
   t8.optionRight = "certainly true";
   t8.condition = "test";
   t8.block = 'test_question4';
   t8.prompt = `<b>` + b.allQ[3] + `</b>`;
-  t8.question = '<font size="3">' + "How likely is it that the statement in the blue box is true, given the story?" + '</font>';
+  t8.question = '<font size="3">' + "How likely is it that the statement in the blue box is true given the story?" + '</font>';
 
   test_Q_used(b, t8, type, 3);
 
@@ -278,15 +278,8 @@ function create_block(b, type) { // blockString
   t9.ID = b.ID;
   t9.main_type = type;
   t9.title = b.name;
+  t9.QUD =  b.background;
   // use correct utterance
-  switch(true) {
-    case (type == "some"):
-      t9.QUD = '<font size="6">' + t9.title + '</font>  <br /> <br /> ' + b.background;
-      break;
-    default:
-      t9.QUD = '<font size="6">' + t9.title + '</font>  <br /> <br /> ' + b.background;
-  }
-
   switch(true) {
     case (type == "some"):
       t9.critical_question = '<b>' + utterance_mapper["some"] + '</b>';
@@ -300,7 +293,7 @@ function create_block(b, type) { // blockString
   t9.block = type;
   t9.prompt = `<b>` + b.critical_question[block_mapper[blockString[3]]] + `</b>`;
   t9.test_question = "no";
-  t9.question = '<font size="3">' + "How likely is it that the statement in the blue box is true, given the story?" + '</font>';
+  t9.question = '<font size="3">' + "How likely is it that the statement in the blue box is true given the story?" + '</font>';
 
   // second round of rel and comp
   // rel
@@ -312,13 +305,7 @@ function create_block(b, type) { // blockString
   t10.ID = b.ID;
   t10.main_type = type;
   t10.title = b.name;
-  switch (true) {
-    case (type == "some"):
-      t10.QUD = '<font size="6">' + t10.title + '</font>  <br /> <br /> ' + b.background;
-      break;
-    default:
-      t10.QUD = '<font size="6">' + t10.title + '</font>  <br /> <br /> ' + b.background;
-  }
+  t10.QUD = b.background;
   switch(true) {
     case (type == "some"):
       t10.critical_question = '<b>' + utterance_mapper["some"] + '</b>';
@@ -332,7 +319,7 @@ function create_block(b, type) { // blockString
   t10.block = blockString[0];
   t10.prompt = `<b>` + b.critical_question[block_mapper[blockString[0]]] + `</b>`;
   t10.test_question = "no";
-  t10.question = '<font size="3">' + "How likely is it that the statement in the blue box is true, given the story?" + '</font>';
+  t10.question = '<font size="3">' + "How likely is it that the statement in the blue box is true given the story?" + '</font>';
 
   //comp
   let t11 = {};
@@ -343,13 +330,7 @@ function create_block(b, type) { // blockString
   t11.ID = b.ID;
   t11.main_type = type;
   t11.title = b.name;
-  switch(true) {
-    case (type == "some"):
-        t11.QUD = '<font size="6">' + t11.title + '</font>  <br /> <br /> ' + b.background;
-        break;
-    default:
-        t11.QUD = '<font size="6">' + t11.title + '</font>  <br /> <br /> ' + b.background;
-  }
+  t11.QUD = b.background;
 
   switch(true) {
     case (type == "some"):
@@ -364,7 +345,7 @@ function create_block(b, type) { // blockString
   t11.block = blockString[1];
   t11.prompt = `<b>` + b.critical_question[block_mapper[blockString[1]]] + `</b>`;
   t11.test_question = "no";
-  t11.question = '<font size="3">' + "How likely is it that the statement in the blue box is true, given the story?" + '</font>';
+  t11.question = '<font size="3">' + "How likely is it that the statement in the blue box is true given the story?" + '</font>';
 
   // return both prior question blocks for xor, and make only one prior question for some
   if (type == "xor") {

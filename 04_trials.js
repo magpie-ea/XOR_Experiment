@@ -2026,51 +2026,51 @@ let some_stories = assign_questions_some(chosen_items_some);
 
 
 const questions = ["Joe went shopping without his wife Sue.", "Sue was very happy about the flowers.", "Joe and Sue have no children.", "Joe had to wait in line at the check-out at some stores he went to yesterday."]; // "Joe and Sue are divorced.",
-const explanations = ["The story implies this statement, so you should rate it as certainly true.", "The story makes this rather likely, but we cannot be sure, so you might want to rate this as medium.", "The story implies the contrary, so you should rate this as certainly false.", "The story and the utterance imply that there might have been a line at the check-out at the stores, so you should rate this as rather true, although we cannot know for sure."]; // "The background story suggests the contrary, but we cannot be sure.",
+const explanations = ["The story implies this statement, so you should rate it as certainly true.", "The story makes this rather likely, but we cannot be sure, so you might want to rate this somewhere in between certainly false and certainly true.", "The story implies the contrary, so you should rate this as certainly false.", "The story and the utterance imply that there might have been a line at the check-out at the stores, so you should rate this as rather true, although we cannot know for sure."]; // "The background story suggests the contrary, but we cannot be sure.",
 
 // hardcoded practice trials
 const trials_practice = [{
-    title: 'Joe´s shopping',
-    QUD: '<font size="4" color= "#00BFFF"> EXAMPLE </font>  <br><br> <font size="6"> Joe\'s shopping </font>  <br /> ' + "<br /> Joe went shopping yesterday, while his wife Sue was at home with the kids. He bought flowers for his wife on the way home.",
+    title: '<font size="4" color= "#00BFFF"> EXAMPLE </font> <br/> Joe\'s shopping',
+    QUD: "<br /> Joe went shopping yesterday, while his wife Sue was at home with the kids. He bought flowers for his wife on the way home.",
     optionLeft: "certainly false",
     optionRight: "certainly true",
     condition: "example",
     critical_question: ``,
     prompt: questions[0],
-    question: '<font size="3"> How likely is it that the statement is true, given the story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[0] + '</i> </font>',
+    question: '<font size="3"> How likely is it that the statement is true given the story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[0] + '</i> </font>',
     block: 'practice'
 },
   {
-    title: 'Joe´s shopping',
-    QUD: '<font size="4" color= "#00BFFF"> EXAMPLE </font>  <br><br> <font size="6"> Joe\'s shopping </font>  <br /> ' + "<br /> Joe went shopping yesterday, while his wife Sue was at home with the kids. He bought flowers for his wife on the way home.",
+    title: '<font size="4" color= "#00BFFF"> EXAMPLE </font> <br/> Joe\'s shopping',
+    QUD: "<br /> Joe went shopping yesterday, while his wife Sue was at home with the kids. He bought flowers for his wife on the way home.",
     optionLeft: "certainly false",
     optionRight: "certainly true",
     condition: "example",
     critical_question: ``,
     prompt: questions[1],
-    question: '<font size="3"> How likely is it that the statement is true, given the story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[1] + '</i></font>',
+    question: '<font size="3"> How likely is it that the statement is true given the story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[1] + '</i></font>',
     block: 'practice'
 },
   {
-    title: 'Joe´s shopping',
-    QUD: '<font size="4" color= "#00BFFF"> EXAMPLE </font>  <br><br> <font size="6"> Joe\'s shopping </font>  <br /> ' + "<br /> Joe went shopping yesterday, while his wife Sue was at home with the kids. He bought flowers for his wife on the way home.",
+    title: '<font size="4" color= "#00BFFF"> EXAMPLE </font> <br/> Joe\'s shopping',
+    QUD: "<br /> Joe went shopping yesterday, while his wife Sue was at home with the kids. He bought flowers for his wife on the way home.",
     optionLeft: "certainly false",
     optionRight: "certainly true",
     condition: "example",
     critical_question: ``,
     prompt: questions[2],
-    question: '<font size="3"> How likely is it that the statement in the blue box is true, given the story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[2] + '</i></font>',
+    question: '<font size="3"> How likely is it that the statement in the blue box is true given the story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[2] + '</i></font>',
     block: 'practice'
 },
 {
-  title: 'Joe´s shopping',
-  QUD: '<font size="4" color= "#00BFFF"> EXAMPLE </font>  <br><br> <font size="6"> Joe\'s shopping </font> <br/> <br /> ' + '<font color= "#00008B"> Note that on this example trial the story is the same, but there is an <font color="pink"><b>additional sentence in the pink box</b></font>. Please take this additional sentence into account when answering the question.</font> <br /> ' + "<br /> Joe went shopping yesterday, while his wife Sue was at home with the kids. He bought flowers for his wife on the way home.",
+  title: '<font size="4" color= "#00BFFF"> EXAMPLE </font> <br/> Joe\'s shopping',
+  QUD: "<br /> Joe went shopping yesterday, while his wife Sue was at home with the kids. He bought flowers for his wife on the way home.",
   optionLeft: "certainly false",
   optionRight: "certainly true",
   condition: "example",
   critical_question: `Joe says to his wife the next day: 'The stores were really crowded yesterday.'`,
   prompt: questions[3],
-  question: '<font size="3"> How likely is it that the statement in the blue box is true, given the story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[3] + '</i></font>',
+  question: '<font size="3"> How likely is it that the statement in the blue box is true given the story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[3] + '</i></font>',
   block: 'practice'
 }
 //   {
@@ -2079,7 +2079,7 @@ const trials_practice = [{
 //     optionLeft: "certainly false",
 //     optionRight: "certainly true",
 //     condition: "example",
-//     question: `<br> ------------------------------- <br/>` + questions[3] + ' <br /> ------------------------------- <br/> <font size="2"> How likely do you think it is that the statement is true, given the information in the background story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[3] + '</i></font>',
+//     question: `<br> ------------------------------- <br/>` + questions[3] + ' <br /> ------------------------------- <br/> <font size="2"> How likely do you think it is that the statement is true given the information in the background story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[3] + '</i></font>',
 //     block: 'practice'
 // }
 ];
