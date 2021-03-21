@@ -2025,8 +2025,8 @@ let some_stories = assign_questions_some(chosen_items_some);
 // xor_block = _.cloneDeep(eight_stories);
 
 
-const questions = ["Joe went shopping without his wife Sue.", "Sue was very happy about the flowers.", "Joe and Sue have no children.", "Joe had to wait in line at the check-out at some stores."]; // "Joe and Sue are divorced.",
-const explanations = ["The story implies this statement, so you should rate it as certainly true.", "The story makes this rather likely, but we cannot be sure.", "The story implies the contrary, so you should rate this as certainly false.", "The story and the utterance imply that there might have been a line at the check-out at the stores, so you should rate this as rather true, although we don't know for sure."]; // "The background story suggests the contrary, but we cannot be sure.",
+const questions = ["Joe went shopping without his wife Sue.", "Sue was very happy about the flowers.", "Joe and Sue have no children.", "Joe had to wait in line at the check-out at some stores he went to yesterday."]; // "Joe and Sue are divorced.",
+const explanations = ["The story implies this statement, so you should rate it as certainly true.", "The story makes this rather likely, but we cannot be sure, so you might want to rate this as medium.", "The story implies the contrary, so you should rate this as certainly false.", "The story and the utterance imply that there might have been a line at the check-out at the stores, so you should rate this as rather true, although we cannot know for sure."]; // "The background story suggests the contrary, but we cannot be sure.",
 
 // hardcoded practice trials
 const trials_practice = [{
@@ -2059,7 +2059,7 @@ const trials_practice = [{
     condition: "example",
     critical_question: ``,
     prompt: questions[2],
-    question: '<font size="3"> How likely is it that the statement is true, given the story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[2] + '</i></font>',
+    question: '<font size="3"> How likely is it that the statement in the blue box is true, given the story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[2] + '</i></font>',
     block: 'practice'
 },
 {
@@ -2069,8 +2069,8 @@ const trials_practice = [{
   optionRight: "certainly true",
   condition: "example",
   critical_question: `Joe says to his wife the next day: 'The stores were really crowded yesterday.'`,
-  prompt: questions[2],
-  question: '<font size="3"> How likely is it that the statement is true, given the story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[2] + '</i></font>',
+  prompt: questions[3],
+  question: '<font size="3"> How likely is it that the statement in the blue box is true, given the story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[3] + '</i></font>',
   block: 'practice'
 }
 //   {

@@ -125,7 +125,7 @@ function create_block(b, type) { // blockString
   t1.condition = "test";
   t1.block = 'test_question1';
   t1.prompt = '<b>' + b.allQ[block_mapper[blockString[0]]] + '</b>';
-  t1.question = '<font size="3">' + "How likely is it that the statement is true, given the story?" + '</font>';
+  t1.question = '<font size="3">' + "How likely is it that the statement in the blue box is true, given the story?" + '</font>';
 
   test_Q_used(b, t1, type, 1);
 
@@ -146,7 +146,7 @@ function create_block(b, type) { // blockString
   t2.block = blockString[0];
   t2.prompt = '<b>' + b.critical_question[block_mapper[blockString[0]]] + '</b>';
   t2.test_question = "no";
-  t2.question = '<font size="3">' + "How likely is it that the statement is true, given the story?" + '</font>';
+  t2.question = '<font size="3">' + "How likely is it that the statement in the blue box is true, given the story?" + '</font>';
 
 // competence question block
   let t3 = {};
@@ -165,7 +165,7 @@ function create_block(b, type) { // blockString
   t3.block = blockString[1];
   t3.prompt = `<b>` + b.critical_question[block_mapper[blockString[1]]] + `</b>`;
   t3.test_question = "no";
-  t3.question = '<font size="3">' + "How likely is it that the statement is true, given the story?" + '</font>';
+  t3.question = '<font size="3">' + "How likely is it that the statement in the blue box is true, given the story?" + '</font>';
 
 // first prior question block
   let t4 = {};
@@ -184,7 +184,7 @@ function create_block(b, type) { // blockString
   t4.test_question = "no";
   t4.block = blockString[2];
   t4.prompt = `<b>` + b.critical_question[block_mapper[blockString[2]]] + `</b>`;
-  t4.question = '<font size="3">' + "How likely is it that the statement is true, given the story?" + '</font>';
+  t4.question = '<font size="3">' + "How likely is it that the statement in the blue box is true, given the story?" + '</font>';
 
   // Second prior question block (only used for xor)
   let t5 = {};
@@ -203,7 +203,7 @@ function create_block(b, type) { // blockString
   t5.test_question = "no";
   t5.block = blockString[2];
   t5.prompt = `<b>` + b.critical_question[block_mapper[blockString[2]] + 1] + `</b>`;
-  t5.question = '<font size="3">' + "How likely is it that the statement is true, given the story?" + '</font>';
+  t5.question = '<font size="3">' + "How likely is it that the statement in the blue box is true, given the story?" + '</font>';
 
   // more test questions used as fillers before the inference question
   let t6 = {};
@@ -221,7 +221,7 @@ function create_block(b, type) { // blockString
   t6.condition = "test";
   t6.block = 'test_question2';
   t6.prompt = `<b>` + b.allQ[0] + `</b>`;
-  t6.question = '<font size="3">' + "How likely is it that the statement is true, given the story?" + '</font>';
+  t6.question = '<font size="3">' + "How likely is it that the statement in the blue box is true, given the story?" + '</font>';
 
   test_Q_used(b, t6, type, 0);
 
@@ -241,7 +241,7 @@ function create_block(b, type) { // blockString
   t7.condition = "test";
   t7.block = 'test_question3';
   t7.prompt = `<b>` + b.allQ[2] + `</b>`;
-  t7.question = '<font size="3">' + "How likely is it that the statement is true, given the story?" + '</font>';
+  t7.question = '<font size="3">' + "How likely is it that the statement in the blue box is true, given the story?" + '</font>';
 
   test_Q_used(b, t7, type, 2);
 
@@ -262,7 +262,7 @@ function create_block(b, type) { // blockString
   t8.condition = "test";
   t8.block = 'test_question4';
   t8.prompt = `<b>` + b.allQ[3] + `</b>`;
-  t8.question = '<font size="3">' + "How likely is it that the statement is true, given the story?" + '</font>';
+  t8.question = '<font size="3">' + "How likely is it that the statement in the blue box is true, given the story?" + '</font>';
 
   test_Q_used(b, t8, type, 3);
 
@@ -300,7 +300,7 @@ function create_block(b, type) { // blockString
   t9.block = type;
   t9.prompt = `<b>` + b.critical_question[block_mapper[blockString[3]]] + `</b>`;
   t9.test_question = "no";
-  t9.question = '<font size="3">' + "How likely is it that the statement is true, given the story?" + '</font>';
+  t9.question = '<font size="3">' + "How likely is it that the statement in the blue box is true, given the story?" + '</font>';
 
   // second round of rel and comp
   // rel
@@ -332,7 +332,7 @@ function create_block(b, type) { // blockString
   t10.block = blockString[0];
   t10.prompt = `<b>` + b.critical_question[block_mapper[blockString[0]]] + `</b>`;
   t10.test_question = "no";
-  t10.question = '<font size="3">' + "How likely is it that the statement is true, given the story?" + '</font>';
+  t10.question = '<font size="3">' + "How likely is it that the statement in the blue box is true, given the story?" + '</font>';
 
   //comp
   let t11 = {};
@@ -364,7 +364,7 @@ function create_block(b, type) { // blockString
   t11.block = blockString[1];
   t11.prompt = `<b>` + b.critical_question[block_mapper[blockString[1]]] + `</b>`;
   t11.test_question = "no";
-  t11.question = '<font size="3">' + "How likely is it that the statement is true, given the story?" + '</font>';
+  t11.question = '<font size="3">' + "How likely is it that the statement in the blue box is true, given the story?" + '</font>';
 
   // return both prior question blocks for xor, and make only one prior question for some
   if (type == "xor") {
