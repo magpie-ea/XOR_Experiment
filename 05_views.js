@@ -78,7 +78,7 @@ const begin_experiment = magpieViews.view_generator("instructions", {
   trials: 1,
   name: 'begin_experiment',
   title: 'Begin Experiment',
-  text: `Next, the main part of the experiment will start. Please provide a rating of how likely the <font color="lightblue"><b>statement in the blue box</b></font> is true, given the provided story. The exact rating is a matter of taste and you might want to give a higher or lower rating. Just follow your intuition.`,
+  text: `Next, the main part of the experiment will start. Please provide a rating of how likely the <font color="steelblue"><b>statement in the blue box</b></font> is true, given the provided story. The exact rating is a matter of taste and you might want to give a higher or lower rating. Just follow your intuition.`,
   buttonText: 'Begin experiment'
 });
 

@@ -24,19 +24,19 @@ let vignettes_or = {
    "question_pri1": "If Jimmy visited the Statue of Liberty, it is likely that he also visited the Empire State Building on his day-trip.",
    "question_pri2": "If Jimmy visited the Empire State Building, it is likely that he also visited the Statue of Liberty on his day-trip.",
    "question_pri_and": "It is likely that Jimmy visited both the Statue of Liberty and the Empire State Building on his day-trip. ",
-   "question_xor": "From what Jimmy’s brother said we may conclude that Jimmy did not visit both the Statue of Liberty and the Empire State Building.",
+   "question_xor": "From what Jimmy's brother said we may conclude that Jimmy did not visit both the Statue of Liberty and the Empire State Building.",
    "question_xorI": "Jimmy's brother wanted to convey that Jimmy did not visit both the Statue of Liberty and the Empire State Building.",
-   "question_exh1": "From what Jimmy’s brother said we may conclude that Jimmy did not visit the Empire State Building as well.",
-   "question_exh2": "From what Jimmy’s brother said we may conclude that Jimmy did not visit the Statue of Liberty as well.",
+   "question_exh1": "From what Jimmy's brother said we may conclude that Jimmy did not visit the Empire State Building as well.",
+   "question_exh2": "From what Jimmy's brother said we may conclude that Jimmy did not visit the Statue of Liberty as well.",
    "test_true": "Jimmy had to rush to be back home and did not have much time to spend in the city.",
    "test_false": "Jimmy went on a school trip to New York City.",
    "test_uncertain": "Jimmy had told his friends about his plans to visit New York City before.",
    "test_true1": "Jimmy has a sibling.",
    "test_true2": "Jimmy goes to school.",
-   "test_false1": "Jimmy’s brother went to New York City with Jimmy.",
+   "test_false1": "Jimmy's brother went to New York City with Jimmy.",
    "test_false2": "Jimmy is an exemplary student.",
-   "test_uncertain1": "Jimmy’s parents know that he went to New York City.",
-   "test_uncertain2": "Jimmy’s brother has been to New York City last year."
+   "test_uncertain1": "Jimmy's parents know that he went to New York City.",
+   "test_uncertain2": "Jimmy's brother has been to New York City last year."
  },
  {
    "ID": 15,
@@ -70,7 +70,7 @@ let vignettes_or = {
    "test_true2": "Richard and Tom are friends with Harold.",
    "test_false1": "Harold used to have a parrot.",
    "test_false2": "Tom and Harold are roommates.",
-   "test_uncertain1": "Harold’s girlfriend is afraid that pets will ruin the apartment.",
+   "test_uncertain1": "Harold's girlfriend is afraid that pets will ruin the apartment.",
    "test_uncertain2": "Richard has a dog."
  },
  {
