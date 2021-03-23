@@ -35,7 +35,7 @@ $("document")
         // Possible deployment methods are:
         // "debug" and "directLink"
         // As well as "MTurk", "MTurkSandbox" and "Prolific"
-        deployMethod: "debug",
+        deployMethod: "Prolific",
         contact_email: "polina.tsvilodub@gmail.com",
         prolificURL: "https://app.prolific.ac/submissions/complete?cc=SAMPLE1234"
       },
