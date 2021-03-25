@@ -97,14 +97,23 @@ Plot main rel / comp questions by main condition, separated into with / without 
 ```{r}
 # add info to already record this
 d_critical <- d_critical %>% 
-  mutate(w_utterance = ifelse(is.na(critical_question), F, T))
+  mutate(w_utterance = ifelse(is.na(critical_question), F, T),
+         block = ifelse(block == "comp", "competence", 
+                        ifelse(block == "rel", "relevance", "prior")))
 
 d_critical %>% 
   filter(block != "xor" & block != "some") %>%
+  filter(block == class_condition) %>%
   ggplot(., aes(x = as.factor(prior_class), y = response, color = w_utterance)) +
   geom_point(size = 2, alpha = 0.3, position = position_jitter(width = 0.1)) +
     facet_wrap(main_type~class_condition) # get ratings from the respective trials only 
 # use block for getting the actual correct ratings, but class_condition for subsetting the prior classification fo the respective predictor 
+
+# some condition was wrongly recorded as pri
+d_critical %>% 
+     filter(block != "xor" & block != "some") %>%
+     filter(block == class_condition) %>% filter(block == "prior" & w_utterance == T) %>% View()
+ 
 ```
 
 plot inference rating as a function of respective rating of the explanatory factor (think about a plot where one would see an interaction)
