@@ -112,7 +112,8 @@ d_critical %>%
 # some condition was wrongly recorded as pri
 d_critical %>% 
      filter(block != "xor" & block != "some") %>%
-     filter(block == class_condition) %>% filter(block == "prior" & w_utterance == T) %>% View()
+     filter(block == class_condition) %>% filter(block == "prior" & w_utterance == T) %>%
+  View()
  
 ```
 
