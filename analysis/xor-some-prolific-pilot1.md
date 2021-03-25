@@ -22,14 +22,14 @@ pounds/participant.
 library(tidyverse)
 ```
 
-    ## ── Attaching packages ────────────────────────────────────────────────────── tidyverse 1.3.0 ──
+    ## -- Attaching packages --------------------------------------- tidyverse 1.3.0 --
 
-    ## ✓ ggplot2 3.3.1     ✓ purrr   0.3.4
-    ## ✓ tibble  3.0.1     ✓ dplyr   1.0.0
-    ## ✓ tidyr   1.1.0     ✓ stringr 1.4.0
-    ## ✓ readr   1.3.1     ✓ forcats 0.5.0
+    ## v ggplot2 3.3.2     v purrr   0.3.4
+    ## v tibble  3.0.4     v dplyr   1.0.2
+    ## v tidyr   1.1.2     v stringr 1.4.0
+    ## v readr   1.4.0     v forcats 0.5.0
 
-    ## ── Conflicts ───────────────────────────────────────────────────────── tidyverse_conflicts() ──
+    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
     ## x dplyr::filter() masks stats::filter()
     ## x dplyr::lag()    masks stats::lag()
 
@@ -37,7 +37,8 @@ library(tidyverse)
 d <- read_csv("../data/pilots/results_58_xor-some-Prolific-pilot1_N10.csv")
 ```
 
-    ## Parsed with column specification:
+    ## 
+    ## -- Column specification --------------------------------------------------------
     ## cols(
     ##   .default = col_character(),
     ##   submission_id = col_double(),
@@ -54,8 +55,7 @@ d <- read_csv("../data/pilots/results_58_xor-some-Prolific-pilot1_N10.csv")
     ##   timeSpent = col_double(),
     ##   trial_number = col_double()
     ## )
-
-    ## See spec(...) for full column specifications.
+    ## i Use `spec()` for the full column specifications.
 
 Checking if there are any comments indicating technical issues:
 
@@ -147,7 +147,7 @@ d_native %>% count(title)
     ## # A tibble: 9 x 2
     ##   title                                                                        n
     ##   <chr>                                                                    <int>
-    ## 1 "<font size=\"4\" color= \"#00BFFF\"> EXAMPLE </font> <br/> Joe's shopp…    40
+    ## 1 "<font size=\"4\" color= \"#00BFFF\"> EXAMPLE </font> <br/> Joe's shopp~    40
     ## 2 "Brad's clothes"                                                           110
     ## 3 "Carl's party"                                                             110
     ## 4 "Harry Potter"                                                             100
@@ -162,7 +162,26 @@ example trials (and possibly the bot check) according to preregistered
 exclusion criteria. For now, all the data is considered.
 
 ``` r
-d_native %>% group_by(submission_id) %>% count(response) %>% View()
+d_native %>% group_by(submission_id) %>% count(response)
+```
+
+    ## # A tibble: 398 x 3
+    ## # Groups:   submission_id [10]
+    ##    submission_id response     n
+    ##            <dbl>    <dbl> <int>
+    ##  1          1828        0     3
+    ##  2          1828        4     1
+    ##  3          1828        7     1
+    ##  4          1828       12     3
+    ##  5          1828       16     1
+    ##  6          1828       22     1
+    ##  7          1828       24     3
+    ##  8          1828       25     2
+    ##  9          1828       26     1
+    ## 10          1828       28     3
+    ## # ... with 388 more rows
+
+``` r
 d_main <- d_native %>% filter(trial_name != "example")
 d_exmpl <- d_native %>% filter(trial_name == "example")
 d_critical <- d_main %>% filter(condition == "critical")
@@ -232,7 +251,7 @@ without critical utterance
 d_critical <- d_critical %>% 
   mutate(w_utterance = ifelse(is.na(critical_question), F, T),
          block = ifelse(block == "comp", "competence", 
-                        ifelse(block == "rel", "relevance", "prior")))
+                        ifelse(block == "rel", "relevance", ifelse(block == "pri", "prior", block) )))
 
 d_critical %>% 
   filter(block != "xor" & block != "some") %>%
@@ -247,12 +266,41 @@ d_critical %>%
 ``` r
 # use block for getting the actual correct ratings, but class_condition for subsetting the prior classification fo the respective predictor 
 
-# some condition was wrongly recorded as pri
+# # some condition was wrongly recorded as pri
+# d_critical %>% 
+#      filter(block != "xor" & block != "some") %>%
+#      filter(block == class_condition) %>% filter(block == "prior" & w_utterance == T) %>%
+#   View()
+ 
 d_critical %>% 
-     filter(block != "xor" & block != "some") %>%
-     filter(block == class_condition) %>% filter(block == "prior" & w_utterance == T) %>%
-  View()
+  filter(block != "xor" & block != "some") %>%
+  filter(block == class_condition) %>%
+  group_by(main_type, class_condition, w_utterance, prior_class) %>% 
+  summarize(mean_response = mean(response))
 ```
+
+    ## `summarise()` regrouping output by 'main_type', 'class_condition', 'w_utterance' (override with `.groups` argument)
+
+    ## # A tibble: 16 x 5
+    ## # Groups:   main_type, class_condition, w_utterance [10]
+    ##    main_type class_condition w_utterance prior_class mean_response
+    ##    <chr>     <chr>           <lgl>             <dbl>         <dbl>
+    ##  1 some      competence      FALSE                 1          78.1
+    ##  2 some      competence      TRUE                  1          77.5
+    ##  3 some      prior           FALSE                 0          30.3
+    ##  4 some      prior           FALSE                 1          51.4
+    ##  5 some      relevance       FALSE                 0          43.2
+    ##  6 some      relevance       FALSE                 1          75.3
+    ##  7 some      relevance       TRUE                  0          48.8
+    ##  8 some      relevance       TRUE                  1          76.4
+    ##  9 xor       competence      FALSE                 0          42.2
+    ## 10 xor       competence      TRUE                  0          59  
+    ## 11 xor       prior           FALSE                 0          36.8
+    ## 12 xor       prior           FALSE                 1          57.9
+    ## 13 xor       relevance       FALSE                 0          39.2
+    ## 14 xor       relevance       FALSE                 1          42.0
+    ## 15 xor       relevance       TRUE                  0          44.4
+    ## 16 xor       relevance       TRUE                  1          42.8
 
 plot inference rating as a function of respective rating of the
 explanatory factor (think about a plot where one would see an

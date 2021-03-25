@@ -56,7 +56,7 @@ d_native %>% count(title)
 
 Next, we would exclude participants based on their ratings in the main / example trials (and possibly the bot check) according to preregistered exclusion criteria. For now, all the data is considered.
 ```{r clean}
-d_native %>% group_by(submission_id) %>% count(response) %>% View()
+d_native %>% group_by(submission_id) %>% count(response)
 d_main <- d_native %>% filter(trial_name != "example")
 d_exmpl <- d_native %>% filter(trial_name == "example")
 d_critical <- d_main %>% filter(condition == "critical")
@@ -99,7 +99,7 @@ Plot main rel / comp questions by main condition, separated into with / without 
 d_critical <- d_critical %>% 
   mutate(w_utterance = ifelse(is.na(critical_question), F, T),
          block = ifelse(block == "comp", "competence", 
-                        ifelse(block == "rel", "relevance", "prior")))
+                        ifelse(block == "rel", "relevance", ifelse(block == "pri", "prior", block) )))
 
 d_critical %>% 
   filter(block != "xor" & block != "some") %>%
@@ -109,12 +109,18 @@ d_critical %>%
     facet_wrap(main_type~class_condition) # get ratings from the respective trials only 
 # use block for getting the actual correct ratings, but class_condition for subsetting the prior classification fo the respective predictor 
 
-# some condition was wrongly recorded as pri
-d_critical %>% 
-     filter(block != "xor" & block != "some") %>%
-     filter(block == class_condition) %>% filter(block == "prior" & w_utterance == T) %>%
-  View()
+# # some condition was wrongly recorded as pri
+# d_critical %>% 
+#      filter(block != "xor" & block != "some") %>%
+#      filter(block == class_condition) %>% filter(block == "prior" & w_utterance == T) %>%
+#   View()
  
+d_critical %>% 
+  filter(block != "xor" & block != "some") %>%
+  filter(block == class_condition) %>%
+  group_by(main_type, class_condition, w_utterance, prior_class) %>% 
+  summarize(mean_response = mean(response))
 ```
+
 
 plot inference rating as a function of respective rating of the explanatory factor (think about a plot where one would see an interaction)
