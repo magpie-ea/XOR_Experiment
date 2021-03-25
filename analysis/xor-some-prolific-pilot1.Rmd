@@ -1,0 +1,110 @@
+---
+title: "XOR-Some Prolific Pilot 1"
+author: "Polina Tsvilodub"
+date: "3/24/2021"
+output: github_document
+---
+
+In this first pilot on Prolific we test the implementation of the xor study in magpie. The structure of the experiment was as follows:
+Participants read instructions, completed three example trials, and then completed 8 main blocks consisting of 4 xor and 4 some items. Each main block had the following structure: Participants read the background story, answered one comprehension question, then answered competence / relevance / prior questions in randomized order; then they read another 3 comprehension questions, after which the critical utterance was added below the background story. They answered the inference strength question, and then competence / relevance questions in randomized order again.
+
+N=10 participants were recruited for this pilot and compensated 2 pounds/participant. 
+
+```{r libraries}
+library(tidyverse)
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r anonymization, include=FALSE}
+#d_raw <- read_csv("~/Documents/Research/XOR/results_58_xor-some-Prolific-pilot1_N10.csv")
+# remove IDs
+#d_raw %>% select(-prolific_id) %>% write_csv("../data/pilots/results_58_xor-some-Prolific-pilot1_N10.csv") 
+```
+
+```{r data}
+d <- read_csv("../data/pilots/results_58_xor-some-Prolific-pilot1_N10.csv")
+```
+
+Checking if there are any comments indicating technical issues:
+```{r comments}
+d %>% distinct(comments)
+```
+
+Check native languages. In the main experiment, participants not indicating English as (one of) their native language(s) will be excluded. We also compute some participant demographics.
+```{r languages}
+d %>% distinct(languages)
+# exclude non-natives if necessary
+d_native <- d
+
+d_native %>% pull(age) %>% mean(., na.rm = T) 
+d_native %>% count(gender) %>% mutate(n = n/88)
+```
+
+Next, we check whether all the conditions were used correctly.
+
+```{r counts}
+# check xor/some vs. trial type
+d_native %>% count(main_type, condition) 
+# check xor/some vs. experimental condition
+d_native %>% count(main_type, exp_condition)
+# count items used
+d_native %>% count(title)
+```
+
+Next, we would exclude participants based on their ratings in the main / example trials (and possibly the bot check) according to preregistered exclusion criteria. For now, all the data is considered.
+```{r clean}
+d_native %>% group_by(submission_id) %>% count(response) %>% View()
+d_main <- d_native %>% filter(trial_name != "example")
+d_exmpl <- d_native %>% filter(trial_name == "example")
+d_critical <- d_main %>% filter(condition == "critical")
+
+# get overall mean ratings / subject
+d_native %>% group_by(submission_id) %>% summarise(mean_rating = mean(response)) %>% arrange(mean_rating)
+```
+Plot responses on example questions by question type
+
+Plot test questions by type
+```{r}
+d_test <- d_main %>% rowwise() %>% filter(condition == "test") %>% 
+  mutate(test_condition = substr(test_question, 6, 9),
+         test_condition = ifelse(test_condition == "fals", "false", 
+                                 ifelse(test_condition == "unce", "uncertain",
+                                        test_condition)))
+
+d_test %>% 
+  ggplot(., aes(x = test_condition, y = response)) +
+  geom_point(size = 2, alpha = 0.3, position = position_jitter(width = 0.1))
+# add mean / CI
+```
+
+Plot main rel / comp / pri questions by main condition
+
+```{r}
+d_critical <- d_critical %>% 
+  pivot_longer(c(competence, relevance, prior), 
+               names_to = "class_condition", 
+               values_to = "prior_class")
+d_critical %>% 
+  filter(block != "xor" & block != "some") %>%
+  ggplot(., aes(x = as.factor(prior_class), y = response)) +
+  geom_point(size = 2, alpha = 0.3, position = position_jitter(width = 0.1)) +
+    facet_wrap(main_type~class_condition)
+```
+Plot main rel / comp questions by main condition, separated into with / without critical utterance
+```{r}
+# add info to already record this
+d_critical <- d_critical %>% 
+  mutate(w_utterance = ifelse(is.na(critical_question), F, T))
+
+d_critical %>% 
+  filter(block != "xor" & block != "some") %>%
+  ggplot(., aes(x = as.factor(prior_class), y = response, color = w_utterance)) +
+  geom_point(size = 2, alpha = 0.3, position = position_jitter(width = 0.1)) +
+    facet_wrap(main_type~class_condition) # get ratings from the respective trials only 
+# use block for getting the actual correct ratings, but class_condition for subsetting the prior classification fo the respective predictor 
+```
+
+plot inference rating as a function of respective rating of the explanatory factor (think about a plot where one would see an interaction)
