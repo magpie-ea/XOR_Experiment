@@ -23,14 +23,14 @@ this pilot to get more data points per item.
 library(tidyverse)
 ```
 
-    ## ── Attaching packages ────────────────────────────────────────────────────── tidyverse 1.3.0 ──
+    ## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──
 
-    ## ✓ ggplot2 3.3.1     ✓ purrr   0.3.4
-    ## ✓ tibble  3.0.1     ✓ dplyr   1.0.0
-    ## ✓ tidyr   1.1.0     ✓ stringr 1.4.0
-    ## ✓ readr   1.3.1     ✓ forcats 0.5.0
+    ## ✓ ggplot2 3.3.2     ✓ purrr   0.3.4
+    ## ✓ tibble  3.0.4     ✓ dplyr   1.0.2
+    ## ✓ tidyr   1.1.2     ✓ stringr 1.4.0
+    ## ✓ readr   1.4.0     ✓ forcats 0.5.0
 
-    ## ── Conflicts ───────────────────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
     ## x dplyr::filter() masks stats::filter()
     ## x dplyr::lag()    masks stats::lag()
 
@@ -41,26 +41,6 @@ library(tidyboot)
 ``` r
 d <- read_csv("../data/pilots/results_58_xor-some-Prolific-pilot1_N10.csv")
 ```
-
-    ## Parsed with column specification:
-    ## cols(
-    ##   .default = col_character(),
-    ##   submission_id = col_double(),
-    ##   ID = col_double(),
-    ##   RT = col_double(),
-    ##   age = col_double(),
-    ##   competence = col_double(),
-    ##   endTime = col_double(),
-    ##   experiment_id = col_double(),
-    ##   prior = col_double(),
-    ##   relevance = col_double(),
-    ##   response = col_double(),
-    ##   startTime = col_double(),
-    ##   timeSpent = col_double(),
-    ##   trial_number = col_double()
-    ## )
-
-    ## See spec(...) for full column specifications.
 
 Checking if there are any comments indicating technical issues:
 
@@ -194,8 +174,6 @@ d_critical <- d_main %>% filter(condition == "critical")
 d_native %>% group_by(submission_id) %>% summarise(mean_rating = mean(response)) %>% arrange(mean_rating)
 ```
 
-    ## `summarise()` ungrouping output (override with `.groups` argument)
-
     ## # A tibble: 10 x 2
     ##    submission_id mean_rating
     ##            <dbl>       <dbl>
@@ -223,6 +201,14 @@ d_test <- d_main %>% rowwise() %>% filter(condition == "test") %>%
 d_test_ci <- d_test %>% group_by(test_condition) %>% 
   tidyboot_mean(column = response) 
 ```
+
+    ## Warning: Problem with `mutate()` input `strap`.
+    ## ℹ `as_data_frame()` is deprecated as of tibble 2.0.0.
+    ## Please use `as_tibble()` instead.
+    ## The signature and semantics have changed, see `?as_tibble`.
+    ## This warning is displayed once every 8 hours.
+    ## Call `lifecycle::last_warnings()` to see where this warning was generated.
+    ## ℹ Input `strap` is `purrr::map(strap, dplyr::as_data_frame)`.
 
     ## Warning: `as_data_frame()` is deprecated as of tibble 2.0.0.
     ## Please use `as_tibble()` instead.
@@ -260,11 +246,7 @@ d_critical %>%
   filter(block == class_condition) %>%
   group_by(main_type, class_condition, w_utterance, prior_class) %>% 
   summarize(mean_response = mean(response)) -> d_critical_summary
-```
 
-    ## `summarise()` regrouping output by 'main_type', 'class_condition', 'w_utterance' (override with `.groups` argument)
-
-``` r
 d_critical %>% 
   filter(block != "xor" & block != "some") %>%
   filter(block == class_condition) %>%
@@ -296,6 +278,19 @@ d_critical %>%
 
 ![](xor-some-prolific-pilot1_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
+Create more extensive condition labels, including information about
+whether a rating was produced with or without the utterance given.
+
+``` r
+# extending 'conditions' labels to include wheter the utterance was present or not
+d_critical <- d_critical %>% 
+  mutate(block_extended = ifelse(
+    !w_utterance, 
+    block, 
+    ifelse(block %in% c("some", "xor"), "target", str_c(block, "_wUtt", ""))
+  ))
+```
+
 Plot mean ratings (across all 10 participants) for each vignette (with
 its respective condition indicated in the facet title, in the order
 relevance/competence/prior), in each condition. For relevance and
@@ -307,19 +302,47 @@ bar.width = 0.8
 d_critical %>% 
   mutate(title = paste(title, exp_condition, sep = "_")) %>%
   filter(block == class_condition | block == "xor" | block == "some") %>%
-  group_by(block, title, w_utterance, main_type) %>%
+  group_by(block_extended, title, w_utterance, main_type) %>%
   summarize(mean_rating = mean(response)) %>% 
-  ggplot(., aes(x = block, y = mean_rating, fill = w_utterance)) +
+  ggplot(., aes(x = block_extended, y = mean_rating, fill = w_utterance)) +
   geom_col(alpha = 0.7, width = bar.width, position = position_dodge(width = bar.width)) +
   #geom_point(size = 2, alpha = 0.5, position = position_jitter(width = 0.1)) +
   facet_wrap(main_type~title, ncol = 4) +
-  theme(axis.text.x = element_text(angle = 45)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   ggtitle("By-item by-question mean ratings")
 ```
 
-    ## `summarise()` regrouping output by 'block', 'title', 'w_utterance' (override with `.groups` argument)
+![](xor-some-prolific-pilot1_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
-![](xor-some-prolific-pilot1_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+``` r
+# make a versatile wide representation of the critical data
+d_critical_wide <- d_critical %>% 
+  select(submission_id, title, main_type, block_extended, response) %>% 
+  unique() %>% 
+  pivot_wider(
+    names_from = block_extended, 
+    values_from = response, 
+    values_fn = mean # getting means for double prior measurement in "xor"
+  ) 
+
+# correlation plot for "some"
+GGally::ggpairs(
+  filter(d_critical_wide, main_type == "some") %>%  
+    select(prior:ncol(d_critical_wide))
+)
+```
+
+![](xor-some-prolific-pilot1_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
+``` r
+# correlation plot for "or"
+GGally::ggpairs(
+  filter(d_critical_wide, main_type == "xor") %>%  
+    select(prior:ncol(d_critical_wide))
+  )
+```
+
+![](xor-some-prolific-pilot1_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->
 
 In conclusion, the technical side of the experiment seems to work
 without glitches; participants perform as expected on the comprehension

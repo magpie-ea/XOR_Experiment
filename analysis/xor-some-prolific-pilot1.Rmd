@@ -16,7 +16,7 @@ library(tidyboot)
 ```
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, warnings = FALSE, message = FALSE)
 ```
 
 ```{r anonymization, include=FALSE}
@@ -140,7 +140,6 @@ d_critical %>%
  
 ```
 
-
 Plot inference ratings as a function of *anticipated* rating of the explanatory factor, similar to the paper: 
 ``` {r}
 d_critical %>% 
@@ -156,20 +155,57 @@ d_critical %>%
   
 ```
 
+Create more extensive condition labels, including information about whether a rating was produced with or without the utterance given.
+
+``` {r}
+# extending 'conditions' labels to include wheter the utterance was present or not
+d_critical <- d_critical %>% 
+  mutate(block_extended = ifelse(
+    !w_utterance, 
+    block, 
+    ifelse(block %in% c("some", "xor"), "target", str_c(block, "_wUtt", ""))
+  ))
+```
+
+
 Plot mean ratings (across all 10 participants) for each vignette (with its respective condition indicated in the facet title, in the order relevance/competence/prior), in each condition. For relevance and competence, the color indicates whether it was presented without the utterance or with. 
 ```{r, fig.width=10, fig.height=7}
 bar.width = 0.8
 d_critical %>% 
   mutate(title = paste(title, exp_condition, sep = "_")) %>%
   filter(block == class_condition | block == "xor" | block == "some") %>%
-  group_by(block, title, w_utterance, main_type) %>%
+  group_by(block_extended, title, w_utterance, main_type) %>%
   summarize(mean_rating = mean(response)) %>% 
-  ggplot(., aes(x = block, y = mean_rating, fill = w_utterance)) +
+  ggplot(., aes(x = block_extended, y = mean_rating, fill = w_utterance)) +
   geom_col(alpha = 0.7, width = bar.width, position = position_dodge(width = bar.width)) +
   #geom_point(size = 2, alpha = 0.5, position = position_jitter(width = 0.1)) +
   facet_wrap(main_type~title, ncol = 4) +
-  theme(axis.text.x = element_text(angle = 45)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   ggtitle("By-item by-question mean ratings")
+```
+
+``` {r}
+# make a versatile wide representation of the critical data
+d_critical_wide <- d_critical %>% 
+  select(submission_id, title, main_type, block_extended, response) %>% 
+  unique() %>% 
+  pivot_wider(
+    names_from = block_extended, 
+    values_from = response, 
+    values_fn = mean # getting means for double prior measurement in "xor"
+  ) 
+
+# correlation plot for "some"
+GGally::ggpairs(
+  filter(d_critical_wide, main_type == "some") %>%  
+    select(prior:ncol(d_critical_wide))
+)
+  
+# correlation plot for "or"
+GGally::ggpairs(
+  filter(d_critical_wide, main_type == "xor") %>%  
+    select(prior:ncol(d_critical_wide))
+  )
 ```
 
 In conclusion, the technical side of the experiment seems to work without glitches; participants perform as expected on the comprehension questions; the relevance / competence / prior ratings seem to be mostly in line with our anticipated categorizations.
