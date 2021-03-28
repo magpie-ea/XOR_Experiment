@@ -23,14 +23,14 @@ this pilot to get more data points per item.
 library(tidyverse)
 ```
 
-    ## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──
+    ## ── Attaching packages ───────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.0 ──
 
-    ## ✓ ggplot2 3.3.2     ✓ purrr   0.3.4
-    ## ✓ tibble  3.0.4     ✓ dplyr   1.0.2
-    ## ✓ tidyr   1.1.2     ✓ stringr 1.4.0
-    ## ✓ readr   1.4.0     ✓ forcats 0.5.0
+    ## ✓ ggplot2 3.3.1     ✓ purrr   0.3.4
+    ## ✓ tibble  3.0.1     ✓ dplyr   1.0.0
+    ## ✓ tidyr   1.1.0     ✓ stringr 1.4.0
+    ## ✓ readr   1.3.1     ✓ forcats 0.5.0
 
-    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ── Conflicts ──────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
     ## x dplyr::filter() masks stats::filter()
     ## x dplyr::lag()    masks stats::lag()
 
@@ -202,14 +202,6 @@ d_test_ci <- d_test %>% group_by(test_condition) %>%
   tidyboot_mean(column = response) 
 ```
 
-    ## Warning: Problem with `mutate()` input `strap`.
-    ## ℹ `as_data_frame()` is deprecated as of tibble 2.0.0.
-    ## Please use `as_tibble()` instead.
-    ## The signature and semantics have changed, see `?as_tibble`.
-    ## This warning is displayed once every 8 hours.
-    ## Call `lifecycle::last_warnings()` to see where this warning was generated.
-    ## ℹ Input `strap` is `purrr::map(strap, dplyr::as_data_frame)`.
-
     ## Warning: `as_data_frame()` is deprecated as of tibble 2.0.0.
     ## Please use `as_tibble()` instead.
     ## The signature and semantics have changed, see `?as_tibble`.
@@ -343,6 +335,22 @@ GGally::ggpairs(
 ```
 
 ![](xor-some-prolific-pilot1_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->
+
+Check by-participant behavior to see if they show versatile response
+strategies for the different questions for xor vs. some. Participants
+show a sufficient range of responses across conditions.
+
+``` r
+d_critical %>%
+  filter(block == class_condition | block == "xor" | block == "some") %>%
+  ggplot(., aes(x = block, y = response, color = block)) +
+  geom_point(alpha = 0.7, size = 2) + 
+  facet_wrap(main_type~submission_id, ncol = 10) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  ggtitle("By-participant ratings all xor vs. some trials")
+```
+
+![](xor-some-prolific-pilot1_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 In conclusion, the technical side of the experiment seems to work
 without glitches; participants perform as expected on the comprehension

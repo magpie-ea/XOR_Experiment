@@ -208,6 +208,17 @@ GGally::ggpairs(
   )
 ```
 
+Check by-participant behavior to see if they show versatile response strategies for the different questions for xor vs. some. Participants show a sufficient range of responses across conditions.  
+```{r, fig.width=15, fig.height=7}
+d_critical %>%
+  filter(block == class_condition | block == "xor" | block == "some") %>%
+  ggplot(., aes(x = block, y = response, color = block)) +
+  geom_point(alpha = 0.7, size = 2) + 
+  facet_wrap(main_type~submission_id, ncol = 10) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  ggtitle("By-participant ratings all xor vs. some trials")
+```
+
 In conclusion, the technical side of the experiment seems to work without glitches; participants perform as expected on the comprehension questions; the relevance / competence / prior ratings seem to be mostly in line with our anticipated categorizations.
 
 One point to note is that on average participants took slightly longer than the expected 15 minutes to complete the experiment. 
