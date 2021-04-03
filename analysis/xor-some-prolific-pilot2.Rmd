@@ -1,0 +1,327 @@
+---
+title: "XOR-Some Prolific Pilot 2"
+author: "Polina Tsvilodub"
+date: "4/2/2021"
+output: github_document
+---
+
+In this second pilot on Prolific we gather a more substantial amount of pilot data for the xor-some study on Prolific. The structure of the experiment was as follows:
+Participants read instructions, completed three example trials, and then completed 8 main blocks consisting of 4 xor and 4 some items. Each main block had the following structure: Participants read the background story, answered one comprehension question, then answered competence / relevance / prior questions in randomized order; then they read another 3 comprehension questions, after which the critical utterance was added below the background story. They answered the inference strength question, and then competence / relevance questions in randomized order again.
+
+N=118 participants were recruited for this pilot and compensated 2 pounds/participant. 8 items (4 some + 4 xor) were sampled at random for each participant such that each participant saw one item in each condition (relevance X competence X prior = 8 unique conditions). 
+
+```{r libraries, include=FALSE}
+library(tidyverse)
+library(tidyboot)
+library(brms)
+library(tidybayes)
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warnings = FALSE, message = FALSE)
+```
+
+```{r anonymization, include=FALSE}
+#d_raw <- read_csv("~/Documents/Research/XOR/raw_data/results_58_xor-some-Prolific-pilot2_N120.csv")
+# remove IDs
+#d_raw %>% select(-prolific_id) %>% write_csv("../data/pilots/results_58_xor-some-Prolific-pilot2_N120.csv") 
+```
+
+## Checks & Exclusions
+```{r data, results='hide', include=FALSE}
+d <- read_csv("../data/pilots/results_58_xor-some-Prolific-pilot2_N120.csv")
+```
+
+Checking if there are any comments indicating technical issues which is not the case:
+```{r comments}
+d %>% distinct(comments) %>% View()
+```
+
+Check native languages. Participants not indicating English as (one of) their native language(s) are be excluded. We also compute some participant demographics.
+```{r languages}
+d %>% distinct(languages)
+cat("Number of partiipants before excluding non-natives: ", d %>% distinct(submission_id) %>% count() %>% pull() ) 
+# exclude non-natives if necessary
+d_native <- d %>% 
+ # filter(("en" | "En" | "bri") %in% languages)
+  filter(grepl("[(en)(br)]", languages, ignore.case = T))
+
+cat("Number of partiipants after excluding non-natives: ", d_native %>% distinct(submission_id) %>% count() %>% pull() )
+
+cat("Mean age: ", d_native %>% pull(age) %>% mean(., na.rm = T) )
+cat("Gender counts: ") 
+d_native %>% count(gender) %>% mutate(n = n/88)
+```
+
+Next, we check whether all the conditions were used correctly.
+
+```{r counts}
+# check xor/some vs. trial type
+d_native %>% count(main_type, condition) 
+# check xor/some vs. experimental condition
+d_native %>% count(main_type, exp_condition)
+# count items used
+d_native %>% count(title)
+```
+
+Check the time participants spent overall on the experiment before cleaning the data:
+```{r responseTime}
+overall_timeSpent <- d_native %>% mutate(timeSpent = round(timeSpent, 2)) %>% distinct(timeSpent) 
+
+#  summarize(timeCounts = count(timeSpent) / d_native %>% )
+ggplot(data = overall_timeSpent, aes(y=timeSpent, alpha = 0.7)) +
+  geom_boxplot() +
+  ggtitle("Overall time participants took in mins")
+```
+```{r}
+d_main <- d_native %>% select(-age, -botresponse, -comments, -education, -endTime, 
+                              -gender, -languages, -optionLeft, -optionRight, -startDate,
+                              -startTime, -timeSpent) %>%
+  filter(trial_name != "example")
+d_exmpl <- d_native %>% select(-age, -botresponse, -comments, -education, -endTime, 
+                              -gender, -languages, -optionLeft, -optionRight, -startDate,
+                              -startTime, -timeSpent) %>%
+  filter(trial_name == "example")
+d_critical <- d_main %>% filter(condition == "critical")
+```
+
+Plot responses on comprehension questions by type before applying exclusion criteria:
+```{r, echo=FALSE}
+d_test <- d_main %>% rowwise() %>% filter(condition == "test") %>% 
+  mutate(test_condition = substr(test_question, 6, 9),
+         test_condition = ifelse(test_condition == "fals", "false", 
+                                 ifelse(test_condition == "unce", "uncertain",
+                                        test_condition)))
+d_test_ci <- d_test %>% group_by(test_condition) %>% 
+  tidyboot_mean(column = response) 
+
+d_test %>% 
+  ggplot(., aes(x = test_condition, y = response)) +
+  geom_point(size = 2, alpha = 0.3, position = position_jitter(width = 0.1)) +
+  geom_point(data = d_test_ci, aes(x = test_condition, y = mean), color = "red", 
+             size = 4) +
+  facet_wrap(~main_type)
+```
+
+
+Next, we exclude participants based on their ratings in the main trials: Participants who gave all responses within the range of 10 and participants who failed more than 0.2 of the comprehension questions are excluded from analysis. 
+Participants who failed all example trials are excluded, as well. 
+The bot check trial is not considered for exclusions. 
+```{r exclusions}
+# get participants failing example trials
+d_exmpl <- d_exmpl %>% group_by(submission_id) %>% 
+  mutate(example_condition = ifelse(grepl("as certainly true", question), "true", 
+                                    ifelse(grepl("as certainly false", question), "false",
+                                           "uncertain")),
+         passed_example_trial = case_when(example_condition == "true" ~ response >= 80,
+                                    example_condition == "false" ~ response <= 20,
+                                    example_condition == "uncertain" ~ response >= 30),
+       #  check if all trials passed
+         passed_example = case_when(sum(passed_example_trial) == 0 ~ FALSE,
+                                    TRUE ~ TRUE)
+         ) %>% filter(passed_example == F)
+
+cat("Subjects failing the example trials: ", d_exmpl %>% distinct(submission_id) %>% pull() %>% length())
+
+# apply exclusion criteria to main trials
+# check range of responses per participant
+d_main_fail <- d_main %>% group_by(submission_id) %>%
+  mutate(passed_main = case_when(max(response) - min(response) <= 10 ~ FALSE,
+                                 TRUE ~ TRUE)
+         ) %>% filter(passed_main == F)
+cat("Subjects providing the same ratings throughout the trials: ", d_main_fail %>% distinct(submission_id) %>% pull() %>% length())
+
+# get participants failing comprehension questions
+d_test <- d_test %>%
+  group_by(submission_id) %>%
+  mutate(passed_filler_trial = case_when(test_condition == "true" ~ response >= 70,
+                                   test_condition == "false" ~ response <= 40,
+                                   test_condition == "uncertain" ~ response %in% (0:90)),
+         mean_comprehension = mean(passed_filler_trial),
+         passed_filler = mean_comprehension >= 0.8
+         ) %>%
+  filter(passed_filler == F)
+
+cat("Subjects failing the comprehension trials: ", d_test %>% distinct(submission_id) %>% pull() %>% length())
+
+# put it all together
+d_full_clean <- anti_join(d_main, d_main_fail, by = "submission_id")
+d_full_clean <- anti_join(d_full_clean, d_exmpl, d_test, by = "submission_id")
+d_full_clean <- anti_join(d_full_clean, d_test, by = "submission_id")
+
+cat("Nr. of participants left after cleaning: ", d_full_clean %>% distinct(submission_id) %>% pull() %>% length())
+```
+
+```{r clean}
+# get overall mean ratings / subject
+d_full_clean %>% group_by(submission_id) %>% summarise(mean_rating = mean(response)) %>% arrange(mean_rating)
+```
+
+```{r, echo=FALSE}
+d_critical_clean <- d_full_clean %>% filter(condition == "critical")
+d_critical_long <- d_critical_clean %>% 
+  pivot_longer(c(competence, relevance, prior), 
+               names_to = "class_condition", 
+               values_to = "prior_class")
+```
+
+## Plots
+Plot main rel / comp / prior questions by main condition and by prior classification of the item (x-axis), separated into with / without critical utterance (shape, color). The prior questions were only used without the utterance. 
+```{r}
+
+d_critical_long <- d_critical_long %>% 
+  mutate(w_utterance = ifelse(is.na(critical_question), F, T),
+         block = ifelse(block == "comp", "competence", 
+                        ifelse(block == "rel", "relevance", ifelse(block == "pri", "prior", block) )))
+d_critical_long %>% 
+  filter(block != "xor" & block != "some") %>%
+  filter(block == class_condition) %>%
+  group_by(main_type, class_condition, w_utterance, prior_class) %>% 
+  summarize(mean_response = mean(response)) -> d_critical_summary
+
+d_critical_long %>% 
+  filter(block != "xor" & block != "some") %>%
+  filter(block == class_condition) %>%
+  ggplot(., aes(x = as.factor(prior_class), y = response, shape = w_utterance, color = w_utterance)) +
+  geom_point(size = 2, alpha = 0.6, position = position_jitter(width = 0.1)) +
+  geom_point(data = d_critical_summary, aes(x = as.factor(prior_class), y = mean_response, shape = w_utterance), 
+             color = "red", size = 3) +
+  xlab("Anticipated categorization of the items (low / high)") +
+  facet_wrap(main_type~class_condition) # get ratings from the respective trials only 
+ 
+```
+```{r}
+# check whether the ratings in the two prior questions are the same in xor 
+d_critical_long %>% 
+  filter(block != "xor" & block != "some") %>%
+  filter(block == class_condition) %>%
+  filter(block == "prior", main_type == "xor") %>%
+  mutate(priorQ_nr = rep(c(1,2), 396)) -> d_xor_priors
+d_xor_priors %>% group_by(priorQ_nr, prior_class) %>%
+  summarise(mean = mean(response)) -> d_xor_priors_summary
+d_xor_priors %>%
+  ggplot(., aes(x = as.factor(priorQ_nr), y = response )) +
+  geom_point(size = 2, alpha = 0.6, position = position_jitter(width = 0.1)) +
+  geom_point(data = d_xor_priors_summary, aes(x = as.factor(priorQ_nr), y = mean), color = "red", size = 3) +
+  xlab("First vs Second prior question for high vs low prior conditions") +
+  facet_wrap(~as.factor(prior_class)) # get ratings from the respective trials only 
+ 
+```
+
+Plot inference ratings as a function of *anticipated* rating of the explanatory factor, similar to the paper: 
+``` {r}
+d_critical_long %>% 
+  filter(block == "xor" | block == "some") %>%
+  #group_by(block, class_condition, prior_class) %>%
+  #summarize(mean_rating = mean(response)) %>%
+  ggplot(., aes(x = prior_class, y = response)) +
+  geom_point(size = 2, alpha = 0.5) +
+  geom_line() +
+  facet_wrap(block~class_condition) +
+  xlab("Anticipated categorization of the items") +
+  ggtitle("Mean inference strength ratings by-predictor")
+  
+```
+
+Create more extensive condition labels, including information about whether a rating was produced with or without the utterance given.
+
+``` {r}
+# extending 'conditions' labels to include whether the utterance was present or not
+d_critical_long <- d_critical_long %>% 
+  mutate(block_extended = ifelse(
+    !w_utterance, 
+    block, 
+    ifelse(block %in% c("some", "xor"), "target", str_c(block, "_wUtt", ""))
+  ))
+```
+
+
+Plot mean ratings (across all participants) for each vignette (with its respective condition indicated in the facet title, in the order relevance/competence/prior), in each condition. For relevance and competence, the color indicates whether it was presented without the utterance or with. 
+```{r, fig.width=10, fig.height=30}
+bar.width = 0.8
+d_critical_long %>% 
+  mutate(title = paste(title, exp_condition, sep = "_")) %>%
+  filter(block == class_condition | block == "xor" | block == "some") %>%
+  group_by(block_extended, title, w_utterance, main_type) %>%
+  summarize(mean_rating = mean(response)) %>% 
+  ggplot(., aes(x = block_extended, y = mean_rating, fill = w_utterance)) +
+  geom_col(alpha = 0.7, width = bar.width, position = position_dodge(width = bar.width)) +
+  #geom_point(size = 2, alpha = 0.5, position = position_jitter(width = 0.1)) +
+  facet_wrap(main_type~title, ncol = 4) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  ggtitle("By-item by-question mean ratings")
+```
+
+``` {r}
+# make a versatile wide representation of the critical data
+d_critical_wide <- d_critical_long %>% 
+  select(submission_id, title, main_type, block_extended, response) %>% 
+  unique() %>% 
+  pivot_wider(
+    names_from = block_extended, 
+    values_from = response, 
+    values_fn = mean # getting means for double prior measurement in "xor"
+  ) 
+
+# correlation plot for "some"
+GGally::ggpairs(
+  filter(d_critical_wide, main_type == "some") %>%  
+    select(prior:ncol(d_critical_wide))
+)
+  
+# correlation plot for "or"
+GGally::ggpairs(
+  filter(d_critical_wide, main_type == "xor") %>%  
+    select(prior:ncol(d_critical_wide))
+  )
+```
+
+Check by-participant behavior to see if they show versatile response strategies for the different questions for xor vs. some. Participants show a sufficient range of responses across conditions.  
+```{r, fig.width=15, fig.height=7}
+d_critical_long %>%
+  filter(block == class_condition | block == "xor" | block == "some") %>%
+  ggplot(., aes(x = block, y = response, color = block)) +
+  geom_point(alpha = 0.7, size = 2) + 
+  facet_wrap(main_type~submission_id, ncol = 10) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  ggtitle("By-participant ratings all xor vs. some trials")
+```
+
+## Stats
+
+```{r, results='hide'}
+# xor, maximal model with interactions and maximal REs
+model_xor <- brm(
+  target ~ prior*competence*relevance + 
+    (1 + prior + competence + relevance || submission_id) +
+    (1 | title),
+  data = d_critical_wide %>% filter(main_type == "xor"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+
+```{r}
+summary(model_xor)
+```
+
+```{r, results='hide'}
+# some, maximal model with interactions and maximal REs
+model_some <- brm(
+  target ~ prior*competence*relevance + 
+    (1 + prior + competence + relevance || submission_id) +
+    (1 | title),
+  data = d_critical_wide %>% filter(main_type == "some"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+```{r}
+summary(model_some)
+```
+
+## Explore z-scoring
+
+## Exploreusing binary predictors 
