@@ -162,16 +162,65 @@ d_critical_long <- d_critical_clean %>%
   pivot_longer(c(competence, relevance, prior), 
                names_to = "class_condition", 
                values_to = "prior_class")
-```
 
-## Plots
-Plot main rel / comp / prior questions by main condition and by prior classification of the item (x-axis), separated into with / without critical utterance (shape, color). The prior questions were only used without the utterance. 
-```{r}
 
 d_critical_long <- d_critical_long %>% 
   mutate(w_utterance = ifelse(is.na(critical_question), F, T),
          block = ifelse(block == "comp", "competence", 
                         ifelse(block == "rel", "relevance", ifelse(block == "pri", "prior", block) )))
+```
+
+Create more extensive condition labels, including information about whether a rating was produced with or without the utterance given.
+
+``` {r}
+# extending 'conditions' labels to include whether the utterance was present or not
+d_critical_long <- d_critical_long %>% 
+  mutate(block_extended = ifelse(
+    !w_utterance, 
+    block, 
+    ifelse(block %in% c("some", "xor"), "target", str_c(block, "_wUtt", ""))
+  ))
+```
+
+Average nr of responses per question per vignette:
+```{r}
+d_critical_long %>% 
+  filter(class_condition == block | block == "xor" | block == "some") %>%
+  select(-class_condition, -prior_class) %>%
+  unique() %>% count(title, block_extended, main_type) %>%
+  mutate(n = ifelse(main_type == "xor" & block_extended == "prior", n/2, n)) %>%
+  summarize(mean_observations = mean(n))
+```
+
+Compute the average deviation from expected responses for each vignette, individually for each dimension (rel / comp / pri):
+```{r}
+d_critical_long %>% 
+  filter(block != "xor" & block != "some") %>%
+  filter(block == class_condition) %>%
+  mutate(expected_rating = prior_class * 100,
+         response_deviation = abs(response - expected_rating)) %>%
+  group_by(title, block_extended) %>%
+  summarize(mean_deviation = mean(response_deviation)) %>%
+  arrange(desc(mean_deviation), .by_group = T) %>%
+  # get the largest deviations - over 50 
+  filter(mean_deviation >= 50) -> d_critical_deviations
+
+#d_critical_deviations %>% write_csv("../data/pilots/pilot2_byItem_rating_deviations.csv")
+
+print(d_critical_deviations)
+
+# count which dimension is the most problematic - the prior
+d_critical_deviations %>% group_by(block_extended) %>% count()
+
+# check which items have the most deviations over 50 
+d_critical_deviations %>% group_by(title) %>% count() %>% arrange(desc(.$n))
+```
+
+
+## Plots
+Plot main rel / comp / prior questions by main condition and by prior classification of the item (x-axis), separated into with / without critical utterance (shape, color). The prior questions were only used without the utterance. 
+```{r}
+
 d_critical_long %>% 
   filter(block != "xor" & block != "some") %>%
   filter(block == class_condition) %>%
@@ -220,17 +269,6 @@ d_critical_long %>%
   xlab("Anticipated categorization of the items") +
   ggtitle("Inference strength ratings by-predictor")
   
-```
-Create more extensive condition labels, including information about whether a rating was produced with or without the utterance given.
-
-``` {r}
-# extending 'conditions' labels to include whether the utterance was present or not
-d_critical_long <- d_critical_long %>% 
-  mutate(block_extended = ifelse(
-    !w_utterance, 
-    block, 
-    ifelse(block %in% c("some", "xor"), "target", str_c(block, "_wUtt", ""))
-  ))
 ```
 
 ```{r}

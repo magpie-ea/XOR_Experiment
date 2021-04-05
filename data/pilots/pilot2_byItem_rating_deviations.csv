@@ -1,0 +1,75 @@
+title,block_extended,mean_deviation
+Alex's racket,prior,61.833333333333336
+Alex's racket,relevance,57.86666666666667
+Alex's racket,relevance_wUtt,51.733333333333334
+Alissa's paint,competence,65.55555555555556
+Attendance,prior,82.85714285714286
+Bill's order,prior,52.666666666666664
+Brad Pitt,competence_wUtt,56.333333333333336
+Brad's clothes,competence_wUtt,69.07692307692308
+Brad's clothes,relevance,66.76923076923077
+Brad's clothes,relevance_wUtt,64.46153846153847
+Brad's clothes,prior,58.61538461538461
+College,competence,53.63636363636363
+Crime,competence,51.6
+Crime,prior,51.35
+Dave's kids,relevance,52.72727272727273
+Dave's kids,relevance_wUtt,51.27272727272727
+Emails from a broken laptop,relevance_wUtt,64.18181818181819
+Emails from a broken laptop,relevance,60.54545454545455
+Final exam,competence_wUtt,54.375
+Gerald's graduation,competence_wUtt,56.285714285714285
+Gift unwrapping,prior,60.30769230769231
+Gigi's exams,competence_wUtt,50.36363636363637
+Gourmet desserts,relevance,58.1
+Gourmet desserts,prior,53.8
+Greg's movie,competence,63
+Greg's movie,competence_wUtt,54.18181818181818
+Greg's movie,prior,53.81818181818182
+Greg's movie,relevance_wUtt,53.09090909090909
+Greg's movie,relevance,52.72727272727273
+Harold's pet,competence_wUtt,53.3
+Harry Potter,prior,74.46666666666667
+Harvard admission exams,prior,69.5
+Harvard admission exams,competence_wUtt,50.8
+Health inspector,relevance,76.85714285714286
+Health inspector,relevance_wUtt,70.71428571428571
+Health inspector,competence_wUtt,53
+Hotel check,prior,68.18181818181819
+Jimmy's trip,competence_wUtt,63.15384615384615
+Jimmy's trip,competence,57.61538461538461
+Joshua's delay,relevance,72.15384615384616
+Joshua's delay,relevance_wUtt,61.53846153846154
+Joshua's delay,competence_wUtt,59
+Leo's prize,competence,71.125
+Lily's husband,relevance,64.21428571428571
+Lily's husband,relevance_wUtt,63.5
+Martha's cookies,competence_wUtt,56.611111111111114
+Mrs Gibbs' worry,prior,67.3
+Mrs Sanders' son,relevance,52.90909090909091
+Nuts,competence_wUtt,55.4
+Pete's accident,competence_wUtt,53.714285714285715
+Pete's presents,prior,51.81818181818182
+Picnic pictures,competence_wUtt,60.583333333333336
+Picnic pictures,competence,54.25
+Rabbits,competence_wUtt,65.92307692307692
+Rabbits,competence,54.07692307692308
+Restaurant,prior,68.85714285714286
+Restaurant,relevance,50.57142857142857
+Rumors,prior,51.8125
+Shelter,prior,84.57142857142857
+Shelter,competence_wUtt,77.92857142857143
+Shelter,relevance,67
+Shelter,relevance_wUtt,58
+Star Trek expert quiz,prior,61.25
+Suzy's fruits,prior,65
+Suzy's fruits,relevance_wUtt,53.1875
+Suzy's fruits,competence_wUtt,51.4375
+Swiss watch prototype testing,prior,76.42105263157895
+The game,prior,71
+The game,competence_wUtt,55.875
+Tony's clubbing,relevance_wUtt,55.54545454545455
+Underage drinking,relevance,91.55555555555556
+Underage drinking,relevance_wUtt,90.77777777777777
+Violinist,prior,61.4
+Youth hostel,prior,60.77777777777778
