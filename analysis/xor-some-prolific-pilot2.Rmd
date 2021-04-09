@@ -330,7 +330,7 @@ d_critical_wide <- d_critical_long %>%
   ) 
 ```
 
-Plot inference strength ratings against raw predictor ratings for each participant / each item:
+Plot inference strength ratings against raw predictor ratings from each participant across items:
 ```{r}
 d_critical_wide %>%
   ggplot(., aes(x = relevance, y = target)) +
@@ -395,7 +395,7 @@ d_critical_predictorsXtarget %>%
 
 ```
 
-Plot inference strength ratings against predictor ratings, by-item, using by-item mean ratings across participants. Error bard indicate the standard deviation:
+Plot inference strength ratings against predictor ratings, by-item, using by-item mean ratings across participants. Error bars indicate the standard deviation of the mean:
 ```{r, fig.height=4, fig.width=8}
 d_critical_predictorsXtarget_summary <- d_critical_predictorsXtarget %>% 
   group_by(title, predictors, main_type) %>%
@@ -463,7 +463,7 @@ d_critical_zScored %>%
   ggtitle("Centered responses to by-predictor questions")
 ```
 
-Plot z-scored predictor ratings against z-scored target ratings
+Plot z-scored predictor ratings against z-scored target inference ratings
 ```{r}
 d_critical_zScored_wide <- d_critical_zScored %>% 
   select(submission_id, title, main_type, block_extended, response_centered) %>% 
@@ -518,6 +518,7 @@ GGally::ggpairs(
 
 
 ## Stats
+
 Maximal models on raw ratings:
 ```{r, results='hide'}
 # xor, maximal model with interactions and maximal REs
@@ -538,7 +539,7 @@ summary(model_xor)
 
 Exploring plots of posterior samples for pairwise parameters shows that there is a visible correlation between prior & competence, and a somewhat weaker correlation between competence & relevance. The interaction estimates also show a correlation with the main effects (as a rough overall judgment).   
 ```{r}
-shinystan::launch_shinystan(model_xor)
+#shinystan::launch_shinystan(model_xor)
 ```
 Plot correlations of main effects
 ```{r}
@@ -564,13 +565,13 @@ summary(model_some)
 
 For "some", the correlation of prior and relevance is higher than for prior and competence; there is also a visible correlation of competence and relevance. 
 ```{r}
-shinystan::launch_shinystan(model_some)
+#shinystan::launch_shinystan(model_some)
 ```
 ```{r}
 bayesplot::mcmc_pairs(model_some, pars = c("b_prior", "b_competence", "b_relevance"))
 ```
 
-#### Smaller models with raw data to check for colinearity 
+#### Smaller models with raw data to check for collinearity 
 Models on raw data with only one predictor: 
 ```{r, results='hide'}
 # xor
@@ -802,6 +803,7 @@ bayesplot::mcmc_pairs(model_some_rel_comp, pars = c("b_competence", "b_relevance
 ```
 
 #### Stats on z-scored data
+The same stats (full, one predictor, to predictors) on z-scored data:
 ```{r, results='hide'}
 # xor, maximal model with interactions and maximal REs on z-scored data
 model_xor_zScored <- brm(
@@ -1317,5 +1319,3 @@ model_some_cat_zScored_rel <- brm(
 summary(model_some_cat_zScored_rel)
 ```
 
-
-In summary, the different models provide somewhat different results, specially when using raw ratings vs. binary predictors. 
