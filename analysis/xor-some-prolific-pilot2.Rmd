@@ -198,8 +198,10 @@ d_critical_long %>%
   filter(block != "xor" & block != "some") %>%
   filter(block == class_condition) %>%
   mutate(expected_rating = prior_class * 100,
-         response_deviation = abs(response - expected_rating)) %>%
-  group_by(title, block_extended) %>%
+         response_deviation = abs(response - expected_rating),
+         block = ifelse(block == "xor" | block == "some", "target", block)
+         ) %>%
+  group_by(title, block) %>%
   summarize(mean_deviation = mean(response_deviation)) %>%
   arrange(desc(mean_deviation), .by_group = T) %>%
   # get the largest deviations - over 50 
@@ -210,12 +212,56 @@ d_critical_long %>%
 print(d_critical_deviations)
 
 # count which dimension is the most problematic - the prior
-d_critical_deviations %>% group_by(block_extended) %>% count()
+d_critical_deviations %>% group_by(block) %>% count()
 
 # check which items have the most deviations over 50 
 d_critical_deviations %>% group_by(title) %>% count() %>% arrange(desc(.$n))
 ```
 
+Compute the standard deviation for each question for each item as an additional measure of spread in the participants' responses within-item:
+```{r}
+d_critical_long %>% 
+  filter(block != "xor" & block != "some") %>%
+  filter(block == class_condition) %>%
+  mutate(
+         block = ifelse(block == "xor" | block == "some", "target", block)
+         ) %>%
+  group_by(title, block) %>%
+  summarize(item_sd = sd(response)) %>%
+  arrange(desc(item_sd), .by_group = T) %>%
+  # arbitrary set to 25
+  filter(item_sd >= 25) -> d_critical_sd
+d_critical_sd
+
+#d_critical_sd %>% write_csv("../data/pilots/pilot2_byItem_rating_SDs.csv")
+```
+
+Visually check the spread of by-item ratings among subjects for each question:
+```{r, fig.height=20, fig.width=7}
+
+d_critical_long %>% 
+  mutate(title = paste(title, exp_condition, sep = "_"),
+         block = ifelse(block == "xor" | block == "some", "target", block)) %>%
+  filter(block == class_condition | block == "target") %>%
+  ggplot(., aes(x = block, y = response, color = block)) +
+  geom_point(alpha = 0.7, position = position_jitter(width = 0.1)) +
+  ylab("Raw responses to respective questions") +
+  facet_wrap(main_type~title, ncol = 4) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  ggtitle("By-item by-question raw ratings")
+```
+For the following items, participants seem  to *disagree* in their judgments for all of the predictors: Emails from a broken laptop, Gift unwrapping, Martha's cookies, Suzie's fruits, Brad's clothes, Crime, maybe more..
+
+Check by-vignette by-predictor empirical means, to see if the range is somewhat covered:
+```{r}
+d_critical_long %>% 
+  mutate(title = paste(title, exp_condition, sep = "_"),
+         block = ifelse(block == "xor" | block == "some", "target", block)) %>%
+  filter(block == class_condition | block == "target") %>%
+  group_by(title, block) %>%
+  summarise(mean_response = mean(response)) %>%
+  arrange(mean_response)
+```
 
 ## Plots
 Plot main rel / comp / prior questions by main condition and by prior classification of the item (x-axis), separated into with / without critical utterance (shape, color). The prior questions were only used without the utterance. 
@@ -234,6 +280,7 @@ d_critical_long %>%
   geom_point(size = 2, alpha = 0.6, position = position_jitter(width = 0.1)) +
   geom_point(data = d_critical_summary, aes(x = as.factor(prior_class), y = mean_response, shape = w_utterance), 
              color = "red", size = 3) +
+  ylab("Responses to respective predictor question") +
   xlab("Anticipated categorization of the items (low / high)") +
   facet_wrap(main_type~class_condition) # get ratings from the respective trials only 
  
@@ -251,6 +298,7 @@ d_xor_priors %>%
   ggplot(., aes(x = as.factor(priorQ_nr), y = response )) +
   geom_point(size = 2, alpha = 0.6, position = position_jitter(width = 0.1)) +
   geom_point(data = d_xor_priors_summary, aes(x = as.factor(priorQ_nr), y = mean), color = "red", size = 3) +
+  ylab("Responses to prior questions") +
   xlab("First vs Second prior question for high vs low prior conditions") +
   facet_wrap(~as.factor(prior_class)) # get ratings from the respective trials only 
  
@@ -260,11 +308,10 @@ Plot inference ratings as a function of *anticipated* rating of the explanatory 
 ``` {r}
 d_critical_long %>% 
   filter(block == "xor" | block == "some") %>%
-  #group_by(block, class_condition, prior_class) %>%
-  #summarize(mean_rating = mean(response)) %>%
   ggplot(., aes(x = prior_class, y = response)) +
   geom_point(size = 2, alpha = 0.5) +
   geom_smooth(method="lm") +
+  ylab("Inference strength ratings") +
   facet_wrap(block~class_condition) +
   xlab("Anticipated categorization of the items") +
   ggtitle("Inference strength ratings by-predictor")
@@ -289,6 +336,7 @@ d_critical_wide %>%
   ggplot(., aes(x = relevance, y = target)) +
   geom_point(size = 2, alpha = 0.7) +
   geom_smooth(method = "lm") +
+  ylab("Inference strength ratings") +
   facet_wrap(~main_type, ncol = 1) -> p.rel
 
 d_critical_wide %>%
@@ -319,35 +367,70 @@ d_critical_long %>%
   ggplot(., aes(x = block_extended, y = mean_rating, fill = w_utterance)) +
   geom_col(alpha = 0.7, width = bar.width, position = position_dodge(width = bar.width)) +
   #geom_point(size = 2, alpha = 0.5, position = position_jitter(width = 0.1)) +
+  ylab("Mean responses to respective questions") +
+  xlab("Question type") +
   facet_wrap(main_type~title, ncol = 4) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   ggtitle("By-item by-question mean ratings")
 ```
+
+Plot by-item trends between predictor ratings and target inference strength ratings (relevance / competence ratings with utterance are omitted):
+```{r, fig.height=20, fig.width=8}
+# make a versatile wide representation of the critical data
+d_critical_predictorsXtarget <- d_critical_wide %>% 
+  pivot_longer(
+    cols = c(relevance, prior, competence, relevance_wUtt, competence_wUtt),
+    names_to = "predictors",
+    values_to = "predictor_response"
+  ) %>%
+  filter(predictors != "relevance_wUtt", predictors != "competence_wUtt") 
+
+d_critical_predictorsXtarget %>%
+  ggplot(., aes(x = predictor_response, y = target)) +
+  geom_point() +
+  facet_wrap(title~predictors, ncol= 6) +
+  xlab("Response to predictor questions") +
+  ylab("Inference strength rating") +
+  ggtitle("By-item Inference Strength Ratings vs. Predictor Ratings (left to right)")
+
+```
+
+Plot inference strength ratings against predictor ratings, by-item, using by-item mean ratings across participants. Error bard indicate the standard deviation:
+```{r, fig.height=4, fig.width=8}
+d_critical_predictorsXtarget_summary <- d_critical_predictorsXtarget %>% 
+  group_by(title, predictors, main_type) %>%
+  summarise(mean_target = mean(target),
+            mean_predictor = mean(predictor_response), 
+            sd_target = sd(target),
+            sd_predictor = sd(predictor_response))  
+
+
+d_critical_predictorsXtarget_summary %>%
+  ggplot(., aes(x = mean_predictor, y = mean_target)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = mean_target - sd_target, ymax = mean_target + sd_target), alpha = 0.7) +
+  geom_errorbarh(aes(xmin = mean_predictor - sd_predictor, xmax = mean_predictor + sd_predictor), alpha = 0.7) +
+  geom_text(aes(label=title), size = 1.5, nudge_y = 4) +
+  geom_smooth(method = "lm") +
+  ylab("Mean inference strength rating") +
+  xlab("Mean predictor ratings") + 
+  facet_wrap(main_type~predictors)
+```
+
 
 ``` {r}
 
 # correlation plot for "some"
 GGally::ggpairs(
   filter(d_critical_wide, main_type == "some") %>%  
-    select(prior:ncol(d_critical_wide))
+    select(prior, competence, relevance, target, competence_wUtt, relevance_wUtt) 
 )
   
 # correlation plot for "or"
 GGally::ggpairs(
   filter(d_critical_wide, main_type == "xor") %>%  
-    select(prior:ncol(d_critical_wide))
+    select(prior, competence, relevance, target, competence_wUtt, relevance_wUtt)
   )
-```
-
-Check by-participant behavior to see if they show versatile response strategies for the different questions for xor vs. some. Participants show a sufficient range of responses across conditions.  
-```{r, fig.width=15, fig.height=7}
-d_critical_long %>%
-  filter(block == class_condition | block == "xor" | block == "some") %>%
-  ggplot(., aes(x = block, y = response, color = block)) +
-  geom_point(alpha = 0.7, size = 2) + 
-  facet_wrap(main_type~submission_id, ncol = 10) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  ggtitle("By-participant ratings all xor vs. some trials")
 ```
 
 
@@ -357,7 +440,9 @@ Visual exploration of z-scoring each measure (rel / comp / pri / target / comp-w
 d_critical_zScored <- d_critical_long %>% group_by(submission_id, block_extended) %>%
   mutate(block_mean = mean(response),
          block_sd = sd(response),
-         response_centered = (response - block_mean)/block_sd)
+         response_centered = (response - block_mean)/block_sd,
+         # catch the cases where sd is 0 
+         response_centered = ifelse(is.na(response_centered), 0, response_centered))
 
 d_critical_zScored %>% 
   filter(block != "xor" & block != "some") %>%
@@ -372,6 +457,7 @@ d_critical_zScored %>%
   geom_point(size = 2, alpha = 0.6, position = position_jitter(width = 0.1)) +
   geom_point(data = d_critical_zScore_summary, aes(x = as.factor(prior_class), y = mean_response, shape = w_utterance), 
              color = "red", size = 3) +
+  ylab("Responses to respective predictor questions") +
   xlab("Anticipated categorization of the items (low / high)") +
   facet_wrap(main_type~class_condition) + # get ratings from the respective trials only 
   ggtitle("Centered responses to by-predictor questions")
@@ -391,6 +477,7 @@ d_critical_zScored_wide <- d_critical_zScored %>%
 d_critical_zScored_wide %>%
   ggplot(., aes(x = relevance, y = target)) +
   geom_point(size = 2, alpha = 0.7) +
+  ylab("Inference strength ratings") +
   geom_smooth(method = "lm") +
   facet_wrap(~main_type, ncol = 1) -> p.rel.z
 
@@ -411,6 +498,25 @@ d_critical_zScored_wide %>%
 gridExtra::grid.arrange(p.rel.z, p.comp.z, p.pri.z, ncol = 3) 
 ```
 
+Correlation plots of z-scored data:
+``` {r}
+
+# correlation plot for "some"
+GGally::ggpairs(
+  filter(d_critical_zScored_wide, main_type == "some") %>% ungroup() %>%  
+    select(prior, competence, relevance, target, competence_wUtt, relevance_wUtt)
+)
+  
+# correlation plot for "or"
+GGally::ggpairs(
+  filter(d_critical_zScored_wide, main_type == "xor") %>%  ungroup() %>%
+    select(prior, competence, relevance, target, competence_wUtt, relevance_wUtt)
+  )
+
+
+```
+
+
 ## Stats
 Maximal models on raw ratings:
 ```{r, results='hide'}
@@ -430,6 +536,15 @@ model_xor <- brm(
 summary(model_xor)
 ```
 
+Exploring plots of posterior samples for pairwise parameters shows that there is a visible correlation between prior & competence, and a somewhat weaker correlation between competence & relevance. The interaction estimates also show a correlation with the main effects (as a rough overall judgment).   
+```{r}
+shinystan::launch_shinystan(model_xor)
+```
+Plot correlations of main effects
+```{r}
+bayesplot::mcmc_pairs(model_xor, pars = c("b_prior", "b_competence", "b_relevance"))
+```
+
 ```{r, results='hide'}
 # some, maximal model with interactions and maximal REs
 model_some <- brm(
@@ -445,6 +560,245 @@ model_some <- brm(
 
 ```{r}
 summary(model_some)
+```
+
+For "some", the correlation of prior and relevance is higher than for prior and competence; there is also a visible correlation of competence and relevance. 
+```{r}
+shinystan::launch_shinystan(model_some)
+```
+```{r}
+bayesplot::mcmc_pairs(model_some, pars = c("b_prior", "b_competence", "b_relevance"))
+```
+
+#### Smaller models with raw data to check for colinearity 
+Models on raw data with only one predictor: 
+```{r, results='hide'}
+# xor
+model_xor_prior <- brm(
+  target ~ prior + 
+    (1 + prior | submission_id) +
+    (1 | title),
+  data = d_critical_wide %>% filter(main_type == "xor"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+
+```{r}
+summary(model_xor_prior)
+```
+
+```{r, results='hide'}
+# xor
+model_xor_comp <- brm(
+  target ~ competence + 
+    (1 + competence | submission_id) +
+    (1 | title),
+  data = d_critical_wide %>% filter(main_type == "xor"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+
+```{r}
+summary(model_xor_comp)
+```
+
+```{r, results='hide'}
+# xor
+model_xor_rel <- brm(
+  target ~ relevance + 
+    (1 + relevance | submission_id) +
+    (1 | title),
+  data = d_critical_wide %>% filter(main_type == "xor"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+
+```{r}
+summary(model_xor_rel)
+```
+
+```{r, results='hide'}
+# some
+model_some_rel <- brm(
+  target ~ relevance + 
+    (1 + relevance | submission_id) +
+    (1 | title),
+  data = d_critical_wide %>% filter(main_type == "some"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+
+```{r}
+summary(model_some_rel)
+```
+
+```{r, results='hide'}
+# some
+model_some_prior <- brm(
+  target ~ prior + 
+    (1 + prior | submission_id) +
+    (1 | title),
+  data = d_critical_wide %>% filter(main_type == "some"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+
+```{r}
+summary(model_some_prior)
+```
+
+```{r, results='hide'}
+# some
+model_some_comp <- brm(
+  target ~ competence + 
+    (1 + competence | submission_id) +
+    (1 | title),
+  data = d_critical_wide %>% filter(main_type == "some"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+
+```{r}
+summary(model_some_comp)
+```
+
+With two predictors:
+```{r, results='hide'}
+# xor
+model_xor_pri_comp <- brm(
+  target ~ prior*competence + 
+    (1 + prior*competence || submission_id) +
+    (1 | title),
+  data = d_critical_wide %>% filter(main_type == "xor"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+
+```{r}
+summary(model_xor_pri_comp)
+```
+
+```{r}
+bayesplot::mcmc_pairs(model_xor_pri_comp, pars = c("b_prior", "b_competence"))
+```
+
+```{r, results='hide'}
+# xor
+model_xor_pri_rel <- brm(
+  target ~ prior*relevance + 
+    (1 + prior*relevance || submission_id) +
+    (1 | title),
+  data = d_critical_wide %>% filter(main_type == "xor"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+
+```{r}
+summary(model_xor_pri_rel)
+```
+
+```{r}
+bayesplot::mcmc_pairs(model_xor_pri_rel, pars = c("b_prior", "b_relevance"))
+```
+
+```{r, results='hide'}
+# xor
+model_xor_rel_comp <- brm(
+  target ~ relevance*competence + 
+    (1 + relevance*competence || submission_id) +
+    (1 | title),
+  data = d_critical_wide %>% filter(main_type == "xor"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+
+```{r}
+summary(model_xor_rel_comp)
+```
+
+```{r}
+bayesplot::mcmc_pairs(model_xor_rel_comp, pars = c("b_competence", "b_relevance"))
+```
+
+```{r, results='hide'}
+# some
+model_some_pri_comp <- brm(
+  target ~ prior*competence + 
+    (1 + prior*competence || submission_id) +
+    (1 | title),
+  data = d_critical_wide %>% filter(main_type == "some"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+
+```{r}
+summary(model_some_pri_comp)
+```
+
+```{r}
+bayesplot::mcmc_pairs(model_some_pri_comp, pars = c("b_prior", "b_competence"))
+```
+
+```{r, results='hide'}
+# some
+model_some_pri_rel <- brm(
+  target ~ prior*relevance + 
+    (1 + prior*relevance || submission_id) +
+    (1 | title),
+  data = d_critical_wide %>% filter(main_type == "some"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+
+```{r}
+summary(model_some_pri_rel)
+```
+
+```{r}
+bayesplot::mcmc_pairs(model_some_pri_rel, pars = c("b_prior", "b_relevance"))
+```
+
+```{r, results='hide'}
+# some
+model_some_rel_comp <- brm(
+  target ~ relevance*competence + 
+    (1 + relevance*competence || submission_id) +
+    (1 | title),
+  data = d_critical_wide %>% filter(main_type == "some"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+
+```{r}
+summary(model_some_rel_comp)
+```
+
+```{r}
+bayesplot::mcmc_pairs(model_some_rel_comp, pars = c("b_competence", "b_relevance"))
 ```
 
 #### Stats on z-scored data
@@ -465,6 +819,10 @@ model_xor_zScored <- brm(
 summary(model_xor_zScored)
 ```
 
+```{r}
+bayesplot::mcmc_pairs(model_xor_zScored, pars = c("b_prior", "b_relevance", "b_competence"))
+```
+
 ```{r, results='hide'}
 # some, maximal model with interactions and maximal REs
 model_some_zScored <- brm(
@@ -482,6 +840,240 @@ model_some_zScored <- brm(
 summary(model_some_zScored)
 ```
 
+```{r}
+bayesplot::mcmc_pairs(model_some_zScored, pars = c("b_prior", "b_relevance", "b_competence"))
+```
+
+#### Smaller models with z-scored data
+```{r, results='hide'}
+# xor
+model_xor_zScored_prior <- brm(
+  target ~ prior + 
+    (1 + prior | submission_id) +
+    (1 | title),
+  data = d_critical_zScored_wide %>% filter(main_type == "xor"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+
+```{r}
+summary(model_xor_zScored_prior)
+```
+
+```{r, results='hide'}
+# xor
+model_xor_zScored_comp <- brm(
+  target ~ competence + 
+    (1 + competence | submission_id) +
+    (1 | title),
+  data = d_critical_zScored_wide %>% filter(main_type == "xor"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+
+```{r}
+summary(model_xor_zScored_comp)
+```
+
+```{r, results='hide'}
+# xor
+model_xor_zScored_rel <- brm(
+  target ~ relevance + 
+    (1 + relevance | submission_id) +
+    (1 | title),
+  data = d_critical_zScored_wide %>% filter(main_type == "xor"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+
+```{r}
+summary(model_xor_zScored_rel)
+```
+
+```{r, results='hide'}
+# some
+model_some_zScored_rel <- brm(
+  target ~ relevance + 
+    (1 + relevance | submission_id) +
+    (1 | title),
+  data = d_critical_zScored_wide %>% filter(main_type == "some"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+
+```{r}
+summary(model_some_zScored_rel)
+```
+
+```{r, results='hide'}
+# some
+model_some_zScored_prior <- brm(
+  target ~ prior + 
+    (1 + prior | submission_id) +
+    (1 | title),
+  data = d_critical_zScored_wide %>% filter(main_type == "some"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+
+```{r}
+summary(model_some_zScored_prior)
+```
+
+```{r, results='hide'}
+# some
+model_some_zScored_comp <- brm(
+  target ~ competence + 
+    (1 + competence | submission_id) +
+    (1 | title),
+  data = d_critical_zScored_wide %>% filter(main_type == "some"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+
+```{r}
+summary(model_some_zScored_comp)
+```
+
+With two predictors:
+```{r, results='hide'}
+# xor
+model_xor_zScored_pri_comp <- brm(
+  target ~ prior*competence + 
+    (1 + prior*competence || submission_id) +
+    (1 | title),
+  data = d_critical_zScored_wide %>% filter(main_type == "xor"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+
+```{r}
+summary(model_xor_zScored_pri_comp)
+```
+
+```{r}
+bayesplot::mcmc_pairs(model_xor_zScored_pri_comp, pars = c("b_prior", "b_competence"))
+```
+
+```{r, results='hide'}
+# xor
+model_xor_zScored_pri_rel <- brm(
+  target ~ prior*relevance + 
+    (1 + prior*relevance || submission_id) +
+    (1 | title),
+  data = d_critical_zScored_wide %>% filter(main_type == "xor"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+
+```{r}
+summary(model_xor_zScored_pri_rel)
+```
+
+```{r}
+bayesplot::mcmc_pairs(model_xor_zScored_pri_rel, pars = c("b_prior", "b_relevance"))
+```
+
+```{r, results='hide'}
+# xor
+model_xor_zScored_rel_comp <- brm(
+  target ~ relevance*competence + 
+    (1 + relevance*competence || submission_id) +
+    (1 | title),
+  data = d_critical_zScored_wide %>% filter(main_type == "xor"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+
+```{r}
+summary(model_xor_zScored_rel_comp)
+```
+
+```{r}
+bayesplot::mcmc_pairs(model_xor_zScored_rel_comp, pars = c("b_relevance", "b_competence"))
+```
+
+```{r, results='hide'}
+# some
+model_some_zScored_pri_comp <- brm(
+  target ~ prior*competence + 
+    (1 + prior*competence || submission_id) +
+    (1 | title),
+  data = d_critical_zScored_wide %>% filter(main_type == "some"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+
+```{r}
+summary(model_some_zScored_pri_comp)
+```
+
+```{r}
+bayesplot::mcmc_pairs(model_some_zScored_pri_comp, pars = c("b_prior", "b_competence"))
+```
+
+```{r, results='hide'}
+# some
+model_some_zScored_pri_rel <- brm(
+  target ~ prior*relevance + 
+    (1 + prior*relevance || submission_id) +
+    (1 | title),
+  data = d_critical_zScored_wide %>% filter(main_type == "some"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+
+```{r}
+summary(model_some_zScored_pri_rel)
+```
+
+```{r}
+bayesplot::mcmc_pairs(model_some_zScored_pri_rel, pars = c("b_prior", "b_relevance"))
+```
+
+```{r, results='hide'}
+# some
+model_some_zScored_rel_comp <- brm(
+  target ~ relevance*competence + 
+    (1 + relevance*competence || submission_id) +
+    (1 | title),
+  data = d_critical_zScored_wide %>% filter(main_type == "some"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+
+```{r}
+summary(model_some_zScored_rel_comp)
+```
+
+```{r}
+bayesplot::mcmc_pairs(model_some_zScored_rel_comp, pars = c("b_relevance", "b_competence"))
+```
+
 #### Stats with dichotomized predictors 
 Maximal model on raw inference ratings, using anticipated binary categorization of items as predictors 
 ```{r, results='hide'}
@@ -492,16 +1084,16 @@ d_critical_long %>%
     names_from = class_condition, 
     values_from = prior_class
   )  %>%
-  mutate(relevance = as.factor(relevance),
-         competence = as.factor(competence),
-         prior = as.factor(prior)) %>% 
+  mutate(relevance = factor(relevance, levels = c(1, 0)),
+         competence = factor(competence, levels = c(1, 0)),
+         prior = factor(prior, levels = c(1, 0))) %>% 
   filter(block_extended == "target") -> d_critical_wide_cat
 # sum code predictors
-# low prior: 1, high prior:: -1 
+# low prior: -1, high prior:: 1 
 contrasts(d_critical_wide_cat$prior) <- contr.sum(2)
-# low comp : 1, high comp : -1
+# low comp : -1, high comp : 1
 contrasts(d_critical_wide_cat$competence) <- contr.sum(2)
-# low rel: 1, high rel: -1
+# low rel: -1, high rel: 1
 contrasts(d_critical_wide_cat$relevance) <- contr.sum(2)
 
 # xor, maximal model with interactions and maximal REs
@@ -519,6 +1111,19 @@ model_xor_cat <- brm(
 ```{r}
 summary(model_xor_cat)
 ```
+We test the following hypotheses for the categorical predictors models (identical for both or and some):
+H1: For higher prior of the stronger alternative being true, the inference strength is lower
+H2: For higher speaker comptence, the inference strength is higher
+H3: For higher listener relevance, the inference strength is higher 
+```{r}
+# xor
+# test H1
+hypothesis(model_xor_cat, "prior1 < 0")
+# test H2
+hypothesis(model_xor_cat, "competence1 > 0")
+# test H3
+hypothesis(model_xor_cat, "relevance1 > 0")
+```
 
 ```{r, results='hide'}
 model_some_cat <- brm(
@@ -531,8 +1136,19 @@ model_some_cat <- brm(
   iter = 3000
 )
 ```
+
 ```{r}
 summary(model_some_cat)
+```
+
+```{r}
+# some
+# test H1
+hypothesis(model_some_cat, "prior1 < 0")
+# test H2
+hypothesis(model_some_cat, "competence1 > 0")
+# test H3
+hypothesis(model_some_cat, "relevance1 > 0")
 ```
 
 Maximal model on z-scored inference ratings, using anticipated binary categorization of items as predictors 
@@ -544,16 +1160,16 @@ d_critical_zScored %>%
     names_from = class_condition, 
     values_from = prior_class
   )  %>%
-  mutate(relevance = as.factor(relevance),
-         competence = as.factor(competence),
-         prior = as.factor(prior)) %>% 
+  mutate(relevance = factor(relevance, levels = c(1, 0)),
+         competence = factor(competence, levels = c(1, 0)),
+         prior = factor(prior, levels = c(1, 0))) %>% 
   filter(block_extended == "target") -> d_critical_wide_cat_zScored
 # sum code predictors
-# low prior: 1, high prior:: -1 
+# low prior: -1, high prior:: 1 
 contrasts(d_critical_wide_cat_zScored$prior) <- contr.sum(2)
-# low comp : 1, high comp : -1
+# low comp : -1, high comp : 1
 contrasts(d_critical_wide_cat_zScored$competence) <- contr.sum(2)
-# low rel: 1, high rel: -1
+# low rel: -1, high rel: 1
 contrasts(d_critical_wide_cat_zScored$relevance) <- contr.sum(2)
 
 # xor, maximal model with interactions and maximal REs
@@ -572,6 +1188,16 @@ model_xor_cat_zScored <- brm(
 summary(model_xor_cat_zScored)
 ```
 
+```{r}
+# xor
+# test H1
+hypothesis(model_xor_cat_zScored, "prior1 < 0")
+# test H2
+hypothesis(model_xor_cat_zScored, "competence1 > 0")
+# test H3
+hypothesis(model_xor_cat_zScored, "relevance1 > 0")
+```
+
 ```{r, results='hide'}
 model_some_cat_zScored <- brm(
   response_centered ~ prior*competence*relevance + 
@@ -583,8 +1209,113 @@ model_some_cat_zScored <- brm(
   iter = 3000
 )
 ```
+
 ```{r}
 summary(model_some_cat_zScored)
 ```
 
-In summary, the different models provide somewhat different results, specially when using raw ratings vs. binary predictors. Since interpreting the categorical models in relation to the plots might be not as straight-forward, I am not entirely sure whether the qualitative results match in all models. Using centered data seems to provide a little tighter estimates in the models; not sure where the slight qualitative differences come from. 
+```{r}
+# some
+# test H1
+hypothesis(model_some_cat_zScored, "prior1 < 0")
+# test H2
+hypothesis(model_some_cat_zScored, "competence1 > 0")
+# test H3
+hypothesis(model_some_cat_zScored, "relevance1 > 0")
+```
+
+#### Single predictor z-scored models with categorical predictors
+For xor:
+```{r, results="hide"}
+model_xor_cat_zScored_pri <- brm(
+  response_centered ~ prior + 
+    (1 + prior | submission_id) +
+    (1 | title),
+  data = d_critical_wide_cat_zScored %>% filter(main_type == "xor"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+```{r}
+summary(model_xor_cat_zScored_pri)
+```
+
+```{r, results="hide"}
+model_xor_cat_zScored_comp <- brm(
+  response_centered ~ competence + 
+    (1 + competence | submission_id) +
+    (1 | title),
+  data = d_critical_wide_cat_zScored %>% filter(main_type == "xor"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+```{r}
+summary(model_xor_cat_zScored_comp)
+```
+
+```{r, results="hide"}
+model_xor_cat_zScored_rel <- brm(
+  response_centered ~ relevance + 
+    (1 + relevance | submission_id) +
+    (1 | title),
+  data = d_critical_wide_cat_zScored %>% filter(main_type == "xor"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+```{r}
+summary(model_xor_cat_zScored_rel)
+```
+
+For some:
+```{r, results="hide"}
+model_some_cat_zScored_pri <- brm(
+  response_centered ~ prior + 
+    (1 + prior | submission_id) +
+    (1 | title),
+  data = d_critical_wide_cat_zScored %>% filter(main_type == "some"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+```{r}
+summary(model_some_cat_zScored_pri)
+```
+
+```{r, results="hide"}
+model_some_cat_zScored_comp <- brm(
+  response_centered ~ competence + 
+    (1 + competence | submission_id) +
+    (1 | title),
+  data = d_critical_wide_cat_zScored %>% filter(main_type == "some"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+```{r}
+summary(model_some_cat_zScored_comp)
+```
+
+```{r, results="hide"}
+model_some_cat_zScored_rel <- brm(
+  response_centered ~ relevance + 
+    (1 + relevance | submission_id) +
+    (1 | title),
+  data = d_critical_wide_cat_zScored %>% filter(main_type == "some"),
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+```
+```{r}
+summary(model_some_cat_zScored_rel)
+```
+
+
+In summary, the different models provide somewhat different results, specially when using raw ratings vs. binary predictors. 
