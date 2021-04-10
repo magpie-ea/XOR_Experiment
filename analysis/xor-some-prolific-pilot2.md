@@ -643,7 +643,7 @@ d_critical_predictorsXtarget_summary %>%
   geom_point() +
   geom_errorbar(aes(ymin = mean_target - sd_target, ymax = mean_target + sd_target), alpha = 0.7) +
   geom_errorbarh(aes(xmin = mean_predictor - sd_predictor, xmax = mean_predictor + sd_predictor), alpha = 0.7) +
-  geom_text(aes(label=title), size = 1.5, nudge_y = 4) +
+  geom_text(aes(label=title), size = 2.5, nudge_y = 4) +
   geom_smooth(method = "lm") +
   ylab("Mean inference strength rating") +
   xlab("Mean predictor ratings") + 
@@ -804,38 +804,38 @@ summary(model_xor)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     16.96      2.97    10.85    22.44 1.00     1046     1491
-    ## sd(prior)          0.10      0.07     0.01     0.25 1.00      921     1688
-    ## sd(competence)     0.14      0.06     0.01     0.25 1.01      417      504
-    ## sd(relevance)      0.09      0.06     0.00     0.22 1.00      779     1446
+    ## sd(Intercept)     17.06      2.90    10.92    22.44 1.00      816     1122
+    ## sd(prior)          0.10      0.07     0.00     0.25 1.01      920     1771
+    ## sd(competence)     0.14      0.06     0.01     0.25 1.01      494      772
+    ## sd(relevance)      0.09      0.06     0.00     0.22 1.00      664     1074
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     9.26      2.54     4.42    14.50 1.00     1323     1974
+    ## sd(Intercept)     9.20      2.61     4.13    14.43 1.00     1221     1837
     ## 
     ## Population-Level Effects: 
     ##                            Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## Intercept                     62.46      9.73    43.48    81.76 1.00     2060
-    ## prior                          0.01      0.23    -0.45     0.46 1.00     2017
-    ## competence                     0.07      0.15    -0.22     0.37 1.00     2147
-    ## relevance                      0.18      0.18    -0.17     0.52 1.00     2227
-    ## prior:competence               0.00      0.00    -0.01     0.01 1.00     2221
-    ## prior:relevance               -0.00      0.00    -0.01     0.00 1.00     2300
-    ## competence:relevance          -0.00      0.00    -0.01     0.00 1.00     2208
-    ## prior:competence:relevance     0.00      0.00    -0.00     0.00 1.00     2373
+    ## Intercept                     63.24      9.75    44.06    82.39 1.00     1926
+    ## prior                         -0.01      0.24    -0.47     0.45 1.00     2142
+    ## competence                     0.06      0.15    -0.22     0.36 1.00     1945
+    ## relevance                      0.17      0.18    -0.18     0.53 1.00     2181
+    ## prior:competence               0.00      0.00    -0.01     0.01 1.00     2195
+    ## prior:relevance               -0.00      0.00    -0.01     0.00 1.00     2206
+    ## competence:relevance          -0.00      0.00    -0.01     0.00 1.00     2115
+    ## prior:competence:relevance     0.00      0.00    -0.00     0.00 1.00     2226
     ##                            Tail_ESS
-    ## Intercept                      3424
-    ## prior                          3530
-    ## competence                     3286
-    ## relevance                      4096
-    ## prior:competence               3565
-    ## prior:relevance                3392
-    ## competence:relevance           3759
-    ## prior:competence:relevance     3487
+    ## Intercept                      3020
+    ## prior                          3514
+    ## competence                     3269
+    ## relevance                      2816
+    ## prior:competence               3479
+    ## prior:relevance                3162
+    ## competence:relevance           3432
+    ## prior:competence:relevance     3578
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma    24.68      1.20    22.45    27.14 1.00     1755     3791
+    ## sigma    24.74      1.22    22.48    27.19 1.00     1974     4150
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -891,38 +891,38 @@ summary(model_some)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     10.26      1.89     6.27    13.76 1.00     1127     1280
-    ## sd(prior)          0.06      0.04     0.00     0.16 1.00      859     2167
-    ## sd(competence)     0.03      0.02     0.00     0.08 1.00     1258     2075
-    ## sd(relevance)      0.04      0.03     0.00     0.10 1.00      769     1550
+    ## sd(Intercept)     10.23      1.87     6.31    13.69 1.00     1167     1248
+    ## sd(prior)          0.06      0.04     0.00     0.15 1.01     1020     1521
+    ## sd(competence)     0.03      0.02     0.00     0.08 1.00     1393     1624
+    ## sd(relevance)      0.04      0.03     0.00     0.11 1.00      718     1242
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     8.61      1.97     4.93    12.68 1.00     1039      677
+    ## sd(Intercept)     8.58      1.91     5.09    12.66 1.00     1893     3337
     ## 
     ## Population-Level Effects: 
     ##                            Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## Intercept                     77.62      5.99    65.93    88.97 1.00     1862
-    ## prior                         -0.15      0.21    -0.54     0.25 1.00     1749
-    ## competence                     0.13      0.09    -0.06     0.32 1.00     2017
-    ## relevance                     -0.07      0.08    -0.23     0.09 1.00     2031
-    ## prior:competence               0.00      0.00    -0.00     0.01 1.00     1857
-    ## prior:relevance                0.00      0.00    -0.00     0.01 1.00     1816
-    ## competence:relevance           0.00      0.00    -0.00     0.00 1.00     2271
-    ## prior:competence:relevance    -0.00      0.00    -0.00     0.00 1.00     1928
+    ## Intercept                     77.71      5.90    66.06    89.18 1.00     1973
+    ## prior                         -0.16      0.20    -0.55     0.24 1.00     1890
+    ## competence                     0.13      0.09    -0.06     0.31 1.00     2320
+    ## relevance                     -0.07      0.08    -0.23     0.08 1.00     2254
+    ## prior:competence               0.00      0.00    -0.00     0.01 1.00     1894
+    ## prior:relevance                0.00      0.00    -0.00     0.01 1.00     2034
+    ## competence:relevance           0.00      0.00    -0.00     0.00 1.00     2485
+    ## prior:competence:relevance    -0.00      0.00    -0.00     0.00 1.00     2072
     ##                            Tail_ESS
-    ## Intercept                      2825
-    ## prior                          2994
-    ## competence                     2866
-    ## relevance                      3051
-    ## prior:competence               2878
-    ## prior:relevance                3042
-    ## competence:relevance           3196
-    ## prior:competence:relevance     3238
+    ## Intercept                      3308
+    ## prior                          3049
+    ## competence                     3546
+    ## relevance                      3848
+    ## prior:competence               3199
+    ## prior:relevance                3314
+    ## competence:relevance           3687
+    ## prior:competence:relevance     3243
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma    19.97      0.93    18.27    21.92 1.00     2086     2794
+    ## sigma    19.99      0.91    18.33    21.86 1.00     2474     2990
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -954,23 +954,15 @@ model_xor_prior <- brm(
     (1 | title),
   data = d_critical_wide %>% filter(main_type == "xor"),
   family = "gaussian",
+  control = list(adapt_delta = 0.99),
   cores = 4,
   iter = 3000
 )
 ```
 
-    ## Warning: There were 52 divergent transitions after warmup. Increasing adapt_delta above 0.8 may help. See
-    ## http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
-
-    ## Warning: Examine the pairs() plot to diagnose sampling problems
-
 ``` r
 summary(model_xor_prior)
 ```
-
-    ## Warning: There were 52 divergent transitions after warmup. Increasing
-    ## adapt_delta above 0.8 may help. See http://mc-stan.org/misc/
-    ## warnings.html#divergent-transitions-after-warmup
 
     ##  Family: gaussian 
     ##   Links: mu = identity; sigma = identity 
@@ -982,26 +974,26 @@ summary(model_xor_prior)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                      Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## sd(Intercept)           20.55      2.78    15.43    26.42 1.01     1576
-    ## sd(prior)                0.08      0.06     0.00     0.23 1.01      528
-    ## cor(Intercept,prior)    -0.11      0.52    -0.94     0.91 1.00     2964
+    ## sd(Intercept)           20.53      2.79    15.31    26.48 1.00     2874
+    ## sd(prior)                0.09      0.07     0.00     0.26 1.00      732
+    ## cor(Intercept,prior)    -0.11      0.51    -0.93     0.92 1.00     4470
     ##                      Tail_ESS
-    ## sd(Intercept)            2608
-    ## sd(prior)                 586
-    ## cor(Intercept,prior)     2707
+    ## sd(Intercept)            3842
+    ## sd(prior)                 915
+    ## cor(Intercept,prior)     3573
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     9.62      2.36     5.23    14.68 1.00     1434     1967
+    ## sd(Intercept)     9.69      2.44     5.22    14.86 1.00     2216     3026
     ## 
     ## Population-Level Effects: 
     ##           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## Intercept    69.20      4.28    60.87    77.68 1.00     2096     2796
-    ## prior        -0.03      0.07    -0.18     0.11 1.00     1958     3076
+    ## Intercept    69.18      4.41    60.57    77.77 1.00     3354     4329
+    ## prior        -0.03      0.08    -0.17     0.12 1.00     4390     4980
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma    25.19      1.12    23.13    27.54 1.00     2249     2373
+    ## sigma    25.16      1.10    23.08    27.44 1.00     4429     4629
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -1015,35 +1007,19 @@ model_xor_comp <- brm(
     (1 | title),
   data = d_critical_wide %>% filter(main_type == "xor"),
   family = "gaussian",
+  control = list(adapt_delta = 0.99),
   cores = 4,
   iter = 3000
 )
 ```
 
-    ## Warning: There were 517 divergent transitions after warmup. Increasing adapt_delta above 0.8 may help. See
-    ## http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
-
-    ## Warning: Examine the pairs() plot to diagnose sampling problems
-
-    ## Warning: The largest R-hat is 1.07, indicating chains have not mixed.
-    ## Running the chains for more iterations may help. See
-    ## http://mc-stan.org/misc/warnings.html#r-hat
-
     ## Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
     ## Running the chains for more iterations may help. See
     ## http://mc-stan.org/misc/warnings.html#bulk-ess
 
-    ## Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
-    ## Running the chains for more iterations may help. See
-    ## http://mc-stan.org/misc/warnings.html#tail-ess
-
 ``` r
 summary(model_xor_comp)
 ```
-
-    ## Warning: There were 517 divergent transitions after warmup. Increasing
-    ## adapt_delta above 0.8 may help. See http://mc-stan.org/misc/
-    ## warnings.html#divergent-transitions-after-warmup
 
     ##  Family: gaussian 
     ##   Links: mu = identity; sigma = identity 
@@ -1055,26 +1031,26 @@ summary(model_xor_comp)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## sd(Intercept)                21.03      4.07    13.47    29.73 1.02      260
-    ## sd(competence)                0.20      0.09     0.02     0.37 1.04       98
-    ## cor(Intercept,competence)    -0.23      0.40    -0.74     0.80 1.03      144
+    ## sd(Intercept)                20.90      4.09    13.10    29.25 1.00     1228
+    ## sd(competence)                0.20      0.09     0.02     0.37 1.01      333
+    ## cor(Intercept,competence)    -0.23      0.40    -0.74     0.78 1.01      633
     ##                           Tail_ESS
-    ## sd(Intercept)                  781
-    ## sd(competence)                 322
-    ## cor(Intercept,competence)      940
+    ## sd(Intercept)                 3141
+    ## sd(competence)                1142
+    ## cor(Intercept,competence)     1325
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     9.39      2.31     5.09    14.10 1.01      537     1346
+    ## sd(Intercept)     9.59      2.38     5.25    14.77 1.00     2253     2854
     ## 
     ## Population-Level Effects: 
     ##            Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## Intercept     63.81      4.59    54.74    72.77 1.00      341      505
-    ## competence     0.07      0.06    -0.05     0.21 1.02      169      104
+    ## Intercept     63.92      4.53    55.18    72.79 1.00     4626     4474
+    ## competence     0.07      0.06    -0.05     0.19 1.00     5025     4205
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma    24.39      1.24    22.13    26.93 1.02      227      458
+    ## sigma    24.39      1.25    22.02    26.97 1.00     1130     3038
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -1088,23 +1064,15 @@ model_xor_rel <- brm(
     (1 | title),
   data = d_critical_wide %>% filter(main_type == "xor"),
   family = "gaussian",
+  control = list(adapt_delta = 0.99),
   cores = 4,
   iter = 3000
 )
 ```
 
-    ## Warning: There were 38 divergent transitions after warmup. Increasing adapt_delta above 0.8 may help. See
-    ## http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
-
-    ## Warning: Examine the pairs() plot to diagnose sampling problems
-
 ``` r
 summary(model_xor_rel)
 ```
-
-    ## Warning: There were 38 divergent transitions after warmup. Increasing
-    ## adapt_delta above 0.8 may help. See http://mc-stan.org/misc/
-    ## warnings.html#divergent-transitions-after-warmup
 
     ##  Family: gaussian 
     ##   Links: mu = identity; sigma = identity 
@@ -1116,26 +1084,26 @@ summary(model_xor_rel)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                          Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## sd(Intercept)               19.74      2.85    14.30    25.62 1.00     2533
-    ## sd(relevance)                0.08      0.06     0.00     0.21 1.01      677
-    ## cor(Intercept,relevance)     0.06      0.50    -0.86     0.94 1.00     4094
+    ## sd(Intercept)               19.68      2.89    14.06    25.55 1.00     2801
+    ## sd(relevance)                0.08      0.06     0.00     0.22 1.01      573
+    ## cor(Intercept,relevance)     0.05      0.52    -0.89     0.94 1.00     3214
     ##                          Tail_ESS
-    ## sd(Intercept)                2335
-    ## sd(relevance)                 726
-    ## cor(Intercept,relevance)     3731
+    ## sd(Intercept)                3722
+    ## sd(relevance)                 985
+    ## cor(Intercept,relevance)     3545
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     9.96      2.29     5.80    14.73 1.00     2152     3363
+    ## sd(Intercept)    10.00      2.28     5.93    14.84 1.00     2227     2983
     ## 
     ## Population-Level Effects: 
     ##           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## Intercept    67.06      4.01    59.27    74.89 1.00     4121     4014
-    ## relevance     0.02      0.05    -0.09     0.13 1.00     5632     4065
+    ## Intercept    66.93      4.03    59.08    74.93 1.00     3208     4036
+    ## relevance     0.02      0.06    -0.09     0.13 1.00     4920     3997
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma    25.07      1.14    22.90    27.39 1.00     3107     2295
+    ## sigma    25.08      1.12    22.95    27.33 1.00     3501     4405
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -1149,23 +1117,15 @@ model_some_rel <- brm(
     (1 | title),
   data = d_critical_wide %>% filter(main_type == "some"),
   family = "gaussian",
+  control = list(adapt_delta = 0.99),
   cores = 4,
   iter = 3000
 )
 ```
 
-    ## Warning: There were 20 divergent transitions after warmup. Increasing adapt_delta above 0.8 may help. See
-    ## http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
-
-    ## Warning: Examine the pairs() plot to diagnose sampling problems
-
 ``` r
 summary(model_some_rel)
 ```
-
-    ## Warning: There were 20 divergent transitions after warmup. Increasing
-    ## adapt_delta above 0.8 may help. See http://mc-stan.org/misc/
-    ## warnings.html#divergent-transitions-after-warmup
 
     ##  Family: gaussian 
     ##   Links: mu = identity; sigma = identity 
@@ -1177,26 +1137,26 @@ summary(model_some_rel)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                          Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## sd(Intercept)               11.60      2.26     7.16    16.34 1.00     1929
-    ## sd(relevance)                0.04      0.03     0.00     0.11 1.00     1110
-    ## cor(Intercept,relevance)    -0.16      0.55    -0.96     0.92 1.00     4630
+    ## sd(Intercept)               11.71      2.20     7.66    16.37 1.00     2358
+    ## sd(relevance)                0.04      0.03     0.00     0.11 1.00     1251
+    ## cor(Intercept,relevance)    -0.16      0.55    -0.95     0.91 1.00     4278
     ##                          Tail_ESS
-    ## sd(Intercept)                1943
-    ## sd(relevance)                1237
-    ## cor(Intercept,relevance)     3416
+    ## sd(Intercept)                3800
+    ## sd(relevance)                1523
+    ## cor(Intercept,relevance)     3455
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)    11.03      1.89     7.74    15.25 1.00     2212     4052
+    ## sd(Intercept)    11.07      1.88     7.73    15.09 1.00     1992     3691
     ## 
     ## Population-Level Effects: 
     ##           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## Intercept    82.16      3.74    74.90    89.54 1.00     3541     3825
-    ## relevance    -0.00      0.04    -0.09     0.08 1.00     4089     3856
+    ## Intercept    82.22      3.79    74.79    89.62 1.00     2988     4425
+    ## relevance    -0.00      0.04    -0.09     0.09 1.00     4581     5035
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma    19.82      0.87    18.16    21.53 1.00     3170     4286
+    ## sigma    19.79      0.87    18.21    21.59 1.00     3724     4170
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -1210,23 +1170,15 @@ model_some_prior <- brm(
     (1 | title),
   data = d_critical_wide %>% filter(main_type == "some"),
   family = "gaussian",
+  control = list(adapt_delta = 0.99),
   cores = 4,
   iter = 3000
 )
 ```
 
-    ## Warning: There were 38 divergent transitions after warmup. Increasing adapt_delta above 0.8 may help. See
-    ## http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
-
-    ## Warning: Examine the pairs() plot to diagnose sampling problems
-
 ``` r
 summary(model_some_prior)
 ```
-
-    ## Warning: There were 38 divergent transitions after warmup. Increasing
-    ## adapt_delta above 0.8 may help. See http://mc-stan.org/misc/
-    ## warnings.html#divergent-transitions-after-warmup
 
     ##  Family: gaussian 
     ##   Links: mu = identity; sigma = identity 
@@ -1238,26 +1190,26 @@ summary(model_some_prior)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                      Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## sd(Intercept)           11.93      1.88     8.44    15.82 1.00     1904
-    ## sd(prior)                0.09      0.06     0.00     0.23 1.00      860
-    ## cor(Intercept,prior)    -0.33      0.47    -0.95     0.82 1.00     3797
+    ## sd(Intercept)           11.91      1.93     8.25    15.89 1.00     2204
+    ## sd(prior)                0.09      0.07     0.00     0.24 1.00      870
+    ## cor(Intercept,prior)    -0.33      0.49    -0.96     0.83 1.00     3788
     ##                      Tail_ESS
-    ## sd(Intercept)            2988
-    ## sd(prior)                 889
-    ## cor(Intercept,prior)     3700
+    ## sd(Intercept)            3361
+    ## sd(prior)                1978
+    ## cor(Intercept,prior)     3009
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)    10.93      1.89     7.65    15.04 1.00     1952     2957
+    ## sd(Intercept)    10.97      1.93     7.64    15.27 1.00     2165     3760
     ## 
     ## Population-Level Effects: 
     ##           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## Intercept    82.40      2.90    76.74    88.13 1.00     2222     3016
-    ## prior        -0.01      0.05    -0.11     0.09 1.00     5128     3824
+    ## Intercept    82.31      2.93    76.41    87.89 1.00     2388     3708
+    ## prior        -0.01      0.05    -0.11     0.09 1.00     5153     5404
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma    19.78      0.87    18.13    21.53 1.00     3248     3129
+    ## sigma    19.80      0.88    18.20    21.64 1.00     3697     4383
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -1271,14 +1223,24 @@ model_some_comp <- brm(
     (1 | title),
   data = d_critical_wide %>% filter(main_type == "some"),
   family = "gaussian",
+  control = list(adapt_delta = 0.92),
   cores = 4,
   iter = 3000
 )
 ```
 
+    ## Warning: There were 1 divergent transitions after warmup. Increasing adapt_delta above 0.92 may help. See
+    ## http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
+
+    ## Warning: Examine the pairs() plot to diagnose sampling problems
+
 ``` r
 summary(model_some_comp)
 ```
+
+    ## Warning: There were 1 divergent transitions after warmup. Increasing adapt_delta
+    ## above 0.92 may help. See http://mc-stan.org/misc/warnings.html#divergent-
+    ## transitions-after-warmup
 
     ##  Family: gaussian 
     ##   Links: mu = identity; sigma = identity 
@@ -1290,26 +1252,26 @@ summary(model_some_comp)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## sd(Intercept)                15.39      2.84    10.00    21.02 1.00     1906
-    ## sd(competence)                0.10      0.04     0.01     0.18 1.00     1796
-    ## cor(Intercept,competence)    -0.81      0.25    -1.00    -0.02 1.00     2707
+    ## sd(Intercept)                15.31      2.85    10.01    21.14 1.00     1606
+    ## sd(competence)                0.09      0.04     0.01     0.18 1.00     1360
+    ## cor(Intercept,competence)    -0.80      0.27    -0.99    -0.02 1.00     2276
     ##                           Tail_ESS
-    ## sd(Intercept)                 2975
-    ## sd(competence)                1921
-    ## cor(Intercept,competence)     2729
+    ## sd(Intercept)                 2397
+    ## sd(competence)                1156
+    ## cor(Intercept,competence)     1803
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     8.69      1.80     5.51    12.51 1.00     2258     3269
+    ## sd(Intercept)     8.77      1.82     5.54    12.61 1.00     2384     3281
     ## 
     ## Population-Level Effects: 
     ##            Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## Intercept     74.17      3.30    67.78    80.74 1.00     4133     4032
-    ## competence     0.14      0.04     0.06     0.22 1.00     4950     4350
+    ## Intercept     74.05      3.26    67.65    80.42 1.00     3110     4306
+    ## competence     0.14      0.04     0.06     0.22 1.00     4098     4347
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma    19.44      0.90    17.78    21.29 1.00     3418     4405
+    ## sigma    19.45      0.90    17.78    21.32 1.00     2664     3656
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -1344,30 +1306,30 @@ summary(model_xor_pri_comp)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                      Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## sd(Intercept)           17.95      2.61    12.72    22.97 1.01     1028
-    ## sd(prior)                0.09      0.06     0.00     0.24 1.01      820
-    ## sd(competence)           0.13      0.06     0.01     0.25 1.01      551
-    ## sd(prior:competence)     0.00      0.00     0.00     0.00 1.00     1176
+    ## sd(Intercept)           18.14      2.68    12.98    23.41 1.00     1473
+    ## sd(prior)                0.09      0.06     0.00     0.23 1.00     1190
+    ## sd(competence)           0.14      0.06     0.02     0.25 1.00      660
+    ## sd(prior:competence)     0.00      0.00     0.00     0.00 1.00     1582
     ##                      Tail_ESS
-    ## sd(Intercept)            1760
-    ## sd(prior)                1364
-    ## sd(competence)            955
-    ## sd(prior:competence)     2077
+    ## sd(Intercept)            2362
+    ## sd(prior)                1804
+    ## sd(competence)            966
+    ## sd(prior:competence)     2812
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     9.12      2.57     4.34    14.45 1.00     1565     1523
+    ## sd(Intercept)     9.18      2.52     4.21    14.29 1.00     1931     2485
     ## 
     ## Population-Level Effects: 
     ##                  Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## Intercept           69.77      6.96    56.14    83.50 1.00     2839     4032
-    ## prior               -0.15      0.14    -0.43     0.13 1.00     2631     3638
-    ## competence          -0.01      0.10    -0.20     0.18 1.00     3013     3697
-    ## prior:competence     0.00      0.00    -0.00     0.01 1.00     2870     4282
+    ## Intercept           69.83      7.01    56.06    83.90 1.00     3737     3818
+    ## prior               -0.15      0.15    -0.43     0.13 1.00     3610     3765
+    ## competence          -0.01      0.10    -0.21     0.18 1.00     4310     3983
+    ## prior:competence     0.00      0.00    -0.00     0.01 1.00     3792     4118
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma    24.74      1.16    22.58    27.10 1.00     2420     3399
+    ## sigma    24.67      1.15    22.51    27.04 1.00     2344     3974
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -1387,12 +1349,13 @@ model_xor_pri_rel <- brm(
     (1 | title),
   data = d_critical_wide %>% filter(main_type == "xor"),
   family = "gaussian",
+  control = list(adapt_delta = 0.92),
   cores = 4,
   iter = 3000
 )
 ```
 
-    ## Warning: There were 2 divergent transitions after warmup. Increasing adapt_delta above 0.8 may help. See
+    ## Warning: There were 2 divergent transitions after warmup. Increasing adapt_delta above 0.92 may help. See
     ## http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
 
     ## Warning: Examine the pairs() plot to diagnose sampling problems
@@ -1402,7 +1365,7 @@ summary(model_xor_pri_rel)
 ```
 
     ## Warning: There were 2 divergent transitions after warmup. Increasing adapt_delta
-    ## above 0.8 may help. See http://mc-stan.org/misc/warnings.html#divergent-
+    ## above 0.92 may help. See http://mc-stan.org/misc/warnings.html#divergent-
     ## transitions-after-warmup
 
     ##  Family: gaussian 
@@ -1415,25 +1378,25 @@ summary(model_xor_pri_rel)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                     Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)          18.84      2.44    14.10    23.78 1.00     1576     2207
-    ## sd(prior)               0.09      0.06     0.00     0.23 1.01      950     1975
-    ## sd(relevance)           0.09      0.06     0.00     0.21 1.00      750     1647
-    ## sd(prior:relevance)     0.00      0.00     0.00     0.00 1.00     1170     2087
+    ## sd(Intercept)          18.73      2.41    13.96    23.44 1.00     1669     2702
+    ## sd(prior)               0.09      0.06     0.00     0.23 1.00      921     1902
+    ## sd(relevance)           0.09      0.06     0.00     0.21 1.00      939     1936
+    ## sd(prior:relevance)     0.00      0.00     0.00     0.00 1.00     1349     2283
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     9.71      2.43     5.21    14.86 1.00     2133     2898
+    ## sd(Intercept)     9.69      2.53     4.94    14.91 1.00     1509     1078
     ## 
     ## Population-Level Effects: 
     ##                 Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## Intercept          66.20      5.89    54.59    77.58 1.00     2698     4054
-    ## prior               0.02      0.12    -0.21     0.26 1.00     2985     4071
-    ## relevance           0.06      0.09    -0.11     0.23 1.00     3420     3734
-    ## prior:relevance    -0.00      0.00    -0.00     0.00 1.00     3342     4238
+    ## Intercept          66.17      6.02    54.44    78.05 1.00     3735     4116
+    ## prior               0.03      0.12    -0.21     0.26 1.00     4352     4530
+    ## relevance           0.06      0.09    -0.12     0.23 1.00     4549     4748
+    ## prior:relevance    -0.00      0.00    -0.00     0.00 1.00     4786     5026
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma    24.97      1.13    22.91    27.30 1.00     3020     4182
+    ## sigma    24.98      1.17    22.79    27.38 1.00     3275     4209
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -1472,35 +1435,35 @@ summary(model_xor_rel_comp)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                          Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## sd(Intercept)               17.41      2.75    11.74    22.86 1.00      929
-    ## sd(relevance)                0.09      0.06     0.00     0.21 1.00      716
-    ## sd(competence)               0.14      0.06     0.02     0.25 1.01      498
-    ## sd(relevance:competence)     0.00      0.00     0.00     0.00 1.00     1372
+    ## sd(Intercept)               17.43      2.76    11.80    22.80 1.00      966
+    ## sd(relevance)                0.09      0.06     0.00     0.21 1.00      718
+    ## sd(competence)               0.14      0.06     0.02     0.25 1.01      456
+    ## sd(relevance:competence)     0.00      0.00     0.00     0.00 1.00     1338
     ##                          Tail_ESS
-    ## sd(Intercept)                1562
-    ## sd(relevance)                1662
-    ## sd(competence)                724
-    ## sd(relevance:competence)     2420
+    ## sd(Intercept)                1509
+    ## sd(relevance)                1771
+    ## sd(competence)                787
+    ## sd(relevance:competence)     2080
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     9.64      2.34     5.29    14.58 1.00     1970     1712
+    ## sd(Intercept)     9.66      2.34     5.38    14.47 1.00     2017     2748
     ## 
     ## Population-Level Effects: 
     ##                      Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## Intercept               63.21      6.08    51.30    75.20 1.00     3460
-    ## relevance                0.01      0.10    -0.19     0.21 1.00     3518
-    ## competence               0.07      0.09    -0.11     0.25 1.00     4090
-    ## relevance:competence    -0.00      0.00    -0.00     0.00 1.00     3698
+    ## Intercept               63.26      6.12    51.35    75.05 1.00     2981
+    ## relevance                0.01      0.10    -0.19     0.21 1.00     3146
+    ## competence               0.07      0.09    -0.11     0.25 1.00     3645
+    ## relevance:competence    -0.00      0.00    -0.00     0.00 1.00     3390
     ##                      Tail_ESS
-    ## Intercept                3847
-    ## relevance                3989
-    ## competence               4359
-    ## relevance:competence     3920
+    ## Intercept                3997
+    ## relevance                4204
+    ## competence               3971
+    ## relevance:competence     3799
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma    24.58      1.17    22.34    26.97 1.00     2686     3560
+    ## sigma    24.58      1.19    22.28    26.96 1.00     2101     3016
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -1539,30 +1502,30 @@ summary(model_some_pri_comp)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                      Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## sd(Intercept)           10.60      1.66     7.28    13.83 1.00     2044
-    ## sd(prior)                0.06      0.04     0.00     0.15 1.01     1944
-    ## sd(competence)           0.03      0.02     0.00     0.08 1.00     2299
-    ## sd(prior:competence)     0.00      0.00     0.00     0.00 1.00     2491
+    ## sd(Intercept)           10.62      1.68     7.30    13.96 1.00     2223
+    ## sd(prior)                0.06      0.04     0.00     0.15 1.00     1837
+    ## sd(competence)           0.03      0.02     0.00     0.08 1.00     2182
+    ## sd(prior:competence)     0.00      0.00     0.00     0.00 1.00     2254
     ##                      Tail_ESS
-    ## sd(Intercept)            2824
-    ## sd(prior)                3279
-    ## sd(competence)           3064
-    ## sd(prior:competence)     3758
+    ## sd(Intercept)            3357
+    ## sd(prior)                3313
+    ## sd(competence)           2951
+    ## sd(prior:competence)     3145
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     8.51      1.90     5.15    12.62 1.00     2464     3530
+    ## sd(Intercept)     8.51      1.89     5.10    12.52 1.00     2163     3123
     ## 
     ## Population-Level Effects: 
     ##                  Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## Intercept           73.27      3.59    66.35    80.35 1.00     5142     4901
-    ## prior                0.04      0.09    -0.14     0.21 1.00     6835     4819
-    ## competence           0.18      0.05     0.08     0.28 1.00     5282     4700
-    ## prior:competence    -0.00      0.00    -0.00     0.00 1.00     7219     4890
+    ## Intercept           73.30      3.68    66.11    80.52 1.00     5165     4496
+    ## prior                0.04      0.09    -0.14     0.21 1.00     6389     4794
+    ## competence           0.18      0.05     0.08     0.28 1.00     5333     4304
+    ## prior:competence    -0.00      0.00    -0.00     0.00 1.00     6838     4520
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma    19.91      0.90    18.24    21.75 1.00     3632     4331
+    ## sigma    19.90      0.89    18.26    21.72 1.00     3528     4477
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -1601,25 +1564,25 @@ summary(model_some_pri_rel)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                     Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)          10.60      1.76     7.02    13.96 1.00     1663     2314
-    ## sd(prior)               0.06      0.04     0.00     0.16 1.00     1591     3224
-    ## sd(relevance)           0.04      0.03     0.00     0.10 1.00     1258     1876
-    ## sd(prior:relevance)     0.00      0.00     0.00     0.00 1.00     1730     3063
+    ## sd(Intercept)          10.61      1.79     6.89    14.07 1.00     1258     1333
+    ## sd(prior)               0.06      0.04     0.00     0.16 1.00     1842     3113
+    ## sd(relevance)           0.04      0.03     0.00     0.11 1.00     1347     1978
+    ## sd(prior:relevance)     0.00      0.00     0.00     0.00 1.00     1688     2957
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)    11.06      1.89     7.78    15.07 1.00     2656     4172
+    ## sd(Intercept)    11.12      1.98     7.76    15.65 1.00     2024     3344
     ## 
     ## Population-Level Effects: 
     ##                 Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## Intercept          82.74      4.45    73.86    91.30 1.00     3889     4861
-    ## prior              -0.02      0.10    -0.21     0.17 1.00     5094     5279
-    ## relevance          -0.01      0.06    -0.11     0.10 1.00     5173     4983
-    ## prior:relevance     0.00      0.00    -0.00     0.00 1.00     5651     5071
+    ## Intercept          82.73      4.47    74.17    91.59 1.00     4817     5046
+    ## prior              -0.02      0.10    -0.21     0.17 1.00     5984     4412
+    ## relevance          -0.01      0.05    -0.11     0.10 1.00     5333     4781
+    ## prior:relevance     0.00      0.00    -0.00     0.00 1.00     6443     4944
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma    19.81      0.90    18.17    21.64 1.00     4020     4665
+    ## sigma    19.79      0.88    18.14    21.61 1.00     3488     4177
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -1658,35 +1621,35 @@ summary(model_some_rel_comp)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                          Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## sd(Intercept)               10.48      1.80     6.77    13.87 1.00     1347
-    ## sd(relevance)                0.04      0.03     0.00     0.11 1.00      987
-    ## sd(competence)               0.03      0.02     0.00     0.08 1.00     2140
-    ## sd(relevance:competence)     0.00      0.00     0.00     0.00 1.00     2651
+    ## sd(Intercept)               10.53      1.87     6.75    13.97 1.01     1276
+    ## sd(relevance)                0.04      0.03     0.00     0.11 1.00     1029
+    ## sd(competence)               0.03      0.02     0.00     0.08 1.00     2017
+    ## sd(relevance:competence)     0.00      0.00     0.00     0.00 1.00     2459
     ##                          Tail_ESS
-    ## sd(Intercept)                1564
-    ## sd(relevance)                1640
-    ## sd(competence)               2738
-    ## sd(relevance:competence)     2853
+    ## sd(Intercept)                 845
+    ## sd(relevance)                1617
+    ## sd(competence)               3151
+    ## sd(relevance:competence)     2401
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     8.70      1.87     5.30    12.78 1.00     2019     2954
+    ## sd(Intercept)     8.77      1.84     5.45    12.70 1.00     2297     3771
     ## 
     ## Population-Level Effects: 
     ##                      Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## Intercept               76.05      5.19    65.88    86.23 1.00     3240
-    ## relevance               -0.03      0.07    -0.16     0.11 1.00     3571
-    ## competence               0.12      0.07    -0.03     0.27 1.00     3537
-    ## relevance:competence     0.00      0.00    -0.00     0.00 1.00     3746
+    ## Intercept               76.18      5.12    66.40    86.35 1.00     3710
+    ## relevance               -0.03      0.07    -0.16     0.11 1.00     3963
+    ## competence               0.12      0.07    -0.03     0.26 1.00     3256
+    ## relevance:competence     0.00      0.00    -0.00     0.00 1.00     3339
     ##                      Tail_ESS
-    ## Intercept                3667
-    ## relevance                4368
-    ## competence               4309
-    ## relevance:competence     4547
+    ## Intercept                4252
+    ## relevance                4818
+    ## competence               4168
+    ## relevance:competence     4287
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma    19.95      0.89    18.30    21.81 1.00     3155     3611
+    ## sigma    19.91      0.91    18.25    21.84 1.00     2935     2996
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -1729,38 +1692,38 @@ summary(model_xor_zScored)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)      0.08      0.06     0.00     0.22 1.00     2442     3082
-    ## sd(prior)          0.15      0.09     0.01     0.34 1.00     1255     2412
-    ## sd(competence)     0.24      0.10     0.03     0.42 1.00     1110     1454
-    ## sd(relevance)      0.13      0.08     0.01     0.30 1.00     1391     2643
+    ## sd(Intercept)      0.09      0.06     0.00     0.22 1.00     2261     3351
+    ## sd(prior)          0.15      0.09     0.01     0.34 1.01     1279     2634
+    ## sd(competence)     0.25      0.10     0.03     0.42 1.00     1225     1412
+    ## sd(relevance)      0.12      0.08     0.00     0.30 1.00     1629     3044
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     0.35      0.08     0.20     0.53 1.00     1923     2740
+    ## sd(Intercept)     0.36      0.08     0.21     0.54 1.00     1926     3196
     ## 
     ## Population-Level Effects: 
     ##                            Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## Intercept                     -0.21      0.08    -0.37    -0.05 1.00     3814
-    ## prior                         -0.13      0.07    -0.26     0.01 1.00     6384
-    ## competence                     0.07      0.07    -0.06     0.21 1.00     5172
-    ## relevance                     -0.02      0.06    -0.14     0.11 1.00     6436
-    ## prior:competence               0.12      0.07    -0.02     0.26 1.00     7844
-    ## prior:relevance                0.04      0.07    -0.10     0.18 1.00     6425
-    ## competence:relevance          -0.03      0.06    -0.14     0.09 1.00     6640
-    ## prior:competence:relevance    -0.00      0.07    -0.14     0.14 1.00     7377
+    ## Intercept                     -0.21      0.08    -0.36    -0.05 1.00     4126
+    ## prior                         -0.12      0.07    -0.25     0.01 1.00     6636
+    ## competence                     0.07      0.07    -0.07     0.21 1.00     5930
+    ## relevance                     -0.02      0.06    -0.14     0.11 1.00     7437
+    ## prior:competence               0.12      0.07    -0.02     0.26 1.00     7519
+    ## prior:relevance                0.04      0.07    -0.10     0.17 1.00     8348
+    ## competence:relevance          -0.03      0.06    -0.14     0.09 1.00     7154
+    ## prior:competence:relevance    -0.00      0.07    -0.14     0.13 1.00     7690
     ##                            Tail_ESS
-    ## Intercept                      4287
-    ## prior                          5015
-    ## competence                     4841
-    ## relevance                      5009
-    ## prior:competence               4958
-    ## prior:relevance                4735
-    ## competence:relevance           4577
-    ## prior:competence:relevance     4423
+    ## Intercept                      4378
+    ## prior                          4324
+    ## competence                     4955
+    ## relevance                      4582
+    ## prior:competence               4785
+    ## prior:relevance                4777
+    ## competence:relevance           4936
+    ## prior:competence:relevance     4738
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma     0.85      0.04     0.77     0.93 1.00     2246     3382
+    ## sigma     0.84      0.04     0.77     0.93 1.00     1849     3354
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -1799,38 +1762,38 @@ summary(model_some_zScored)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)      0.10      0.07     0.00     0.24 1.00     1974     2778
-    ## sd(prior)          0.10      0.07     0.00     0.24 1.01     1658     3126
-    ## sd(competence)     0.17      0.09     0.01     0.33 1.00     1224     2268
-    ## sd(relevance)      0.07      0.05     0.00     0.19 1.00     2861     3862
+    ## sd(Intercept)      0.10      0.07     0.01     0.24 1.00     1815     2938
+    ## sd(prior)          0.10      0.07     0.00     0.24 1.00     1526     2552
+    ## sd(competence)     0.17      0.08     0.01     0.33 1.00     1005     1626
+    ## sd(relevance)      0.07      0.05     0.00     0.19 1.00     2582     2801
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     0.36      0.08     0.22     0.54 1.00     2595     3742
+    ## sd(Intercept)     0.36      0.08     0.22     0.53 1.00     2504     3137
     ## 
     ## Population-Level Effects: 
     ##                            Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## Intercept                      0.22      0.08     0.06     0.38 1.00     4999
-    ## prior                         -0.04      0.05    -0.14     0.06 1.00     7237
-    ## competence                     0.13      0.06     0.00     0.25 1.00     6957
-    ## relevance                     -0.05      0.06    -0.17     0.06 1.00     8136
-    ## prior:competence              -0.08      0.04    -0.17     0.00 1.00     9884
-    ## prior:relevance               -0.01      0.04    -0.10     0.07 1.00     8492
-    ## competence:relevance           0.02      0.06    -0.09     0.13 1.00     9211
-    ## prior:competence:relevance     0.00      0.04    -0.08     0.08 1.00     9730
+    ## Intercept                      0.22      0.08     0.05     0.38 1.00     3755
+    ## prior                         -0.04      0.05    -0.14     0.06 1.00     6707
+    ## competence                     0.13      0.06     0.01     0.25 1.00     5675
+    ## relevance                     -0.05      0.06    -0.17     0.07 1.00     6708
+    ## prior:competence              -0.08      0.04    -0.17     0.00 1.00     7598
+    ## prior:relevance               -0.01      0.04    -0.10     0.08 1.00     7656
+    ## competence:relevance           0.02      0.06    -0.09     0.13 1.00     7351
+    ## prior:competence:relevance     0.00      0.04    -0.08     0.08 1.00     7196
     ##                            Tail_ESS
-    ## Intercept                      4204
-    ## prior                          4775
-    ## competence                     4211
-    ## relevance                      5105
-    ## prior:competence               4819
-    ## prior:relevance                4515
-    ## competence:relevance           5289
-    ## prior:competence:relevance     5152
+    ## Intercept                      4402
+    ## prior                          4907
+    ## competence                     4593
+    ## relevance                      4420
+    ## prior:competence               4372
+    ## prior:relevance                4820
+    ## competence:relevance           4859
+    ## prior:competence:relevance     4519
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma     0.82      0.04     0.75     0.89 1.00     3499     4532
+    ## sigma     0.82      0.04     0.75     0.89 1.00     2889     3607
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -1871,26 +1834,26 @@ summary(model_xor_zScored_prior)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                      Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## sd(Intercept)            0.08      0.06     0.00     0.21 1.00     2369
-    ## sd(prior)                0.15      0.09     0.01     0.34 1.00     1616
-    ## cor(Intercept,prior)    -0.06      0.57    -0.95     0.94 1.00     1914
+    ## sd(Intercept)            0.08      0.06     0.00     0.22 1.00     2686
+    ## sd(prior)                0.15      0.09     0.01     0.34 1.00     1376
+    ## cor(Intercept,prior)    -0.06      0.57    -0.95     0.94 1.00     1936
     ##                      Tail_ESS
-    ## sd(Intercept)            2813
-    ## sd(prior)                2940
-    ## cor(Intercept,prior)     2591
+    ## sd(Intercept)            3252
+    ## sd(prior)                2706
+    ## cor(Intercept,prior)     3282
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     0.38      0.08     0.24     0.56 1.00     2368     3768
+    ## sd(Intercept)     0.38      0.08     0.24     0.57 1.00     2082     3216
     ## 
     ## Population-Level Effects: 
     ##           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## Intercept    -0.20      0.08    -0.36    -0.04 1.00     3267     4243
-    ## prior        -0.11      0.07    -0.24     0.02 1.00     5576     4800
+    ## Intercept    -0.20      0.09    -0.38    -0.04 1.00     2830     2971
+    ## prior        -0.11      0.07    -0.24     0.02 1.00     6235     4272
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma     0.88      0.04     0.82     0.96 1.00     5053     4328
+    ## sigma     0.88      0.04     0.81     0.95 1.00     3778     3814
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -1923,26 +1886,26 @@ summary(model_xor_zScored_comp)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## sd(Intercept)                 0.09      0.06     0.00     0.23 1.00     2563
-    ## sd(competence)                0.25      0.10     0.04     0.42 1.00     1440
-    ## cor(Intercept,competence)    -0.22      0.55    -0.97     0.91 1.01     1006
+    ## sd(Intercept)                 0.09      0.06     0.00     0.23 1.00     2392
+    ## sd(competence)                0.25      0.10     0.04     0.43 1.00     1379
+    ## cor(Intercept,competence)    -0.23      0.53    -0.96     0.89 1.01      754
     ##                           Tail_ESS
-    ## sd(Intercept)                 3582
-    ## sd(competence)                1564
-    ## cor(Intercept,competence)     1916
+    ## sd(Intercept)                 2819
+    ## sd(competence)                1911
+    ## cor(Intercept,competence)     1384
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     0.39      0.08     0.25     0.57 1.00     2511     3919
+    ## sd(Intercept)     0.40      0.08     0.26     0.57 1.00     1986     3701
     ## 
     ## Population-Level Effects: 
     ##            Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## Intercept     -0.23      0.09    -0.40    -0.06 1.00     3852     3765
-    ## competence     0.08      0.07    -0.06     0.21 1.00     7496     5108
+    ## Intercept     -0.23      0.09    -0.41    -0.06 1.00     3258     3732
+    ## competence     0.07      0.07    -0.06     0.21 1.00     5394     4212
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma     0.86      0.04     0.79     0.93 1.00     3298     4156
+    ## sigma     0.86      0.04     0.79     0.93 1.00     3168     4166
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -1975,26 +1938,26 @@ summary(model_xor_zScored_rel)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                          Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## sd(Intercept)                0.08      0.06     0.00     0.22 1.00     2788
-    ## sd(relevance)                0.14      0.09     0.01     0.32 1.00     1453
-    ## cor(Intercept,relevance)     0.08      0.56    -0.93     0.95 1.00     2517
+    ## sd(Intercept)                0.08      0.06     0.00     0.22 1.00     2425
+    ## sd(relevance)                0.14      0.09     0.01     0.32 1.00     1508
+    ## cor(Intercept,relevance)     0.09      0.57    -0.94     0.96 1.00     2065
     ##                          Tail_ESS
-    ## sd(Intercept)                2579
-    ## sd(relevance)                2278
-    ## cor(Intercept,relevance)     3059
+    ## sd(Intercept)                2566
+    ## sd(relevance)                2496
+    ## cor(Intercept,relevance)     2823
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     0.41      0.08     0.27     0.59 1.00     2329     3598
+    ## sd(Intercept)     0.41      0.08     0.27     0.59 1.00     2197     3498
     ## 
     ## Population-Level Effects: 
     ##           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## Intercept    -0.22      0.09    -0.40    -0.06 1.00     3143     3888
-    ## relevance     0.01      0.06    -0.12     0.13 1.00     6038     4992
+    ## Intercept    -0.22      0.09    -0.40    -0.05 1.00     2593     3616
+    ## relevance     0.01      0.06    -0.11     0.13 1.00     5325     3977
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma     0.88      0.04     0.82     0.95 1.00     5525     4272
+    ## sigma     0.88      0.03     0.82     0.95 1.00     4767     3862
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -2027,26 +1990,26 @@ summary(model_some_zScored_rel)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                          Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## sd(Intercept)                0.09      0.07     0.00     0.24 1.00     1897
-    ## sd(relevance)                0.06      0.05     0.00     0.18 1.00     2657
-    ## cor(Intercept,relevance)     0.02      0.58    -0.94     0.96 1.00     4200
+    ## sd(Intercept)                0.09      0.06     0.00     0.23 1.00     1241
+    ## sd(relevance)                0.06      0.05     0.00     0.17 1.00     2618
+    ## cor(Intercept,relevance)     0.00      0.57    -0.95     0.94 1.00     3634
     ##                          Tail_ESS
-    ## sd(Intercept)                2731
-    ## sd(relevance)                3147
-    ## cor(Intercept,relevance)     3781
+    ## sd(Intercept)                2056
+    ## sd(relevance)                2587
+    ## cor(Intercept,relevance)     3604
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     0.46      0.08     0.32     0.62 1.00     2208     3830
+    ## sd(Intercept)     0.46      0.08     0.33     0.64 1.00     1951     3588
     ## 
     ## Population-Level Effects: 
     ##           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## Intercept     0.22      0.10     0.03     0.40 1.00     2285     3366
-    ## relevance    -0.04      0.06    -0.15     0.07 1.00     5620     4794
+    ## Intercept     0.22      0.10     0.03     0.40 1.00     1534     2821
+    ## relevance    -0.04      0.06    -0.15     0.08 1.00     3562     3969
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma     0.84      0.03     0.78     0.91 1.00     5601     4014
+    ## sigma     0.84      0.03     0.78     0.91 1.00     4901     3955
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -2079,26 +2042,26 @@ summary(model_some_zScored_prior)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                      Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## sd(Intercept)            0.10      0.07     0.00     0.26 1.00     2304
-    ## sd(prior)                0.11      0.07     0.01     0.26 1.00     1532
-    ## cor(Intercept,prior)     0.25      0.55    -0.89     0.97 1.00     3179
+    ## sd(Intercept)            0.10      0.07     0.00     0.26 1.01     1691
+    ## sd(prior)                0.11      0.07     0.01     0.26 1.00     1468
+    ## cor(Intercept,prior)     0.27      0.55    -0.87     0.97 1.00     2116
     ##                      Tail_ESS
-    ## sd(Intercept)            3316
-    ## sd(prior)                2768
-    ## cor(Intercept,prior)     3876
+    ## sd(Intercept)            2463
+    ## sd(prior)                1973
+    ## cor(Intercept,prior)     3151
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     0.46      0.08     0.33     0.64 1.00     2471     3475
+    ## sd(Intercept)     0.46      0.08     0.33     0.64 1.00     2002     3369
     ## 
     ## Population-Level Effects: 
     ##           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## Intercept     0.20      0.10     0.01     0.40 1.00     3550     3982
-    ## prior        -0.01      0.05    -0.11     0.08 1.00     9327     4983
+    ## Intercept     0.21      0.10     0.02     0.40 1.00     1898     3013
+    ## prior        -0.01      0.05    -0.10     0.08 1.00     6556     3974
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma     0.84      0.03     0.77     0.90 1.00     5188     4157
+    ## sigma     0.84      0.03     0.77     0.90 1.00     4694     4413
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -2131,26 +2094,26 @@ summary(model_some_zScored_comp)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## sd(Intercept)                 0.16      0.07     0.02     0.29 1.00     1145
-    ## sd(competence)                0.20      0.08     0.03     0.34 1.00     1262
-    ## cor(Intercept,competence)    -0.63      0.36    -0.99     0.43 1.00      969
+    ## sd(Intercept)                 0.16      0.07     0.01     0.30 1.00     1296
+    ## sd(competence)                0.21      0.07     0.04     0.34 1.00     1340
+    ## cor(Intercept,competence)    -0.63      0.37    -0.99     0.49 1.00     1170
     ##                           Tail_ESS
-    ## sd(Intercept)                 1404
-    ## sd(competence)                1384
-    ## cor(Intercept,competence)     1275
+    ## sd(Intercept)                 2047
+    ## sd(competence)                1679
+    ## cor(Intercept,competence)     1190
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     0.38      0.08     0.25     0.54 1.00     2171     3916
+    ## sd(Intercept)     0.38      0.08     0.25     0.55 1.00     2166     3574
     ## 
     ## Population-Level Effects: 
     ##            Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## Intercept      0.21      0.08     0.04     0.37 1.00     3445     4145
-    ## competence     0.15      0.06     0.04     0.27 1.00     4823     4543
+    ## Intercept      0.21      0.08     0.05     0.37 1.00     3282     3898
+    ## competence     0.15      0.06     0.04     0.27 1.00     5072     4461
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma     0.81      0.04     0.74     0.88 1.00     2091     3505
+    ## sigma     0.81      0.04     0.74     0.88 1.00     2213     3477
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -2185,30 +2148,30 @@ summary(model_xor_zScored_pri_comp)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                      Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## sd(Intercept)            0.08      0.06     0.00     0.22 1.00     2379
-    ## sd(prior)                0.14      0.09     0.01     0.32 1.00     1491
-    ## sd(competence)           0.23      0.10     0.02     0.41 1.01      853
-    ## sd(prior:competence)     0.17      0.11     0.01     0.41 1.01     1230
+    ## sd(Intercept)            0.08      0.06     0.00     0.22 1.00     2493
+    ## sd(prior)                0.13      0.09     0.01     0.31 1.00     1683
+    ## sd(competence)           0.23      0.10     0.03     0.41 1.00     1308
+    ## sd(prior:competence)     0.18      0.11     0.01     0.42 1.00     1396
     ##                      Tail_ESS
-    ## sd(Intercept)            3277
-    ## sd(prior)                2541
-    ## sd(competence)           1086
-    ## sd(prior:competence)     2681
+    ## sd(Intercept)            2972
+    ## sd(prior)                2741
+    ## sd(competence)           1976
+    ## sd(prior:competence)     2621
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     0.35      0.08     0.20     0.52 1.00     1858     2912
+    ## sd(Intercept)     0.35      0.08     0.20     0.52 1.00     1925     3000
     ## 
     ## Population-Level Effects: 
     ##                  Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## Intercept           -0.21      0.08    -0.37    -0.05 1.00     2581     3394
-    ## prior               -0.13      0.06    -0.26    -0.01 1.00     5703     4930
-    ## competence           0.08      0.07    -0.05     0.21 1.00     6164     4718
-    ## prior:competence     0.13      0.07    -0.01     0.26 1.00     7953     4693
+    ## Intercept           -0.21      0.08    -0.37    -0.05 1.00     3880     4141
+    ## prior               -0.13      0.07    -0.26    -0.00 1.00     6137     4522
+    ## competence           0.08      0.07    -0.05     0.22 1.00     6128     4728
+    ## prior:competence     0.13      0.07    -0.02     0.26 1.00     8595     4822
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma     0.84      0.04     0.77     0.93 1.00     2083     3120
+    ## sigma     0.84      0.04     0.77     0.93 1.00     2572     3713
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -2247,25 +2210,25 @@ summary(model_xor_zScored_pri_rel)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                     Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)           0.08      0.06     0.00     0.22 1.00     2492     3174
-    ## sd(prior)               0.15      0.09     0.01     0.34 1.00     1357     2329
-    ## sd(relevance)           0.14      0.09     0.01     0.32 1.00     1562     2802
-    ## sd(prior:relevance)     0.15      0.10     0.01     0.36 1.00     1671     2910
+    ## sd(Intercept)           0.08      0.06     0.00     0.22 1.00     2218     2576
+    ## sd(prior)               0.16      0.09     0.01     0.35 1.00     1388     2643
+    ## sd(relevance)           0.14      0.09     0.01     0.33 1.00     1355     2598
+    ## sd(prior:relevance)     0.15      0.10     0.01     0.35 1.00     1728     2602
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     0.39      0.08     0.24     0.56 1.00     2591     3583
+    ## sd(Intercept)     0.38      0.08     0.24     0.56 1.00     2262     3339
     ## 
     ## Population-Level Effects: 
     ##                 Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## Intercept          -0.20      0.09    -0.37    -0.04 1.00     3999     4278
-    ## prior              -0.10      0.07    -0.23     0.03 1.00     6814     5103
-    ## relevance           0.00      0.06    -0.13     0.13 1.00     7144     4598
-    ## prior:relevance     0.05      0.07    -0.08     0.19 1.00     8749     4975
+    ## Intercept          -0.20      0.09    -0.37    -0.03 1.00     3128     3900
+    ## prior              -0.10      0.07    -0.24     0.04 1.00     5544     5071
+    ## relevance           0.00      0.07    -0.13     0.13 1.00     6731     4842
+    ## prior:relevance     0.05      0.07    -0.09     0.19 1.00     7875     4915
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma     0.86      0.04     0.79     0.94 1.00     2984     4316
+    ## sigma     0.86      0.04     0.79     0.94 1.00     3242     3290
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -2304,35 +2267,35 @@ summary(model_xor_zScored_rel_comp)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                          Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## sd(Intercept)                0.08      0.06     0.00     0.22 1.00     2688
-    ## sd(relevance)                0.13      0.08     0.01     0.31 1.00     2005
-    ## sd(competence)               0.24      0.11     0.02     0.43 1.00      959
-    ## sd(relevance:competence)     0.10      0.07     0.00     0.27 1.00     2274
+    ## sd(Intercept)                0.08      0.06     0.00     0.22 1.00     2097
+    ## sd(relevance)                0.13      0.08     0.01     0.31 1.00     1370
+    ## sd(competence)               0.25      0.10     0.04     0.43 1.00     1172
+    ## sd(relevance:competence)     0.10      0.07     0.00     0.28 1.00     1932
     ##                          Tail_ESS
-    ## sd(Intercept)                3079
-    ## sd(relevance)                3420
-    ## sd(competence)               1553
-    ## sd(relevance:competence)     3208
+    ## sd(Intercept)                2640
+    ## sd(relevance)                2520
+    ## sd(competence)               1897
+    ## sd(relevance:competence)     3101
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     0.40      0.08     0.26     0.57 1.00     2532     4103
+    ## sd(Intercept)     0.40      0.08     0.25     0.57 1.00     2243     3821
     ## 
     ## Population-Level Effects: 
     ##                      Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## Intercept               -0.23      0.09    -0.41    -0.05 1.00     5103
-    ## relevance               -0.00      0.07    -0.13     0.12 1.00     8747
-    ## competence               0.06      0.07    -0.07     0.20 1.00     6981
-    ## relevance:competence    -0.03      0.06    -0.15     0.09 1.00     7914
+    ## Intercept               -0.23      0.09    -0.40    -0.06 1.00     2948
+    ## relevance               -0.01      0.07    -0.13     0.13 1.00     7016
+    ## competence               0.06      0.07    -0.08     0.20 1.00     5816
+    ## relevance:competence    -0.03      0.06    -0.16     0.09 1.00     5725
     ##                      Tail_ESS
-    ## Intercept                4278
-    ## relevance                4878
-    ## competence               4791
-    ## relevance:competence     4488
+    ## Intercept                3975
+    ## relevance                5041
+    ## competence               4265
+    ## relevance:competence     4144
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma     0.85      0.04     0.78     0.93 1.00     2631     3953
+    ## sigma     0.85      0.04     0.78     0.93 1.00     2580     3641
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -2371,30 +2334,30 @@ summary(model_some_zScored_pri_comp)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                      Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## sd(Intercept)            0.09      0.07     0.00     0.24 1.00     1547
-    ## sd(prior)                0.09      0.06     0.00     0.22 1.00     1401
-    ## sd(competence)           0.15      0.08     0.01     0.31 1.00     1082
-    ## sd(prior:competence)     0.12      0.07     0.01     0.26 1.00     1139
+    ## sd(Intercept)            0.10      0.06     0.00     0.24 1.00     1845
+    ## sd(prior)                0.09      0.06     0.00     0.22 1.00     1937
+    ## sd(competence)           0.15      0.08     0.01     0.31 1.00     1282
+    ## sd(prior:competence)     0.12      0.07     0.01     0.26 1.00     1157
     ##                      Tail_ESS
-    ## sd(Intercept)            2763
-    ## sd(prior)                2078
-    ## sd(competence)           1848
-    ## sd(prior:competence)     2610
+    ## sd(Intercept)            2408
+    ## sd(prior)                3369
+    ## sd(competence)           2070
+    ## sd(prior:competence)     1871
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     0.37      0.08     0.23     0.54 1.00     1945     3331
+    ## sd(Intercept)     0.37      0.07     0.23     0.52 1.00     2380     3655
     ## 
     ## Population-Level Effects: 
     ##                  Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## Intercept            0.21      0.08     0.04     0.37 1.00     3046     3514
-    ## prior               -0.04      0.05    -0.13     0.05 1.00     6644     5219
-    ## competence           0.13      0.06     0.01     0.25 1.00     4602     4537
-    ## prior:competence    -0.08      0.04    -0.17     0.01 1.00     6407     4800
+    ## Intercept            0.20      0.08     0.05     0.36 1.00     3638     4013
+    ## prior               -0.04      0.05    -0.13     0.05 1.00     7444     4637
+    ## competence           0.13      0.06     0.02     0.25 1.00     6048     5009
+    ## prior:competence    -0.08      0.04    -0.16     0.01 1.00     8430     4907
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma     0.81      0.04     0.74     0.88 1.00     3019     3924
+    ## sigma     0.81      0.04     0.74     0.88 1.00     3197     3677
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -2433,25 +2396,25 @@ summary(model_some_zScored_pri_rel)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                     Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)           0.09      0.06     0.00     0.24 1.00     2016     2303
-    ## sd(prior)               0.11      0.07     0.01     0.25 1.00     1825     2967
-    ## sd(relevance)           0.06      0.05     0.00     0.18 1.00     3470     3488
-    ## sd(prior:relevance)     0.09      0.06     0.00     0.22 1.00     1950     3067
+    ## sd(Intercept)           0.09      0.07     0.00     0.24 1.00     2128     2777
+    ## sd(prior)               0.10      0.07     0.00     0.25 1.00     1575     3000
+    ## sd(relevance)           0.06      0.05     0.00     0.18 1.00     3221     3121
+    ## sd(prior:relevance)     0.10      0.06     0.01     0.22 1.00     1937     2667
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     0.46      0.08     0.33     0.64 1.00     2523     3964
+    ## sd(Intercept)     0.46      0.08     0.33     0.63 1.00     2753     4167
     ## 
     ## Population-Level Effects: 
     ##                 Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## Intercept           0.21      0.10     0.02     0.41 1.00     3607     3924
-    ## prior              -0.02      0.05    -0.11     0.08 1.00     9672     4764
-    ## relevance          -0.04      0.06    -0.16     0.09 1.00     7476     4335
-    ## prior:relevance    -0.00      0.05    -0.09     0.08 1.00     8499     5070
+    ## Intercept           0.21      0.10     0.02     0.40 1.00     2869     3519
+    ## prior              -0.02      0.05    -0.12     0.08 1.00     8244     5145
+    ## relevance          -0.04      0.06    -0.16     0.09 1.00     7007     4790
+    ## prior:relevance    -0.00      0.05    -0.09     0.09 1.00     7423     4799
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma     0.83      0.03     0.76     0.90 1.00     4741     4654
+    ## sigma     0.83      0.04     0.76     0.90 1.00     4997     4309
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -2490,35 +2453,35 @@ summary(model_some_zScored_rel_comp)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                          Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## sd(Intercept)                0.10      0.07     0.01     0.25 1.00     1947
-    ## sd(relevance)                0.07      0.05     0.00     0.18 1.00     2963
-    ## sd(competence)               0.16      0.09     0.01     0.32 1.01     1078
-    ## sd(relevance:competence)     0.11      0.07     0.00     0.26 1.00     1639
+    ## sd(Intercept)                0.10      0.07     0.00     0.24 1.00     2029
+    ## sd(relevance)                0.07      0.05     0.00     0.18 1.00     3022
+    ## sd(competence)               0.15      0.08     0.01     0.32 1.00     1212
+    ## sd(relevance:competence)     0.11      0.07     0.01     0.27 1.00     1556
     ##                          Tail_ESS
-    ## sd(Intercept)                3151
-    ## sd(relevance)                2875
-    ## sd(competence)               2096
-    ## sd(relevance:competence)     2634
+    ## sd(Intercept)                2890
+    ## sd(relevance)                2987
+    ## sd(competence)               2185
+    ## sd(relevance:competence)     2777
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     0.37      0.08     0.23     0.54 1.00     2267     3969
+    ## sd(Intercept)     0.37      0.08     0.24     0.54 1.00     2448     3355
     ## 
     ## Population-Level Effects: 
     ##                      Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## Intercept                0.22      0.08     0.05     0.38 1.00     3491
-    ## relevance               -0.04      0.06    -0.15     0.07 1.00     7485
-    ## competence               0.15      0.06     0.04     0.27 1.00     5636
-    ## relevance:competence     0.02      0.05    -0.08     0.12 1.00     7620
+    ## Intercept                0.22      0.08     0.06     0.38 1.00     3505
+    ## relevance               -0.04      0.05    -0.14     0.07 1.00     7379
+    ## competence               0.15      0.06     0.03     0.27 1.00     5213
+    ## relevance:competence     0.02      0.05    -0.09     0.12 1.00     7234
     ##                      Tail_ESS
-    ## Intercept                3697
-    ## relevance                5298
-    ## competence               4793
-    ## relevance:competence     4708
+    ## Intercept                3583
+    ## relevance                4724
+    ## competence               4577
+    ## relevance:competence     4381
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma     0.82      0.04     0.75     0.89 1.00     3109     4491
+    ## sigma     0.82      0.04     0.75     0.89 1.00     2847     3873
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -2581,38 +2544,38 @@ summary(model_xor_cat)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                 Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)      20.70      2.07    16.79    24.90 1.00     2106     3454
-    ## sd(prior1)          5.26      2.65     0.43    10.09 1.00      935     2018
-    ## sd(competence1)     7.23      2.76     1.11    12.00 1.00      801      988
-    ## sd(relevance1)      2.80      1.92     0.13     7.20 1.00     1510     2732
+    ## sd(Intercept)      20.77      2.09    16.98    25.12 1.00     2105     3584
+    ## sd(prior1)          5.50      2.60     0.52    10.20 1.00      908     1655
+    ## sd(competence1)     7.39      2.72     1.29    12.08 1.01      796      871
+    ## sd(relevance1)      2.90      1.96     0.14     7.33 1.00     1757     2848
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     7.95      2.88     2.14    13.73 1.00     1242     1632
+    ## sd(Intercept)     8.15      2.65     3.12    13.63 1.00     1755     2244
     ## 
     ## Population-Level Effects: 
     ##                               Estimate Est.Error l-95% CI u-95% CI Rhat
-    ## Intercept                        67.82      2.84    62.30    73.49 1.00
-    ## prior1                           -2.07      2.05    -6.19     1.94 1.00
-    ## competence1                       3.39      2.13    -0.89     7.45 1.00
-    ## relevance1                       -0.30      2.03    -4.26     3.83 1.00
-    ## prior1:competence1                0.11      2.02    -4.02     4.17 1.00
-    ## prior1:relevance1                 2.91      1.99    -0.98     6.84 1.00
-    ## competence1:relevance1            4.08      1.96     0.22     7.97 1.00
-    ## prior1:competence1:relevance1    -2.67      2.04    -6.80     1.43 1.00
+    ## Intercept                        67.86      2.81    62.37    73.40 1.00
+    ## prior1                           -2.07      2.04    -6.16     1.81 1.00
+    ## competence1                       3.37      2.12    -0.88     7.42 1.00
+    ## relevance1                       -0.33      2.05    -4.32     3.76 1.00
+    ## prior1:competence1                0.12      2.06    -3.87     4.23 1.00
+    ## prior1:relevance1                 2.92      2.06    -1.07     6.96 1.00
+    ## competence1:relevance1            4.05      2.06     0.15     8.17 1.00
+    ## prior1:competence1:relevance1    -2.69      1.97    -6.63     1.27 1.00
     ##                               Bulk_ESS Tail_ESS
-    ## Intercept                         2806     3826
-    ## prior1                            4460     3953
-    ## competence1                       4695     4372
-    ## relevance1                        4488     3390
-    ## prior1:competence1                4350     3623
-    ## prior1:relevance1                 4560     4119
-    ## competence1:relevance1            4972     3794
-    ## prior1:competence1:relevance1     4769     4064
+    ## Intercept                         3031     3720
+    ## prior1                            4965     4653
+    ## competence1                       4654     4369
+    ## relevance1                        5166     4035
+    ## prior1:competence1                5065     4122
+    ## prior1:relevance1                 4764     4394
+    ## competence1:relevance1            5044     4156
+    ## prior1:competence1:relevance1     4702     4396
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma    22.78      1.52    19.80    25.75 1.00      948     1490
+    ## sigma    22.69      1.50    19.92    25.75 1.00      980     2285
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -2632,7 +2595,7 @@ hypothesis(model_xor_cat, "prior1 < 0")
 
     ## Hypothesis Tests for class b:
     ##     Hypothesis Estimate Est.Error CI.Lower CI.Upper Evid.Ratio Post.Prob Star
-    ## 1 (prior1) < 0    -2.07      2.05    -5.46     1.24       5.51      0.85     
+    ## 1 (prior1) < 0    -2.07      2.04    -5.44     1.17       5.56      0.85     
     ## ---
     ## 'CI': 90%-CI for one-sided and 95%-CI for two-sided hypotheses.
     ## '*': For one-sided hypotheses, the posterior probability exceeds 95%;
@@ -2646,7 +2609,7 @@ hypothesis(model_xor_cat, "competence1 > 0")
 
     ## Hypothesis Tests for class b:
     ##          Hypothesis Estimate Est.Error CI.Lower CI.Upper Evid.Ratio Post.Prob
-    ## 1 (competence1) > 0     3.39      2.13    -0.13      6.7      16.96      0.94
+    ## 1 (competence1) > 0     3.37      2.12    -0.16     6.79      16.49      0.94
     ##   Star
     ## 1     
     ## ---
@@ -2662,7 +2625,7 @@ hypothesis(model_xor_cat, "relevance1 > 0")
 
     ## Hypothesis Tests for class b:
     ##         Hypothesis Estimate Est.Error CI.Lower CI.Upper Evid.Ratio Post.Prob
-    ## 1 (relevance1) > 0     -0.3      2.03     -3.5     3.08       0.75      0.43
+    ## 1 (relevance1) > 0    -0.33      2.05    -3.69     3.07       0.74      0.43
     ##   Star
     ## 1     
     ## ---
@@ -2683,9 +2646,18 @@ model_some_cat <- brm(
 )
 ```
 
+    ## Warning: There were 4 divergent transitions after warmup. Increasing adapt_delta above 0.8 may help. See
+    ## http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
+
+    ## Warning: Examine the pairs() plot to diagnose sampling problems
+
 ``` r
 summary(model_some_cat)
 ```
+
+    ## Warning: There were 4 divergent transitions after warmup. Increasing adapt_delta
+    ## above 0.8 may help. See http://mc-stan.org/misc/warnings.html#divergent-
+    ## transitions-after-warmup
 
     ##  Family: gaussian 
     ##   Links: mu = identity; sigma = identity 
@@ -2697,38 +2669,38 @@ summary(model_some_cat)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                 Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)      10.91      1.59     7.91    14.17 1.00     1956     3582
-    ## sd(prior1)          1.76      1.28     0.08     4.72 1.00     2378     3689
-    ## sd(competence1)     6.28      2.11     1.36    10.07 1.00      909      832
-    ## sd(relevance1)      3.62      2.00     0.22     7.53 1.00     1089     2447
+    ## sd(Intercept)      10.86      1.57     7.84    14.00 1.00     1890     2916
+    ## sd(prior1)          1.81      1.31     0.06     4.92 1.00     1976     2899
+    ## sd(competence1)     6.35      2.10     1.37     9.99 1.00     1070     1021
+    ## sd(relevance1)      3.62      2.00     0.23     7.54 1.00      923     2057
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     7.55      2.14     3.70    12.13 1.00     1857     2525
+    ## sd(Intercept)     7.46      2.22     3.06    11.95 1.00     1198      969
     ## 
     ## Population-Level Effects: 
     ##                               Estimate Est.Error l-95% CI u-95% CI Rhat
-    ## Intercept                        82.40      1.96    78.51    86.26 1.00
-    ## prior1                           -1.99      1.76    -5.40     1.56 1.00
-    ## competence1                       7.20      1.83     3.57    10.74 1.00
-    ## relevance1                        1.18      1.78    -2.19     4.72 1.00
-    ## prior1:competence1                1.73      1.75    -1.72     5.22 1.00
-    ## prior1:relevance1                -3.12      1.69    -6.49     0.38 1.00
-    ## competence1:relevance1            1.22      1.76    -2.26     4.77 1.00
-    ## prior1:competence1:relevance1     1.32      1.76    -2.14     4.80 1.00
+    ## Intercept                        82.36      1.95    78.54    86.20 1.00
+    ## prior1                           -2.04      1.77    -5.53     1.52 1.00
+    ## competence1                       7.21      1.78     3.59    10.67 1.00
+    ## relevance1                        1.22      1.80    -2.23     4.91 1.00
+    ## prior1:competence1                1.69      1.72    -1.80     5.14 1.00
+    ## prior1:relevance1                -3.07      1.72    -6.48     0.30 1.00
+    ## competence1:relevance1            1.21      1.73    -2.22     4.66 1.00
+    ## prior1:competence1:relevance1     1.26      1.75    -2.35     4.66 1.00
     ##                               Bulk_ESS Tail_ESS
-    ## Intercept                         4460     3822
-    ## prior1                            5217     3700
-    ## competence1                       5427     4013
-    ## relevance1                        4750     4202
-    ## prior1:competence1                5131     4544
-    ## prior1:relevance1                 5191     4436
-    ## competence1:relevance1            5448     4215
-    ## prior1:competence1:relevance1     4406     4418
+    ## Intercept                         3383     4057
+    ## prior1                            3292     3897
+    ## competence1                       4221     3716
+    ## relevance1                        3693     3184
+    ## prior1:competence1                3928     4038
+    ## prior1:relevance1                 4334     4263
+    ## competence1:relevance1            3354     3395
+    ## prior1:competence1:relevance1     3801     3363
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma    18.36      1.08    16.25    20.52 1.00     1347     2987
+    ## sigma    18.36      1.07    16.33    20.44 1.00     1203     2329
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -2742,7 +2714,7 @@ hypothesis(model_some_cat, "prior1 < 0")
 
     ## Hypothesis Tests for class b:
     ##     Hypothesis Estimate Est.Error CI.Lower CI.Upper Evid.Ratio Post.Prob Star
-    ## 1 (prior1) < 0    -1.99      1.76    -4.82     0.94       7.06      0.88     
+    ## 1 (prior1) < 0    -2.04      1.77    -4.92     0.89       7.44      0.88     
     ## ---
     ## 'CI': 90%-CI for one-sided and 95%-CI for two-sided hypotheses.
     ## '*': For one-sided hypotheses, the posterior probability exceeds 95%;
@@ -2756,7 +2728,7 @@ hypothesis(model_some_cat, "competence1 > 0")
 
     ## Hypothesis Tests for class b:
     ##          Hypothesis Estimate Est.Error CI.Lower CI.Upper Evid.Ratio Post.Prob
-    ## 1 (competence1) > 0      7.2      1.83     4.22    10.19       2999         1
+    ## 1 (competence1) > 0     7.21      1.78     4.19    10.11       2999         1
     ##   Star
     ## 1    *
     ## ---
@@ -2772,7 +2744,7 @@ hypothesis(model_some_cat, "relevance1 > 0")
 
     ## Hypothesis Tests for class b:
     ##         Hypothesis Estimate Est.Error CI.Lower CI.Upper Evid.Ratio Post.Prob
-    ## 1 (relevance1) > 0     1.18      1.78    -1.66     4.08       3.01      0.75
+    ## 1 (relevance1) > 0     1.22       1.8    -1.63      4.2       3.07      0.75
     ##   Star
     ## 1     
     ## ---
@@ -2830,38 +2802,38 @@ summary(model_xor_cat_zScored)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                 Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)       0.10      0.07     0.00     0.24 1.00     1448     2357
-    ## sd(prior1)          0.19      0.09     0.02     0.35 1.01     1093     1800
-    ## sd(competence1)     0.23      0.09     0.02     0.40 1.01      966     1239
-    ## sd(relevance1)      0.11      0.07     0.01     0.26 1.00     1546     2630
+    ## sd(Intercept)       0.09      0.07     0.00     0.24 1.00     1700     3035
+    ## sd(prior1)          0.19      0.09     0.02     0.35 1.00     1072     1641
+    ## sd(competence1)     0.23      0.09     0.03     0.39 1.00      897     1320
+    ## sd(relevance1)      0.11      0.07     0.00     0.26 1.00     1484     2383
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     0.34      0.09     0.18     0.54 1.00     2061     2948
+    ## sd(Intercept)     0.33      0.09     0.17     0.53 1.00     1882     2960
     ## 
     ## Population-Level Effects: 
     ##                               Estimate Est.Error l-95% CI u-95% CI Rhat
-    ## Intercept                        -0.23      0.08    -0.38    -0.08 1.00
-    ## prior1                           -0.10      0.08    -0.27     0.05 1.00
+    ## Intercept                        -0.23      0.07    -0.37    -0.08 1.00
+    ## prior1                           -0.10      0.08    -0.25     0.05 1.00
     ## competence1                       0.19      0.08     0.02     0.35 1.00
-    ## relevance1                        0.04      0.08    -0.11     0.19 1.00
+    ## relevance1                        0.03      0.08    -0.12     0.19 1.00
     ## prior1:competence1                0.01      0.08    -0.15     0.16 1.00
-    ## prior1:relevance1                 0.10      0.08    -0.05     0.25 1.00
-    ## competence1:relevance1            0.15      0.08    -0.01     0.30 1.00
-    ## prior1:competence1:relevance1    -0.04      0.08    -0.19     0.11 1.00
+    ## prior1:relevance1                 0.10      0.07    -0.05     0.24 1.00
+    ## competence1:relevance1            0.15      0.08    -0.00     0.30 1.00
+    ## prior1:competence1:relevance1    -0.05      0.08    -0.20     0.11 1.00
     ##                               Bulk_ESS Tail_ESS
-    ## Intercept                         4504     4480
-    ## prior1                            3734     4119
-    ## competence1                       3898     4092
-    ## relevance1                        4258     3919
-    ## prior1:competence1                4113     4244
-    ## prior1:relevance1                 4415     4601
-    ## competence1:relevance1            3936     4137
-    ## prior1:competence1:relevance1     4590     4255
+    ## Intercept                         3958     4048
+    ## prior1                            4129     4583
+    ## competence1                       3932     3599
+    ## relevance1                        3961     4084
+    ## prior1:competence1                3989     4383
+    ## prior1:relevance1                 3654     4289
+    ## competence1:relevance1            4437     4215
+    ## prior1:competence1:relevance1     3662     3650
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma     0.82      0.04     0.74     0.91 1.00     1319     2626
+    ## sigma     0.82      0.04     0.74     0.91 1.00     1354     2851
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -2875,7 +2847,7 @@ hypothesis(model_xor_cat_zScored, "prior1 < 0")
 
     ## Hypothesis Tests for class b:
     ##     Hypothesis Estimate Est.Error CI.Lower CI.Upper Evid.Ratio Post.Prob Star
-    ## 1 (prior1) < 0     -0.1      0.08    -0.24     0.03       9.26       0.9     
+    ## 1 (prior1) < 0     -0.1      0.08    -0.23     0.02      10.54      0.91     
     ## ---
     ## 'CI': 90%-CI for one-sided and 95%-CI for two-sided hypotheses.
     ## '*': For one-sided hypotheses, the posterior probability exceeds 95%;
@@ -2889,7 +2861,7 @@ hypothesis(model_xor_cat_zScored, "competence1 > 0")
 
     ## Hypothesis Tests for class b:
     ##          Hypothesis Estimate Est.Error CI.Lower CI.Upper Evid.Ratio Post.Prob
-    ## 1 (competence1) > 0     0.19      0.08     0.05     0.32      72.17      0.99
+    ## 1 (competence1) > 0     0.19      0.08     0.06     0.32      85.96      0.99
     ##   Star
     ## 1    *
     ## ---
@@ -2905,7 +2877,7 @@ hypothesis(model_xor_cat_zScored, "relevance1 > 0")
 
     ## Hypothesis Tests for class b:
     ##         Hypothesis Estimate Est.Error CI.Lower CI.Upper Evid.Ratio Post.Prob
-    ## 1 (relevance1) > 0     0.04      0.08    -0.09     0.17       2.02      0.67
+    ## 1 (relevance1) > 0     0.03      0.08    -0.09     0.16       1.95      0.66
     ##   Star
     ## 1     
     ## ---
@@ -2940,38 +2912,38 @@ summary(model_some_cat_zScored)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                 Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)       0.10      0.07     0.00     0.25 1.00     1913     2455
-    ## sd(prior1)          0.07      0.05     0.00     0.18 1.00     3385     3486
-    ## sd(competence1)     0.16      0.09     0.01     0.32 1.00     1170     2490
-    ## sd(relevance1)      0.13      0.08     0.01     0.29 1.00     1580     2468
+    ## sd(Intercept)       0.10      0.07     0.00     0.24 1.00     2005     2803
+    ## sd(prior1)          0.07      0.05     0.00     0.18 1.00     2945     3355
+    ## sd(competence1)     0.16      0.09     0.01     0.33 1.01     1279     2191
+    ## sd(relevance1)      0.14      0.08     0.01     0.30 1.00     1372     2137
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     0.28      0.09     0.11     0.46 1.00     1653     2143
+    ## sd(Intercept)     0.27      0.08     0.11     0.45 1.00     1672     1440
     ## 
     ## Population-Level Effects: 
     ##                               Estimate Est.Error l-95% CI u-95% CI Rhat
     ## Intercept                         0.22      0.07     0.09     0.35 1.00
-    ## prior1                           -0.09      0.07    -0.22     0.05 1.00
-    ## competence1                       0.32      0.07     0.18     0.46 1.00
-    ## relevance1                        0.03      0.07    -0.10     0.16 1.00
-    ## prior1:competence1                0.05      0.07    -0.08     0.18 1.00
-    ## prior1:relevance1                -0.12      0.07    -0.26     0.01 1.00
-    ## competence1:relevance1            0.09      0.07    -0.04     0.22 1.00
-    ## prior1:competence1:relevance1     0.05      0.07    -0.08     0.19 1.00
+    ## prior1                           -0.09      0.07    -0.21     0.04 1.00
+    ## competence1                       0.33      0.07     0.19     0.46 1.00
+    ## relevance1                        0.03      0.07    -0.10     0.17 1.00
+    ## prior1:competence1                0.05      0.07    -0.08     0.19 1.00
+    ## prior1:relevance1                -0.12      0.07    -0.25     0.01 1.00
+    ## competence1:relevance1            0.09      0.07    -0.05     0.22 1.00
+    ## prior1:competence1:relevance1     0.05      0.07    -0.08     0.18 1.00
     ##                               Bulk_ESS Tail_ESS
-    ## Intercept                         6096     4755
-    ## prior1                            5690     4443
-    ## competence1                       5993     4717
-    ## relevance1                        6464     4742
-    ## prior1:competence1                6257     4412
-    ## prior1:relevance1                 6300     4402
-    ## competence1:relevance1            6272     4801
-    ## prior1:competence1:relevance1     5704     4609
+    ## Intercept                         5241     4016
+    ## prior1                            5436     4725
+    ## competence1                       5422     4176
+    ## relevance1                        5205     4450
+    ## prior1:competence1                5606     4823
+    ## prior1:relevance1                 5415     4121
+    ## competence1:relevance1            5637     4320
+    ## prior1:competence1:relevance1     5385     4284
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma     0.82      0.04     0.74     0.89 1.00     2593     3242
+    ## sigma     0.82      0.04     0.74     0.89 1.00     2423     3234
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -2985,7 +2957,7 @@ hypothesis(model_some_cat_zScored, "prior1 < 0")
 
     ## Hypothesis Tests for class b:
     ##     Hypothesis Estimate Est.Error CI.Lower CI.Upper Evid.Ratio Post.Prob Star
-    ## 1 (prior1) < 0    -0.09      0.07     -0.2     0.03       9.22       0.9     
+    ## 1 (prior1) < 0    -0.09      0.07    -0.19     0.02       9.64      0.91     
     ## ---
     ## 'CI': 90%-CI for one-sided and 95%-CI for two-sided hypotheses.
     ## '*': For one-sided hypotheses, the posterior probability exceeds 95%;
@@ -2999,7 +2971,7 @@ hypothesis(model_some_cat_zScored, "competence1 > 0")
 
     ## Hypothesis Tests for class b:
     ##          Hypothesis Estimate Est.Error CI.Lower CI.Upper Evid.Ratio Post.Prob
-    ## 1 (competence1) > 0     0.32      0.07     0.21     0.44        Inf         1
+    ## 1 (competence1) > 0     0.33      0.07     0.21     0.44        Inf         1
     ##   Star
     ## 1    *
     ## ---
@@ -3015,7 +2987,7 @@ hypothesis(model_some_cat_zScored, "relevance1 > 0")
 
     ## Hypothesis Tests for class b:
     ##         Hypothesis Estimate Est.Error CI.Lower CI.Upper Evid.Ratio Post.Prob
-    ## 1 (relevance1) > 0     0.03      0.07    -0.08     0.14       2.01      0.67
+    ## 1 (relevance1) > 0     0.03      0.07    -0.08     0.14       2.06      0.67
     ##   Star
     ## 1     
     ## ---
@@ -3054,26 +3026,26 @@ summary(model_xor_cat_zScored_pri)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## sd(Intercept)             0.08      0.06     0.00     0.22 1.00     1972
-    ## sd(prior1)                0.19      0.09     0.02     0.35 1.00      916
-    ## cor(Intercept,prior1)     0.12      0.55    -0.91     0.96 1.00     1249
+    ## sd(Intercept)             0.08      0.06     0.00     0.22 1.00     2050
+    ## sd(prior1)                0.18      0.09     0.01     0.35 1.00     1047
+    ## cor(Intercept,prior1)     0.13      0.55    -0.90     0.96 1.00     1257
     ##                       Tail_ESS
-    ## sd(Intercept)             2601
-    ## sd(prior1)                1989
-    ## cor(Intercept,prior1)     2282
+    ## sd(Intercept)             2114
+    ## sd(prior1)                1922
+    ## cor(Intercept,prior1)     1973
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     0.41      0.08     0.28     0.58 1.00     2472     4018
+    ## sd(Intercept)     0.41      0.08     0.28     0.59 1.00     2390     3631
     ## 
     ## Population-Level Effects: 
     ##           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## Intercept    -0.22      0.09    -0.39    -0.06 1.00     2572     3182
-    ## prior1       -0.10      0.09    -0.28     0.07 1.00     2771     3840
+    ## Intercept    -0.22      0.09    -0.40    -0.05 1.00     2893     3319
+    ## prior1       -0.11      0.09    -0.29     0.07 1.00     3120     4148
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma     0.87      0.04     0.79     0.94 1.00     3120     3646
+    ## sigma     0.87      0.04     0.80     0.94 1.00     2804     3590
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -3105,26 +3077,26 @@ summary(model_xor_cat_zScored_comp)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                            Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## sd(Intercept)                  0.08      0.06     0.00     0.22 1.00     1862
-    ## sd(competence1)                0.25      0.09     0.03     0.41 1.01     1055
-    ## cor(Intercept,competence1)    -0.21      0.55    -0.97     0.92 1.01      676
+    ## sd(Intercept)                  0.09      0.06     0.00     0.23 1.00     2070
+    ## sd(competence1)                0.25      0.09     0.04     0.41 1.00     1330
+    ## cor(Intercept,competence1)    -0.22      0.53    -0.97     0.89 1.00      598
     ##                            Tail_ESS
-    ## sd(Intercept)                  2464
-    ## sd(competence1)                 982
-    ## cor(Intercept,competence1)     1114
+    ## sd(Intercept)                  2772
+    ## sd(competence1)                1726
+    ## cor(Intercept,competence1)     1468
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     0.34      0.08     0.20     0.51 1.00     2112     3117
+    ## sd(Intercept)     0.35      0.08     0.20     0.53 1.00     1923     3385
     ## 
     ## Population-Level Effects: 
     ##             Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## Intercept      -0.23      0.08    -0.39    -0.08 1.00     4735     4287
-    ## competence1     0.19      0.08     0.03     0.35 1.00     4887     4529
+    ## Intercept      -0.23      0.08    -0.39    -0.09 1.00     4348     4163
+    ## competence1     0.19      0.08     0.03     0.36 1.00     4494     4028
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma     0.86      0.04     0.78     0.93 1.00     3091     3819
+    ## sigma     0.86      0.04     0.79     0.93 1.00     3216     4115
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -3156,26 +3128,26 @@ summary(model_xor_cat_zScored_rel)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## sd(Intercept)                 0.08      0.06     0.00     0.21 1.00     2136
-    ## sd(relevance1)                0.11      0.07     0.00     0.27 1.00     1913
-    ## cor(Intercept,relevance1)    -0.01      0.57    -0.95     0.95 1.00     2718
+    ## sd(Intercept)                 0.08      0.06     0.00     0.22 1.00     2774
+    ## sd(relevance1)                0.11      0.07     0.01     0.27 1.00     1805
+    ## cor(Intercept,relevance1)    -0.00      0.58    -0.95     0.95 1.00     3270
     ##                           Tail_ESS
-    ## sd(Intercept)                 2252
-    ## sd(relevance1)                2474
-    ## cor(Intercept,relevance1)     3681
+    ## sd(Intercept)                 3490
+    ## sd(relevance1)                3275
+    ## cor(Intercept,relevance1)     4012
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     0.42      0.08     0.28     0.60 1.00     2158     3115
+    ## sd(Intercept)     0.42      0.08     0.28     0.60 1.00     2170     3083
     ## 
     ## Population-Level Effects: 
     ##            Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## Intercept     -0.23      0.09    -0.41    -0.05 1.00     2743     3409
-    ## relevance1     0.05      0.09    -0.12     0.23 1.00     3373     3508
+    ## Intercept     -0.22      0.09    -0.40    -0.05 1.00     2842     3748
+    ## relevance1     0.05      0.09    -0.13     0.24 1.00     2940     3078
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma     0.88      0.03     0.82     0.95 1.00     5128     4388
+    ## sigma     0.88      0.03     0.82     0.95 1.00     5321     4191
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -3195,9 +3167,18 @@ model_some_cat_zScored_pri <- brm(
 )
 ```
 
+    ## Warning: There were 1 divergent transitions after warmup. Increasing adapt_delta above 0.8 may help. See
+    ## http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
+
+    ## Warning: Examine the pairs() plot to diagnose sampling problems
+
 ``` r
 summary(model_some_cat_zScored_pri)
 ```
+
+    ## Warning: There were 1 divergent transitions after warmup. Increasing adapt_delta
+    ## above 0.8 may help. See http://mc-stan.org/misc/warnings.html#divergent-
+    ## transitions-after-warmup
 
     ##  Family: gaussian 
     ##   Links: mu = identity; sigma = identity 
@@ -3209,26 +3190,26 @@ summary(model_some_cat_zScored_pri)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## sd(Intercept)             0.09      0.07     0.00     0.24 1.00     1437
-    ## sd(prior1)                0.07      0.05     0.00     0.18 1.00     2891
-    ## cor(Intercept,prior1)     0.09      0.57    -0.93     0.96 1.00     3790
+    ## sd(Intercept)             0.09      0.07     0.00     0.24 1.00     1784
+    ## sd(prior1)                0.07      0.05     0.00     0.18 1.00     2743
+    ## cor(Intercept,prior1)     0.08      0.58    -0.94     0.96 1.00     4592
     ##                       Tail_ESS
-    ## sd(Intercept)             2655
-    ## sd(prior1)                3129
-    ## cor(Intercept,prior1)     3573
+    ## sd(Intercept)             2628
+    ## sd(prior1)                2849
+    ## cor(Intercept,prior1)     3982
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     0.46      0.08     0.33     0.64 1.00     1966     3310
+    ## sd(Intercept)     0.46      0.08     0.32     0.64 1.00     1807     3598
     ## 
     ## Population-Level Effects: 
     ##           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## Intercept     0.21      0.09     0.02     0.39 1.00     1723     2608
-    ## prior1       -0.08      0.09    -0.27     0.10 1.00     1885     2766
+    ## Intercept     0.21      0.09     0.03     0.38 1.00     2685     3740
+    ## prior1       -0.08      0.09    -0.26     0.11 1.00     2239     3431
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma     0.84      0.03     0.78     0.91 1.00     5308     4281
+    ## sigma     0.84      0.03     0.78     0.91 1.00     5663     3610
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -3260,26 +3241,26 @@ summary(model_some_cat_zScored_comp)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                            Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## sd(Intercept)                  0.17      0.07     0.02     0.30 1.00      989
-    ## sd(competence1)                0.22      0.08     0.04     0.36 1.00      827
-    ## cor(Intercept,competence1)    -0.72      0.33    -0.99     0.30 1.00      723
+    ## sd(Intercept)                  0.17      0.07     0.02     0.31 1.00      908
+    ## sd(competence1)                0.21      0.08     0.04     0.35 1.00      931
+    ## cor(Intercept,competence1)    -0.71      0.35    -0.99     0.42 1.01      947
     ##                            Tail_ESS
-    ## sd(Intercept)                  1215
-    ## sd(competence1)                 826
-    ## cor(Intercept,competence1)     1029
+    ## sd(Intercept)                  1295
+    ## sd(competence1)                 956
+    ## cor(Intercept,competence1)     1145
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     0.30      0.07     0.18     0.46 1.00     2225     3140
+    ## sd(Intercept)     0.30      0.07     0.18     0.46 1.00     2076     3165
     ## 
     ## Population-Level Effects: 
     ##             Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## Intercept       0.22      0.07     0.07     0.36 1.00     2881     3576
-    ## competence1     0.32      0.07     0.17     0.46 1.00     2756     3062
+    ## Intercept       0.22      0.07     0.07     0.36 1.00     3667     4367
+    ## competence1     0.33      0.07     0.18     0.47 1.00     3514     3835
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma     0.80      0.04     0.73     0.88 1.00     1376     2737
+    ## sigma     0.80      0.04     0.73     0.88 1.00     1378     2854
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -3297,9 +3278,18 @@ model_some_cat_zScored_rel <- brm(
 )
 ```
 
+    ## Warning: There were 1 divergent transitions after warmup. Increasing adapt_delta above 0.8 may help. See
+    ## http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
+
+    ## Warning: Examine the pairs() plot to diagnose sampling problems
+
 ``` r
 summary(model_some_cat_zScored_rel)
 ```
+
+    ## Warning: There were 1 divergent transitions after warmup. Increasing adapt_delta
+    ## above 0.8 may help. See http://mc-stan.org/misc/warnings.html#divergent-
+    ## transitions-after-warmup
 
     ##  Family: gaussian 
     ##   Links: mu = identity; sigma = identity 
@@ -3311,26 +3301,26 @@ summary(model_some_cat_zScored_rel)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 99) 
     ##                           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-    ## sd(Intercept)                 0.10      0.07     0.01     0.25 1.00     2002
-    ## sd(relevance1)                0.12      0.08     0.01     0.29 1.00     1337
-    ## cor(Intercept,relevance1)     0.12      0.55    -0.91     0.96 1.00     2341
+    ## sd(Intercept)                 0.09      0.06     0.00     0.24 1.00     2227
+    ## sd(relevance1)                0.12      0.08     0.01     0.29 1.00     1549
+    ## cor(Intercept,relevance1)     0.12      0.55    -0.93     0.96 1.00     3290
     ##                           Tail_ESS
-    ## sd(Intercept)                 3280
-    ## sd(relevance1)                2898
-    ## cor(Intercept,relevance1)     3655
+    ## sd(Intercept)                 3016
+    ## sd(relevance1)                3210
+    ## cor(Intercept,relevance1)     3941
     ## 
     ## ~title (Number of levels: 32) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     0.47      0.08     0.33     0.65 1.00     2102     2746
+    ## sd(Intercept)     0.47      0.08     0.33     0.66 1.00     2328     3594
     ## 
     ## Population-Level Effects: 
     ##            Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## Intercept      0.21      0.09     0.02     0.39 1.00     2142     2826
-    ## relevance1     0.04      0.10    -0.16     0.24 1.00     2352     2240
+    ## Intercept      0.21      0.10     0.02     0.40 1.00     3990     3688
+    ## relevance1     0.04      0.10    -0.15     0.23 1.00     4128     4325
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma     0.83      0.03     0.77     0.90 1.00     3714     3340
+    ## sigma     0.83      0.03     0.77     0.90 1.00     5237     4637
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential

@@ -237,7 +237,7 @@ d_critical_sd
 ```
 
 Visually check the spread of by-item ratings among subjects for each question:
-```{r, fig.height=20, fig.width=7}
+```{r, fig.height=20, fig.width=10}
 
 d_critical_long %>% 
   mutate(title = paste(title, exp_condition, sep = "_"),
@@ -375,7 +375,7 @@ d_critical_long %>%
 ```
 
 Plot by-item trends between predictor ratings and target inference strength ratings (relevance / competence ratings with utterance are omitted):
-```{r, fig.height=20, fig.width=8}
+```{r, fig.height=35, fig.width=15}
 # make a versatile wide representation of the critical data
 d_critical_predictorsXtarget <- d_critical_wide %>% 
   pivot_longer(
@@ -396,7 +396,7 @@ d_critical_predictorsXtarget %>%
 ```
 
 Plot inference strength ratings against predictor ratings, by-item, using by-item mean ratings across participants. Error bars indicate the standard deviation of the mean:
-```{r, fig.height=4, fig.width=8}
+```{r, fig.height=10, fig.width=8}
 d_critical_predictorsXtarget_summary <- d_critical_predictorsXtarget %>% 
   group_by(title, predictors, main_type) %>%
   summarise(mean_target = mean(target),
@@ -410,7 +410,7 @@ d_critical_predictorsXtarget_summary %>%
   geom_point() +
   geom_errorbar(aes(ymin = mean_target - sd_target, ymax = mean_target + sd_target), alpha = 0.7) +
   geom_errorbarh(aes(xmin = mean_predictor - sd_predictor, xmax = mean_predictor + sd_predictor), alpha = 0.7) +
-  geom_text(aes(label=title), size = 1.5, nudge_y = 4) +
+  geom_text(aes(label=title), size = 2.5, nudge_y = 4) +
   geom_smooth(method = "lm") +
   ylab("Mean inference strength rating") +
   xlab("Mean predictor ratings") + 
@@ -581,6 +581,7 @@ model_xor_prior <- brm(
     (1 | title),
   data = d_critical_wide %>% filter(main_type == "xor"),
   family = "gaussian",
+  control = list(adapt_delta = 0.99),
   cores = 4,
   iter = 3000
 )
@@ -598,6 +599,7 @@ model_xor_comp <- brm(
     (1 | title),
   data = d_critical_wide %>% filter(main_type == "xor"),
   family = "gaussian",
+  control = list(adapt_delta = 0.99),
   cores = 4,
   iter = 3000
 )
@@ -615,6 +617,7 @@ model_xor_rel <- brm(
     (1 | title),
   data = d_critical_wide %>% filter(main_type == "xor"),
   family = "gaussian",
+  control = list(adapt_delta = 0.99),
   cores = 4,
   iter = 3000
 )
@@ -632,6 +635,7 @@ model_some_rel <- brm(
     (1 | title),
   data = d_critical_wide %>% filter(main_type == "some"),
   family = "gaussian",
+  control = list(adapt_delta = 0.99),
   cores = 4,
   iter = 3000
 )
@@ -649,6 +653,7 @@ model_some_prior <- brm(
     (1 | title),
   data = d_critical_wide %>% filter(main_type == "some"),
   family = "gaussian",
+  control = list(adapt_delta = 0.99),
   cores = 4,
   iter = 3000
 )
@@ -666,6 +671,7 @@ model_some_comp <- brm(
     (1 | title),
   data = d_critical_wide %>% filter(main_type == "some"),
   family = "gaussian",
+  control = list(adapt_delta = 0.92),
   cores = 4,
   iter = 3000
 )
@@ -705,6 +711,7 @@ model_xor_pri_rel <- brm(
     (1 | title),
   data = d_critical_wide %>% filter(main_type == "xor"),
   family = "gaussian",
+  control = list(adapt_delta = 0.92),
   cores = 4,
   iter = 3000
 )
