@@ -523,9 +523,11 @@ Maximal models on raw ratings:
 ```{r, results='hide'}
 # xor, maximal model with interactions and maximal REs
 model_xor <- brm(
-  target ~ prior*competence*relevance + 
+  bf(target ~ prior*competence*relevance + 
     (1 + prior + competence + relevance || submission_id) +
     (1 | title),
+    decomp = "QR"
+  ), 
   data = d_critical_wide %>% filter(main_type == "xor"),
   family = "gaussian",
   cores = 4,
