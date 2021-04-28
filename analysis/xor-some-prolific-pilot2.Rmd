@@ -72,6 +72,20 @@ ggplot(data = overall_timeSpent, aes(y=timeSpent, alpha = 0.7)) +
   geom_boxplot() +
   ggtitle("Overall time participants took in mins")
 ```
+
+Investigate very fast completion times:
+```{r}
+ d_native %>% mutate(timeSpent = round(timeSpent, 2)) %>%
+  filter(timeSpent < 8) -> fast_completions
+
+# check if their responses look somehow peculiar
+fast_completions %>%
+  ggplot(., aes(x = response)) +
+  geom_histogram()
+
+cat("number of fast-responders (below 8 mins):", fast_completions %>% distinct(submission_id) %>% pull() %>% length())
+```
+Data frames preparation:
 ```{r}
 d_main <- d_native %>% select(-age, -botresponse, -comments, -education, -endTime, 
                               -gender, -languages, -optionLeft, -optionRight, -startDate,
@@ -108,7 +122,7 @@ Participants who failed all example trials are excluded, as well.
 The bot check trial is not considered for exclusions. 
 ```{r exclusions}
 # get participants failing example trials
-d_exmpl <- d_exmpl %>% group_by(submission_id) %>% 
+d_exmpl_fail <- d_exmpl %>% group_by(submission_id) %>% 
   mutate(example_condition = ifelse(grepl("as certainly true", question), "true", 
                                     ifelse(grepl("as certainly false", question), "false",
                                            "uncertain")),
@@ -120,7 +134,7 @@ d_exmpl <- d_exmpl %>% group_by(submission_id) %>%
                                     TRUE ~ TRUE)
          ) %>% filter(passed_example == F)
 
-cat("Subjects failing the example trials: ", d_exmpl %>% distinct(submission_id) %>% pull() %>% length())
+cat("Subjects failing the example trials: ", d_exmpl_fail %>% distinct(submission_id) %>% pull() %>% length())
 
 # apply exclusion criteria to main trials
 # check range of responses per participant
@@ -128,7 +142,7 @@ d_main_fail <- d_main %>% group_by(submission_id) %>%
   mutate(passed_main = case_when(max(response) - min(response) <= 10 ~ FALSE,
                                  TRUE ~ TRUE)
          ) %>% filter(passed_main == F)
-cat("Subjects providing the same ratings throughout the trials: ", d_main_fail %>% distinct(submission_id) %>% pull() %>% length())
+cat(" Subjects providing the same ratings throughout the trials: ", d_main_fail %>% distinct(submission_id) %>% pull() %>% length())
 
 # get participants failing comprehension questions
 d_test <- d_test %>%
@@ -138,18 +152,127 @@ d_test <- d_test %>%
                                    test_condition == "uncertain" ~ response %in% (0:90)),
          mean_comprehension = mean(passed_filler_trial),
          passed_filler = mean_comprehension >= 0.8
-         ) %>%
+         ) 
+
+d_test_fail <- d_test %>% 
   filter(passed_filler == F)
 
-cat("Subjects failing the comprehension trials: ", d_test %>% distinct(submission_id) %>% pull() %>% length())
+cat(" Subjects failing the comprehension trials: ", d_test_fail %>% distinct(submission_id) %>% pull() %>% length())
 
+# plot by-participant means on comprehension questions, and mark red excluded points, 
+# to see if the participants performed in a peculiar way
+d_test %>% 
+  group_by(submission_id, main_type, test_condition) %>%
+  mutate(subj_mean = mean(response)) %>%
+  ggplot(., aes(x = test_condition, y = subj_mean)) +
+  geom_point(size = 2, alpha = 0.3, position = position_jitter(width = 0.1)) +
+  geom_point(data = . %>% filter(passed_filler == F), aes(x = test_condition, y = subj_mean), color = "red", 
+             size = 2) +
+  facet_wrap(~main_type) +
+  ggtitle("Red points mark subject response means for subjects\nwith a mean comprehension question accuracy < 0.8")
+```
+
+```{r}
 # put it all together
 d_full_clean <- anti_join(d_main, d_main_fail, by = "submission_id")
-d_full_clean <- anti_join(d_full_clean, d_exmpl, d_test, by = "submission_id")
-d_full_clean <- anti_join(d_full_clean, d_test, by = "submission_id")
+d_full_clean <- anti_join(d_full_clean, d_exmpl_fail, d_test, by = "submission_id")
+d_full_clean <- anti_join(d_full_clean, d_test_fail, by = "submission_id")
 
-cat("Nr. of participants left after cleaning: ", d_full_clean %>% distinct(submission_id) %>% pull() %>% length())
+cat(" Nr. of participants left after cleaning: ", d_full_clean %>% distinct(submission_id) %>% pull() %>% length())
 ```
+
+Check exclusions if applying exclusion ranges as suggested by Bob -- then almost twice as many participants are excluded based on their comprehension questions performance (I believe mainly due to a lower bound on correct responses in the uncertain questions). 
+```{r}
+# true comprehension questions: 50-100
+# uncertain comprehension questions: 25-75
+# false comprehension questions: 0-50
+# get participants failing example trials
+
+d_exmpl2 <- d_exmpl %>% group_by(submission_id) %>% 
+  mutate(example_condition = ifelse(grepl("as certainly true", question), "true", 
+                                    ifelse(grepl("as certainly false", question), "false",
+                                           "uncertain")),
+         passed_example_trial = case_when(example_condition == "true" ~ response >= 50,
+                                    example_condition == "false" ~ response <= 50,
+                                    example_condition == "uncertain" ~ response %in% (25:75)),
+       #  check if all trials passed
+         passed_example = case_when(sum(passed_example_trial) == 0 ~ FALSE,
+                                    TRUE ~ TRUE)
+         ) %>% filter(passed_example == F)
+
+cat("Subjects failing the example trials: ", d_exmpl2 %>% distinct(submission_id) %>% pull() %>% length())
+
+# apply exclusion criteria to main trials
+# check range of responses per participant
+d_main_fail <- d_main %>% group_by(submission_id) %>%
+  mutate(passed_main = case_when(max(response) - min(response) <= 10 ~ FALSE,
+                                 TRUE ~ TRUE)
+         ) %>% filter(passed_main == F)
+cat(" Subjects providing the same ratings throughout the trials: ", d_main_fail %>% distinct(submission_id) %>% pull() %>% length())
+
+# get participants failing comprehension questions
+d_test2 <- d_test %>%
+  group_by(submission_id) %>%
+  mutate(passed_filler_trial = case_when(test_condition == "true" ~ response >= 50,
+                                   test_condition == "false" ~ response <= 50,
+                                   test_condition == "uncertain" ~ response %in% (25:75)),
+         mean_comprehension = mean(passed_filler_trial),
+         passed_filler = mean_comprehension >= 0.8
+         ) 
+
+d_test_fail2 <- d_test2 %>% 
+  filter(passed_filler == F)
+
+cat(" Subjects failing the comprehension trials: ", d_test_fail2 %>% distinct(submission_id) %>% pull() %>% length())
+
+```
+Now we explore applying exclusion criteria on z-scored data. Here it might make sense to exclude participants whose >=0.8 of responses are more than 2 SD from the mean (?). 
+```{r}
+# group by extended block, exmpl / filler / critical, maybe polarity of filler exmpl question
+# add block extension, put all data together somehow
+d_critical_fail_zScored <- d_main %>% 
+  mutate(block_extended = ifelse(
+    !(ifelse(is.na(critical_question), F, T)), 
+    block, 
+    ifelse(block %in% c("some", "xor"), "target", str_c(block, "_wUtt", ""))
+  )  
+  ) %>% 
+  filter(!(grepl("test", block_extended))) %>%
+  group_by(submission_id, block_extended) %>%
+  mutate(subj_block_mean = mean(response),
+         subj_block_sd = sd(response),
+         response_centered = (response - subj_block_mean)/subj_block_sd,
+         # catch the cases where sd is 0 
+         response_centered = ifelse(is.na(response_centered), 0, response_centered)) %>%
+  ungroup() %>%
+  # add by-block SDs, such that participants can be excluded based on being outside 2 SDs on a block
+  # or should this be based on by-subject SDs???? 
+  group_by(block_extended) %>%
+  mutate(block_mean = mean(response),
+         block_sd = sd(response),
+         passed_main_trial = case_when(abs(response_centered) <= 2*block_sd ~ T,
+                                       T ~ F),
+         mean_critical_passRate = mean(passed_main_trial))
+
+
+# get participants failing comprehension questions with z-scored data; here, by-subject SD are used for the exclusion
+d_test_fail_zScore <- d_test %>%
+  group_by(submission_id, test_condition) %>%
+  mutate(
+    subj_block_mean = mean(response),
+    subj_block_sd = sd(response),
+    response_centered = (response - subj_block_mean)/subj_block_sd,
+    response_centered = ifelse(is.na(response_centered), 0, response_centered),
+    passed_filler_trial = case_when(abs(response_centered) <= 2*subj_block_sd ~ T,
+                                   T ~ F),
+         mean_comprehension = mean(passed_filler_trial),
+         passed_filler = mean_comprehension >= 0.8
+         ) 
+
+d_test_fail_zScore <- d_test_fail_zScore %>% 
+  filter(passed_filler == F)
+```
+
 
 ```{r clean}
 # get overall mean ratings / subject
@@ -285,23 +408,26 @@ d_critical_long %>%
   facet_wrap(main_type~class_condition) # get ratings from the respective trials only 
  
 ```
-```{r}
+```{r, fig.height=3}
 # check whether the ratings in the two prior questions are the same in xor 
 d_critical_long %>% 
   filter(block != "xor" & block != "some") %>%
   filter(block == class_condition) %>%
   filter(block == "prior", main_type == "xor") %>%
-  mutate(priorQ_nr = rep(c(1,2), 396)) -> d_xor_priors
+  mutate(priorQ_nr = rep(c(1,2), 396),
+         unique_ID = paste(submission_id, ID, sep="_")) -> d_xor_priors
 d_xor_priors %>% group_by(priorQ_nr, prior_class) %>%
   summarise(mean = mean(response)) -> d_xor_priors_summary
+
 d_xor_priors %>%
   ggplot(., aes(x = as.factor(priorQ_nr), y = response )) +
   geom_point(size = 2, alpha = 0.6, position = position_jitter(width = 0.1)) +
   geom_point(data = d_xor_priors_summary, aes(x = as.factor(priorQ_nr), y = mean), color = "red", size = 3) +
+  geom_path(aes(group = "unique_ID"), alpha = 0.6) +
   ylab("Responses to prior questions") +
   xlab("First vs Second prior question for high vs low prior conditions") +
-  facet_wrap(~as.factor(prior_class)) # get ratings from the respective trials only 
- 
+  facet_wrap(~as.factor(prior_class)) + # get ratings from the respective trials only 
+  ggtitle("Xor prior question ratings.\nLines indicate the two responses provided by one participant for a specific item.")
 ```
 
 Plot inference ratings as a function of *anticipated* rating of the explanatory factor, similar to the paper: 
@@ -551,9 +677,10 @@ bayesplot::mcmc_pairs(model_xor, pars = c("b_prior", "b_competence", "b_relevanc
 ```{r, results='hide'}
 # some, maximal model with interactions and maximal REs
 model_some <- brm(
-  target ~ prior*competence*relevance + 
+  bf(target ~ prior*competence*relevance + 
     (1 + prior + competence + relevance || submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_wide %>% filter(main_type == "some"),
   family = "gaussian",
   cores = 4,
@@ -578,9 +705,10 @@ Models on raw data with only one predictor:
 ```{r, results='hide'}
 # xor
 model_xor_prior <- brm(
-  target ~ prior + 
+  bf(target ~ prior + 
     (1 + prior | submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_wide %>% filter(main_type == "xor"),
   family = "gaussian",
   control = list(adapt_delta = 0.99),
@@ -596,9 +724,10 @@ summary(model_xor_prior)
 ```{r, results='hide'}
 # xor
 model_xor_comp <- brm(
-  target ~ competence + 
+  bf(target ~ competence + 
     (1 + competence | submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_wide %>% filter(main_type == "xor"),
   family = "gaussian",
   control = list(adapt_delta = 0.99),
@@ -614,9 +743,10 @@ summary(model_xor_comp)
 ```{r, results='hide'}
 # xor
 model_xor_rel <- brm(
-  target ~ relevance + 
+  bf(target ~ relevance + 
     (1 + relevance | submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_wide %>% filter(main_type == "xor"),
   family = "gaussian",
   control = list(adapt_delta = 0.99),
@@ -632,9 +762,10 @@ summary(model_xor_rel)
 ```{r, results='hide'}
 # some
 model_some_rel <- brm(
-  target ~ relevance + 
+  bf(target ~ relevance + 
     (1 + relevance | submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_wide %>% filter(main_type == "some"),
   family = "gaussian",
   control = list(adapt_delta = 0.99),
@@ -650,9 +781,10 @@ summary(model_some_rel)
 ```{r, results='hide'}
 # some
 model_some_prior <- brm(
-  target ~ prior + 
+  bf(target ~ prior + 
     (1 + prior | submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_wide %>% filter(main_type == "some"),
   family = "gaussian",
   control = list(adapt_delta = 0.99),
@@ -668,9 +800,10 @@ summary(model_some_prior)
 ```{r, results='hide'}
 # some
 model_some_comp <- brm(
-  target ~ competence + 
+  bf(target ~ competence + 
     (1 + competence | submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_wide %>% filter(main_type == "some"),
   family = "gaussian",
   control = list(adapt_delta = 0.92),
@@ -687,9 +820,12 @@ With two predictors:
 ```{r, results='hide'}
 # xor
 model_xor_pri_comp <- brm(
+  bf(
   target ~ prior*competence + 
     (1 + prior*competence || submission_id) +
     (1 | title),
+  decomp = "QR"
+  ),
   data = d_critical_wide %>% filter(main_type == "xor"),
   family = "gaussian",
   cores = 4,
@@ -708,9 +844,10 @@ bayesplot::mcmc_pairs(model_xor_pri_comp, pars = c("b_prior", "b_competence"))
 ```{r, results='hide'}
 # xor
 model_xor_pri_rel <- brm(
-  target ~ prior*relevance + 
+  bf(target ~ prior*relevance + 
     (1 + prior*relevance || submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_wide %>% filter(main_type == "xor"),
   family = "gaussian",
   control = list(adapt_delta = 0.92),
@@ -730,9 +867,10 @@ bayesplot::mcmc_pairs(model_xor_pri_rel, pars = c("b_prior", "b_relevance"))
 ```{r, results='hide'}
 # xor
 model_xor_rel_comp <- brm(
-  target ~ relevance*competence + 
+  bf(target ~ relevance*competence + 
     (1 + relevance*competence || submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_wide %>% filter(main_type == "xor"),
   family = "gaussian",
   cores = 4,
@@ -751,9 +889,10 @@ bayesplot::mcmc_pairs(model_xor_rel_comp, pars = c("b_competence", "b_relevance"
 ```{r, results='hide'}
 # some
 model_some_pri_comp <- brm(
-  target ~ prior*competence + 
+  bf(target ~ prior*competence + 
     (1 + prior*competence || submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_wide %>% filter(main_type == "some"),
   family = "gaussian",
   cores = 4,
@@ -772,9 +911,10 @@ bayesplot::mcmc_pairs(model_some_pri_comp, pars = c("b_prior", "b_competence"))
 ```{r, results='hide'}
 # some
 model_some_pri_rel <- brm(
-  target ~ prior*relevance + 
+  bf(target ~ prior*relevance + 
     (1 + prior*relevance || submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_wide %>% filter(main_type == "some"),
   family = "gaussian",
   cores = 4,
@@ -793,9 +933,10 @@ bayesplot::mcmc_pairs(model_some_pri_rel, pars = c("b_prior", "b_relevance"))
 ```{r, results='hide'}
 # some
 model_some_rel_comp <- brm(
-  target ~ relevance*competence + 
+  bf(target ~ relevance*competence + 
     (1 + relevance*competence || submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_wide %>% filter(main_type == "some"),
   family = "gaussian",
   cores = 4,
@@ -816,9 +957,10 @@ The same stats (full, one predictor, to predictors) on z-scored data:
 ```{r, results='hide'}
 # xor, maximal model with interactions and maximal REs on z-scored data
 model_xor_zScored <- brm(
-  target ~ prior*competence*relevance + 
+  bf(target ~ prior*competence*relevance + 
     (1 + prior + competence + relevance || submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_zScored_wide %>% filter(main_type == "xor"),
   family = "gaussian",
   cores = 4,
@@ -837,9 +979,10 @@ bayesplot::mcmc_pairs(model_xor_zScored, pars = c("b_prior", "b_relevance", "b_c
 ```{r, results='hide'}
 # some, maximal model with interactions and maximal REs
 model_some_zScored <- brm(
-  target ~ prior*competence*relevance + 
+  bf(target ~ prior*competence*relevance + 
     (1 + prior + competence + relevance || submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_zScored_wide %>% filter(main_type == "some"),
   family = "gaussian",
   cores = 4,
@@ -859,9 +1002,10 @@ bayesplot::mcmc_pairs(model_some_zScored, pars = c("b_prior", "b_relevance", "b_
 ```{r, results='hide'}
 # xor
 model_xor_zScored_prior <- brm(
-  target ~ prior + 
+  bf(target ~ prior + 
     (1 + prior | submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_zScored_wide %>% filter(main_type == "xor"),
   family = "gaussian",
   cores = 4,
@@ -876,9 +1020,10 @@ summary(model_xor_zScored_prior)
 ```{r, results='hide'}
 # xor
 model_xor_zScored_comp <- brm(
-  target ~ competence + 
+  bf(target ~ competence + 
     (1 + competence | submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_zScored_wide %>% filter(main_type == "xor"),
   family = "gaussian",
   cores = 4,
@@ -893,9 +1038,10 @@ summary(model_xor_zScored_comp)
 ```{r, results='hide'}
 # xor
 model_xor_zScored_rel <- brm(
-  target ~ relevance + 
+  bf(target ~ relevance + 
     (1 + relevance | submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_zScored_wide %>% filter(main_type == "xor"),
   family = "gaussian",
   cores = 4,
@@ -910,9 +1056,10 @@ summary(model_xor_zScored_rel)
 ```{r, results='hide'}
 # some
 model_some_zScored_rel <- brm(
-  target ~ relevance + 
+  bf(target ~ relevance + 
     (1 + relevance | submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_zScored_wide %>% filter(main_type == "some"),
   family = "gaussian",
   cores = 4,
@@ -927,9 +1074,10 @@ summary(model_some_zScored_rel)
 ```{r, results='hide'}
 # some
 model_some_zScored_prior <- brm(
-  target ~ prior + 
+  bf(target ~ prior + 
     (1 + prior | submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_zScored_wide %>% filter(main_type == "some"),
   family = "gaussian",
   cores = 4,
@@ -944,9 +1092,10 @@ summary(model_some_zScored_prior)
 ```{r, results='hide'}
 # some
 model_some_zScored_comp <- brm(
-  target ~ competence + 
+  bf(target ~ competence + 
     (1 + competence | submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_zScored_wide %>% filter(main_type == "some"),
   family = "gaussian",
   cores = 4,
@@ -962,9 +1111,10 @@ With two predictors:
 ```{r, results='hide'}
 # xor
 model_xor_zScored_pri_comp <- brm(
-  target ~ prior*competence + 
+  bf(target ~ prior*competence + 
     (1 + prior*competence || submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_zScored_wide %>% filter(main_type == "xor"),
   family = "gaussian",
   cores = 4,
@@ -983,9 +1133,10 @@ bayesplot::mcmc_pairs(model_xor_zScored_pri_comp, pars = c("b_prior", "b_compete
 ```{r, results='hide'}
 # xor
 model_xor_zScored_pri_rel <- brm(
-  target ~ prior*relevance + 
+  bf(target ~ prior*relevance + 
     (1 + prior*relevance || submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_zScored_wide %>% filter(main_type == "xor"),
   family = "gaussian",
   cores = 4,
@@ -1004,9 +1155,10 @@ bayesplot::mcmc_pairs(model_xor_zScored_pri_rel, pars = c("b_prior", "b_relevanc
 ```{r, results='hide'}
 # xor
 model_xor_zScored_rel_comp <- brm(
-  target ~ relevance*competence + 
+  bf(target ~ relevance*competence + 
     (1 + relevance*competence || submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_zScored_wide %>% filter(main_type == "xor"),
   family = "gaussian",
   cores = 4,
@@ -1025,9 +1177,10 @@ bayesplot::mcmc_pairs(model_xor_zScored_rel_comp, pars = c("b_relevance", "b_com
 ```{r, results='hide'}
 # some
 model_some_zScored_pri_comp <- brm(
-  target ~ prior*competence + 
+  bf(target ~ prior*competence + 
     (1 + prior*competence || submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_zScored_wide %>% filter(main_type == "some"),
   family = "gaussian",
   cores = 4,
@@ -1046,9 +1199,10 @@ bayesplot::mcmc_pairs(model_some_zScored_pri_comp, pars = c("b_prior", "b_compet
 ```{r, results='hide'}
 # some
 model_some_zScored_pri_rel <- brm(
-  target ~ prior*relevance + 
+  bf(target ~ prior*relevance + 
     (1 + prior*relevance || submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_zScored_wide %>% filter(main_type == "some"),
   family = "gaussian",
   cores = 4,
@@ -1067,9 +1221,10 @@ bayesplot::mcmc_pairs(model_some_zScored_pri_rel, pars = c("b_prior", "b_relevan
 ```{r, results='hide'}
 # some
 model_some_zScored_rel_comp <- brm(
-  target ~ relevance*competence + 
+  bf(target ~ relevance*competence + 
     (1 + relevance*competence || submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_zScored_wide %>% filter(main_type == "some"),
   family = "gaussian",
   cores = 4,
@@ -1109,9 +1264,10 @@ contrasts(d_critical_wide_cat$relevance) <- contr.sum(2)
 
 # xor, maximal model with interactions and maximal REs
 model_xor_cat <- brm(
-  response ~ prior*competence*relevance + 
+  bf(response ~ prior*competence*relevance + 
     (1 + prior + competence + relevance || submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_wide_cat %>% filter(main_type == "xor"),
   family = "gaussian",
   cores = 4,
@@ -1138,9 +1294,10 @@ hypothesis(model_xor_cat, "relevance1 > 0")
 
 ```{r, results='hide'}
 model_some_cat <- brm(
-  response ~ prior*competence*relevance + 
+  bf(response ~ prior*competence*relevance + 
     (1 + prior + competence + relevance || submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_wide_cat %>% filter(main_type == "some"),
   family = "gaussian",
   cores = 4,
@@ -1185,9 +1342,10 @@ contrasts(d_critical_wide_cat_zScored$relevance) <- contr.sum(2)
 
 # xor, maximal model with interactions and maximal REs
 model_xor_cat_zScored <- brm(
-  response_centered ~ prior*competence*relevance + 
+  bf(response_centered ~ prior*competence*relevance + 
     (1 + prior + competence + relevance || submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_wide_cat_zScored %>% filter(main_type == "xor"),
   family = "gaussian",
   cores = 4,
@@ -1211,9 +1369,10 @@ hypothesis(model_xor_cat_zScored, "relevance1 > 0")
 
 ```{r, results='hide'}
 model_some_cat_zScored <- brm(
-  response_centered ~ prior*competence*relevance + 
+  bf(response_centered ~ prior*competence*relevance + 
     (1 + prior + competence + relevance || submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_wide_cat_zScored %>% filter(main_type == "some"),
   family = "gaussian",
   cores = 4,
@@ -1239,9 +1398,10 @@ hypothesis(model_some_cat_zScored, "relevance1 > 0")
 For xor:
 ```{r, results="hide"}
 model_xor_cat_zScored_pri <- brm(
-  response_centered ~ prior + 
+  bf(response_centered ~ prior + 
     (1 + prior | submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_wide_cat_zScored %>% filter(main_type == "xor"),
   family = "gaussian",
   cores = 4,
@@ -1254,9 +1414,10 @@ summary(model_xor_cat_zScored_pri)
 
 ```{r, results="hide"}
 model_xor_cat_zScored_comp <- brm(
-  response_centered ~ competence + 
+  bf(response_centered ~ competence + 
     (1 + competence | submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_wide_cat_zScored %>% filter(main_type == "xor"),
   family = "gaussian",
   cores = 4,
@@ -1269,9 +1430,10 @@ summary(model_xor_cat_zScored_comp)
 
 ```{r, results="hide"}
 model_xor_cat_zScored_rel <- brm(
-  response_centered ~ relevance + 
+  bf(response_centered ~ relevance + 
     (1 + relevance | submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_wide_cat_zScored %>% filter(main_type == "xor"),
   family = "gaussian",
   cores = 4,
@@ -1285,9 +1447,10 @@ summary(model_xor_cat_zScored_rel)
 For some:
 ```{r, results="hide"}
 model_some_cat_zScored_pri <- brm(
-  response_centered ~ prior + 
+  bf(response_centered ~ prior + 
     (1 + prior | submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_wide_cat_zScored %>% filter(main_type == "some"),
   family = "gaussian",
   cores = 4,
@@ -1300,9 +1463,10 @@ summary(model_some_cat_zScored_pri)
 
 ```{r, results="hide"}
 model_some_cat_zScored_comp <- brm(
-  response_centered ~ competence + 
+  bf(response_centered ~ competence + 
     (1 + competence | submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_wide_cat_zScored %>% filter(main_type == "some"),
   family = "gaussian",
   cores = 4,
@@ -1315,9 +1479,10 @@ summary(model_some_cat_zScored_comp)
 
 ```{r, results="hide"}
 model_some_cat_zScored_rel <- brm(
-  response_centered ~ relevance + 
+  bf(response_centered ~ relevance + 
     (1 + relevance | submission_id) +
     (1 | title),
+    decomp = "QR"),
   data = d_critical_wide_cat_zScored %>% filter(main_type == "some"),
   family = "gaussian",
   cores = 4,
