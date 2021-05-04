@@ -412,6 +412,7 @@ d_critical_long %>%
   facet_wrap(main_type~class_condition) # get ratings from the respective trials only 
  
 ```
+
 ```{r, fig.height=3}
 # check whether the ratings in the two prior questions are the same in xor 
 d_critical_long %>% 
@@ -432,6 +433,19 @@ d_xor_priors %>%
   xlab("First vs Second prior question for high vs low prior conditions") +
   facet_wrap(~as.factor(prior_class)) + # get ratings from the respective trials only 
   ggtitle("Xor prior question ratings.\nLines indicate the two responses provided by one participant for a specific item.")
+```
+```{r}
+# check analytically how many subjects rate prior questions differently
+d_xor_priors %>% select(-trial_number, -RT, -prompt) %>% 
+  pivot_wider(names_from = "priorQ_nr", values_from = "response") %>%
+  mutate(response_difference = abs(`1` - `2`),
+         bigDifference = ifelse(response_difference > 15, T, F)) -> d_xor_priors_differences
+
+# 41 responses with difference > 15 between first and second rating
+d_xor_priors_differences %>% count(bigDifference)
+
+# proportion of big differences in prior responses by prior type (high vs low)
+d_xor_priors_differences %>% group_by(prior_class) %>% summarise(prop_big_diffs = mean(bigDifference))
 ```
 
 Plot inference ratings as a function of *anticipated* rating of the explanatory factor, similar to the paper: 
