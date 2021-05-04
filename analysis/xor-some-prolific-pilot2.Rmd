@@ -270,7 +270,11 @@ d_test_fail_zScore <- d_test %>%
          ) 
 
 d_test_fail_zScore <- d_test_fail_zScore %>% 
+  ungroup() %>%
   filter(passed_filler == F)
+
+cat(" Subjects failing the comprehension trials when using z-scored raw data: ", d_test_fail_zScore %>% distinct(submission_id) %>% pull() %>% length())
+
 ```
 
 
