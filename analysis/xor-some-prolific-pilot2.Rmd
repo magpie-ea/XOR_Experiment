@@ -364,18 +364,38 @@ d_critical_sd
 ```
 
 Visually check the spread of by-item ratings among subjects for each question:
-```{r, fig.height=20, fig.width=10}
+```{r, fig.height=25, fig.width=10}
+d_critical_long_grandMeans <- d_critical_long %>% 
+  mutate(title = paste(title, exp_condition, sep = "_"),
+         block = ifelse(block == "xor" | block == "some", "target", block)) %>%
+  filter(block == class_condition | block == "target") %>%
+  group_by(main_type, block) %>% summarize(mean_resp = mean(response))
+
+d_critical_long_expectedCats <- d_critical_long %>% 
+  mutate(title = paste(title, exp_condition, sep = "_"),
+         block = ifelse(block == "xor" | block == "some", "target", block)) %>%
+  filter(block == class_condition | block == "target") %>%
+  group_by(main_type, block, title) %>% summarize(mean_resp_block = mean(response))
 
 d_critical_long %>% 
   mutate(title = paste(title, exp_condition, sep = "_"),
          block = ifelse(block == "xor" | block == "some", "target", block)) %>%
-  filter(block == class_condition | block == "target") %>%
+  left_join(., d_critical_long_grandMeans, by = c("main_type", "block")) %>% filter(block == class_condition | block == "target") -> d_long_place_holder
+
+
+left_join(d_long_place_holder, d_critical_long_expectedCats, by = c("main_type", "block", "title")) %>% 
+  mutate(expected_block = ifelse(block != "target", prior_class * 100, NA),
+         block = factor(block, levels = c("relevance", "competence", "prior"))) %>%
   ggplot(., aes(x = block, y = response, color = block)) +
   geom_point(alpha = 0.7, position = position_jitter(width = 0.1)) +
+  geom_hline(aes(yintercept = mean_resp), alpha = 0.7) +
+  geom_point(aes(y = mean_resp), color = "black", shape = 2) +
+  geom_point(aes(y = mean_resp_block, fill = block), color = "black") +
+  geom_point(aes(y = expected_block), color="red", size = 2.5) +
   ylab("Raw responses to respective questions") +
   facet_wrap(main_type~title, ncol = 4) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  ggtitle("By-item by-question raw ratings")
+  ggtitle("By-item by-question raw ratings\nBlack dots indicate by-block means within-item, lines and triangles indicate grand by-block means\nRed dots indicate expected rating")
 ```
 For the following items, participants seem  to *disagree* in their judgments for all of the predictors: Emails from a broken laptop, Gift unwrapping, Martha's cookies, Suzie's fruits, Brad's clothes, Crime, maybe more..
 
