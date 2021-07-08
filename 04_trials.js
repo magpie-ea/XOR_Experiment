@@ -2096,6 +2096,9 @@ const trials_practice = [{
 // rel_block = _.flatten(_.map(_.shuffle(eight_stories), function (x) {
 //   return (create_block(x, 'rel'));
 // }));
+console.log("Log the practice trials")
+console.log(trials_practice)
+
 xor_block = _.map(_.shuffle(or_stories), function (x) {
   return create_block(x, "xor"); // 'xor'
 });

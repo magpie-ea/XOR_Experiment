@@ -1531,3 +1531,4 @@ model_some_cat_zScored_rel <- brm(
 summary(model_some_cat_zScored_rel)
 ```
 
+Now we explore the original analysis with the by-item means:
