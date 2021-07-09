@@ -6,7 +6,7 @@
 function assign_questions(vign) {
   let pri_question;
   for (var i = 0; i < vign.length; i++) {
-    vign[i].allQ = _.shuffle([vign[i].test_true1, vign[i].test_true2, vign[i].test_true, vign[i].test_false1, vign[i].test_false2, vign[i].test_false, vign[i].test_uncertain1, vign[i].test_uncertain2, vign[i].test_uncertain]);
+    vign[i].allQ = _.shuffle([vign[i].test_true1, vign[i].test_true2, vign[i].test_false1, vign[i].test_false2, vign[i].test_uncertain1, vign[i].test_uncertain2]);
     pri_question = _.shuffle([vign[i].question_pri1, vign[i].question_pri2]);
     vign[i].critical_question = [vign[i].question_comp, vign[i].question_rel, vign[i].question_xor, pri_question[0], pri_question[1]];
   }
@@ -16,7 +16,7 @@ function assign_questions(vign) {
 // add critical questions for some and use only the 6 comprehension questions that are available for some
 function assign_questions_some(vign) {
   for (var i = 0; i < vign.length; i++) {
-    vign[i].allQ = _.shuffle([vign[i].test_true1, vign[i].test_true, vign[i].test_false1, vign[i].test_false, vign[i].test_uncertain1, vign[i].test_uncertain]);
+    vign[i].allQ = _.shuffle([vign[i].test_true1, vign[i].test_true2, vign[i].test_false1, vign[i].test_false2, vign[i].test_uncertain1, vign[i].test_uncertain2]);
     vign[i].critical_question = [vign[i].question_comp, vign[i].question_rel, vign[i].question_imp, vign[i].question_priC];
   }
   return (vign);
@@ -24,7 +24,7 @@ function assign_questions_some(vign) {
 
 // construct recording of the used test question
 function test_Q_used(block, item, type, q_nr) {
-  if (type == "xor") {
+  // if (type == "xor") {
     switch(true) {
       case (block.allQ[q_nr] == block.test_true1):
         item.test_question = 'test_true1';
@@ -32,51 +32,51 @@ function test_Q_used(block, item, type, q_nr) {
       case (block.allQ[q_nr] == block.test_true2):
         item.test_question = 'test_true2';
         break;
-      case (block.allQ[q_nr] == block.test_true):
-          item.test_question = 'test_true';
-          break;
+      // case (block.allQ[q_nr] == block.test_true):
+      //     item.test_question = 'test_true';
+      //     break;
       case (block.allQ[q_nr] == block.test_false1):
         item.test_question = 'test_false1';
         break;
       case (block.allQ[q_nr] == block.test_false2):
         item.test_question = 'test_false2';
         break;
-      case (block.allQ[q_nr] == block.test_false):
-          item.test_question = 'test_false';
-          break;
+      // case (block.allQ[q_nr] == block.test_false):
+      //     item.test_question = 'test_false';
+      //     break;
       case (block.allQ[q_nr] == block.test_uncertain1):
         item.test_question = 'test_uncertain1';
         break;
       case (block.allQ[q_nr] == block.test_uncertain2):
         item.test_question = 'test_uncertain2';
         break;
-      case (block.allQ[q_nr] == block.test_uncertain):
-          item.test_question = 'test_uncertain';
-          break;
+      // case (block.allQ[q_nr] == block.test_uncertain):
+      //     item.test_question = 'test_uncertain';
+      //     break;
     }
     // for some, use only 6 comprehension questions
-  } else {
-    switch(true) {
-      case (block.allQ[q_nr] == block.test_true1):
-        item.test_question = 'test_true1';
-        break;
-      case (block.allQ[q_nr] == block.test_true):
-          item.test_question = 'test_true';
-          break;
-      case (block.allQ[q_nr] == block.test_false1):
-        item.test_question = 'test_false1';
-        break;
-      case (block.allQ[q_nr] == block.test_false):
-          item.test_question = 'test_false';
-          break;
-      case (block.allQ[q_nr] == block.test_uncertain1):
-        item.test_question = 'test_uncertain1';
-        break;
-      case (block.allQ[q_nr] == block.test_uncertain):
-          item.test_question = 'test_uncertain';
-          break;
-    }
-  }
+  // } else {
+  //   switch(true) {
+  //     case (block.allQ[q_nr] == block.test_true1):
+  //       item.test_question = 'test_true1';
+  //       break;
+  //     case (block.allQ[q_nr] == block.test_true2):
+  //         item.test_question = 'test_true2';
+  //         break;
+  //     case (block.allQ[q_nr] == block.test_false1):
+  //       item.test_question = 'test_false1';
+  //       break;
+  //     case (block.allQ[q_nr] == block.test_false2):
+  //         item.test_question = 'test_false2';
+  //         break;
+  //     case (block.allQ[q_nr] == block.test_uncertain1):
+  //       item.test_question = 'test_uncertain1';
+  //       break;
+  //     case (block.allQ[q_nr] == block.test_uncertain2):
+  //         item.test_question = 'test_uncertain2';
+  //         break;
+  //   }
+  // }
   return (item);
 }
 

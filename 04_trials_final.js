@@ -5,7 +5,7 @@
 let vignettes_or = {
   lll: [
     {
-   "FIELD1": 7,
+   "ID": 7,
    "name": "Jimmy's trip",
    "author": "micha",
    "final_selection": 1,
@@ -34,7 +34,7 @@ let vignettes_or = {
    "test_uncertain2": "Jimmy’s brother has been to New York City last year."
  },
  {
-   "FIELD1": 15,
+   "ID": 15,
    "name": "Harold's pet",
    "author": "bob",
    "final_selection": 1,
@@ -63,7 +63,7 @@ let vignettes_or = {
    "test_uncertain2": "Richard has a dog."
  },
  {
-   "FIELD1": 16,
+   "ID": 16,
    "name": "Dave's kids",
    "author": "natalie",
    "final_selection": 1,
@@ -92,7 +92,7 @@ let vignettes_or = {
    "test_uncertain2": "Dave’s wife went to school with them, too."
  },
  {
-   "FIELD1": 41,
+   "ID": 41,
    "name": "Brad Pitt",
    "author": "bob",
    "final_selection": 1,
@@ -123,7 +123,7 @@ let vignettes_or = {
 ],
 llh: [
   {
-   "FIELD1": 6,
+   "ID": 6,
    "name": "Joshua's delay",
    "author": "micha",
    "final_selection": 1,
@@ -152,7 +152,7 @@ llh: [
    "test_uncertain2": "The boys like to play hide and seek."
  },
  {
-   "FIELD1": 14,
+   "ID": 14,
    "name": "Gerald's graduation",
    "author": "bob",
    "final_selection": 1,
@@ -181,7 +181,7 @@ llh: [
    "test_uncertain2": "Gerald studied Computer Science."
  },
  {
-   "FIELD1": 22,
+   "ID": 22,
    "name": "Greg's movie",
    "author": "natalie",
    "final_selection": 1,
@@ -210,7 +210,7 @@ llh: [
    "test_uncertain2": "Greg considers going to the cinema with his sister next weekend."
  },
  {
-   "FIELD1": 25,
+   "ID": 25,
    "name": "Alissa's paint",
    "author": "natalie",
    "final_selection": 1,
@@ -240,7 +240,7 @@ llh: [
  }
 ],
 lhl: [ {
-   "FIELD1": 5,
+   "ID": 5,
    "name": "Tony's clubbing",
    "author": "micha",
    "final_selection": 1,
@@ -269,7 +269,7 @@ lhl: [ {
    "test_uncertain2": "Rob’s favorite music is Jazz."
  },
  {
-   "FIELD1": 13,
+   "ID": 13,
    "name": "Lily's husband",
    "author": "bob",
    "final_selection": 1,
@@ -298,7 +298,7 @@ lhl: [ {
    "test_uncertain2": "Lily does not drink alcohol."
  },
  {
-   "FIELD1": 39,
+   "ID": 39,
    "name": "Unexpected guest",
    "author": "neele",
    "final_selection": 1,
@@ -327,7 +327,7 @@ lhl: [ {
    "test_uncertain2": "Kenny’s last name is Miller."
  },
  {
-   "FIELD1": 40,
+   "ID": 40,
    "name": "Hippies",
    "author": "bob",
    "final_selection": 1,
@@ -358,7 +358,7 @@ lhl: [ {
 ],
  lhh: [
    {
-   "FIELD1": 4,
+   "ID": 4,
    "name": "Bill's order",
    "author": "micha",
    "final_selection": 1,
@@ -387,7 +387,7 @@ lhl: [ {
    "test_uncertain2": "Jake is married."
  },
  {
-   "FIELD1": 12,
+   "ID": 12,
    "name": "Chloe's holiday",
    "author": "bob",
    "final_selection": 1,
@@ -416,7 +416,7 @@ lhl: [ {
    "test_uncertain2": "Chloe forgot about bringing some beach towels, too."
  },
  {
-   "FIELD1": 31,
+   "ID": 31,
    "name": "School",
    "author": "elisa",
    "final_selection": 1,
@@ -445,7 +445,7 @@ lhl: [ {
    "test_uncertain2": "Anna’s and Julia’s families are neighbors, too."
  },
  {
-   "FIELD1": 38,
+   "ID": 38,
    "name": "Grandma",
    "author": "neele",
    "final_selection": 1,
@@ -476,7 +476,7 @@ lhl: [ {
 ],
  hll: [
    {
-   "FIELD1": 3,
+   "ID": 3,
    "name": "Carl's party",
    "author": "micha",
    "final_selection": 1,
@@ -505,7 +505,7 @@ lhl: [ {
    "test_uncertain2": "Carl's wife liked the music very much."
  },
  {
-   "FIELD1": 11,
+   "ID": 11,
    "name": "Leo's prize",
    "author": "bob",
    "final_selection": 1,
@@ -534,7 +534,7 @@ lhl: [ {
    "test_uncertain2": "Hans’s wife participates in the tournament."
  },
  {
-   "FIELD1": 32,
+   "ID": 32,
    "name": "Eyewitness",
    "author": "elisa",
    "final_selection": 1,
@@ -563,7 +563,7 @@ lhl: [ {
    "test_uncertain2": "The suspect wore a red hoodie."
  },
  {
-   "FIELD1": 36,
+   "ID": 36,
    "name": "College",
    "author": "neele",
    "final_selection": 1,
@@ -594,7 +594,7 @@ lhl: [ {
 ],
  hlh: [
    {
-   "FIELD1": 2,
+   "ID": 2,
    "name": "Brad's clothes",
    "author": "micha",
    "final_selection": 1,
@@ -623,7 +623,7 @@ lhl: [ {
    "test_uncertain2": "Mandy feels attracted to Brad."
  },
  {
-   "FIELD1": 10,
+   "ID": 10,
    "name": "Gigi's exams",
    "author": "bob",
    "final_selection": 1,
@@ -652,7 +652,7 @@ lhl: [ {
    "test_uncertain2": "Gigi and her best friend want to go to the same college."
  },
  {
-   "FIELD1": 33,
+   "ID": 33,
    "name": "Rabbits",
    "author": "elisa",
    "final_selection": 1,
@@ -681,7 +681,7 @@ lhl: [ {
    "test_uncertain2": "James is a doctor."
  },
  {
-   "FIELD1": 37,
+   "ID": 37,
    "name": "Crime",
    "author": "neele",
    "final_selection": 1,
@@ -712,7 +712,7 @@ lhl: [ {
 ],
  hhl: [
    {
-   "FIELD1": 1,
+   "ID": 1,
    "name": "Mrs. Sanders' son",
    "author": "micha",
    "final_selection": 1,
@@ -741,7 +741,7 @@ lhl: [ {
    "test_uncertain2": "Ted does not like pizza."
  },
  {
-   "FIELD1": 9,
+   "ID": 9,
    "name": "Pete's accident",
    "author": "bob",
    "final_selection": 1,
@@ -770,7 +770,7 @@ lhl: [ {
    "test_uncertain2": "Pete’s mother works as a waitress."
  },
  {
-   "FIELD1": 18,
+   "ID": 18,
    "name": "Frank's laptop",
    "author": "natalie",
    "final_selection": 1,
@@ -799,7 +799,7 @@ lhl: [ {
    "test_uncertain2": "Frank’s laptop is in repair because he spilled coffee all over it. "
  },
  {
-   "FIELD1": 35,
+   "ID": 35,
    "name": "Crush",
    "author": "neele",
    "final_selection": 1,
@@ -829,7 +829,7 @@ lhl: [ {
  }],
  hhh: [
    {
-   "FIELD1": 0,
+   "ID": 0,
    "name": "Mrs. Gibbs' worry",
    "author": "micha",
    "final_selection": 1,
@@ -858,7 +858,7 @@ lhl: [ {
    "test_uncertain2": "Cindy had to work two shifts yesterday."
  },
  {
-   "FIELD1": 8,
+   "ID": 8,
    "name": "Danny's racket",
    "author": "bob",
    "final_selection": 1,
@@ -887,7 +887,7 @@ lhl: [ {
    "test_uncertain2": "Danny’s girlfriend will come watch the game later."
  },
  {
-   "FIELD1": 19,
+   "ID": 19,
    "name": "Presents",
    "author": "natalie",
    "final_selection": 1,
@@ -916,7 +916,7 @@ lhl: [ {
    "test_uncertain2": "Leah really wants a new bike for her birthday. "
  },
  {
-   "FIELD1": 34,
+   "ID": 34,
    "name": "Semester abroad",
    "author": "neele",
    "final_selection": 1,
@@ -949,7 +949,7 @@ lhl: [ {
 let vignettes_some = {
   hhh: [
     {
-      "FIELD1": 0,
+      "ID": 0,
       "name": "Youth hostel",
       "author": "neele",
       "final_selection": 1,
@@ -973,7 +973,7 @@ let vignettes_some = {
       "test_uncertain1": "There is also going to be a vending machine in the common room of the hostel."
     },
     {
-      "FIELD1": 7,
+      "ID": 7,
       "name": "Hotel check",
       "author": "micha",
       "final_selection": 1,
@@ -997,7 +997,7 @@ let vignettes_some = {
       "test_uncertain1": "Harry started this job one year ago."
     },
     {
-      "FIELD1": 16,
+      "ID": 16,
       "name": "Star Trek expert",
       "author": "bob",
       "final_selection": 1,
@@ -1021,7 +1021,7 @@ let vignettes_some = {
       "test_uncertain1": "Amber is a big Harry Potter fan, too."
     },
     {
-      "FIELD1": 33,
+      "ID": 33,
       "name": "Attendance",
       "author": "elisa",
       "final_selection": 1,
@@ -1046,7 +1046,7 @@ let vignettes_some = {
     }],
  hhl: [
    {
-   "FIELD1": 1,
+   "ID": 1,
    "name": "Teacher problems",
    "author": "neele",
    "final_selection": 1,
@@ -1070,7 +1070,7 @@ let vignettes_some = {
    "test_uncertain1": "Mary has a child."
  },
  {
-   "FIELD1": 15,
+   "ID": 15,
    "name": "Tail-donkey blindfold",
    "author": "bob",
    "final_selection": 1,
@@ -1094,7 +1094,7 @@ let vignettes_some = {
    "test_uncertain1": "Grace and Oliver will play Monopoly next."
  },
  {
-   "FIELD1": 25,
+   "ID": 25,
    "name": "Toby's carrots",
    "author": "natalie",
    "final_selection": 1,
@@ -1118,7 +1118,7 @@ let vignettes_some = {
    "test_uncertain1": "Toby’s favourite dish is chicken."
  },
  {
-   "FIELD1": 31,
+   "ID": 31,
    "name": "Teacher",
    "author": "elisa",
    "final_selection": 1,
@@ -1143,7 +1143,7 @@ let vignettes_some = {
  }],
  hlh: [
    {
-   "FIELD1": 5,
+   "ID": 5,
    "name": "The game",
    "author": "neele",
    "final_selection": 1,
@@ -1167,7 +1167,7 @@ let vignettes_some = {
    "test_uncertain1": "Tim has an older brother who is into computer games, as well."
  },
  {
-   "FIELD1": 11,
+   "ID": 11,
    "name": "Swiss watch prototype testing",
    "author": "micha",
    "final_selection": 1,
@@ -1191,7 +1191,7 @@ let vignettes_some = {
    "test_uncertain1": "The company is a family business."
  },
  {
-   "FIELD1": 21,
+   "ID": 21,
    "name": "Harvard admission exams",
    "author": "bob",
    "final_selection": 1,
@@ -1215,7 +1215,7 @@ let vignettes_some = {
    "test_uncertain1": "Eleanor wants to apply to Harvard, too."
  },
  {
-   "FIELD1": 36,
+   "ID": 36,
    "name": "Violinist",
    "author": "elisa",
    "final_selection": 1,
@@ -1240,7 +1240,7 @@ let vignettes_some = {
  }],
  hll: [
    {
-   "FIELD1": 2,
+   "ID": 2,
    "name": "Nuts",
    "author": "neele",
    "final_selection": 1,
@@ -1264,7 +1264,7 @@ let vignettes_some = {
    "test_uncertain1": "Brian’s favourite cake is chocolate cake."
  },
  {
-   "FIELD1": 13,
+   "ID": 13,
    "name": "Rotten tomatoes",
    "author": "micha",
    "final_selection": 1,
@@ -1288,7 +1288,7 @@ let vignettes_some = {
    "test_uncertain1": "The restaurant’s special dish is Italian pasta."
  },
  {
-   "FIELD1": 20,
+   "ID": 20,
    "name": "Schizophrenia talk",
    "author": "bob",
    "final_selection": 1,
@@ -1312,7 +1312,7 @@ let vignettes_some = {
    "test_uncertain1": "Jacob studies electrical engineering."
  },
  {
-   "FIELD1": 40,
+   "ID": 40,
    "name": "Final exam ",
    "author": "bob",
    "final_selection": 1,
@@ -1336,7 +1336,7 @@ let vignettes_some = {
    "test_uncertain1": "Bernard is athletic."
  }],
  lhh: [{
-   "FIELD1": 3,
+   "ID": 3,
    "name": "Harry Potter",
    "author": "neele",
    "final_selection": 1,
@@ -1360,7 +1360,7 @@ let vignettes_some = {
    "test_uncertain1": "Samantha’s friends brought candy."
  },
  {
-   "FIELD1": 9,
+   "ID": 9,
    "name": "Gift unwrapping",
    "author": "micha",
    "final_selection": 1,
@@ -1384,7 +1384,7 @@ let vignettes_some = {
    "test_uncertain1": "Leonard’s little sister was at his party, too."
  },
  {
-   "FIELD1": 19,
+   "ID": 19,
    "name": "M&M's in the hospital",
    "author": "bob",
    "final_selection": 1,
@@ -1408,7 +1408,7 @@ let vignettes_some = {
    "test_uncertain1": "It was Henry’s first time skiing."
  },
  {
-   "FIELD1": 37,
+   "ID": 37,
    "name": "Restaurant",
    "author": "elisa",
    "final_selection": 1,
@@ -1433,7 +1433,7 @@ let vignettes_some = {
  }],
  lhl: [
    {
-   "FIELD1": 10,
+   "ID": 10,
    "name": "Van Gogh exhibition",
    "author": "micha",
    "final_selection": 1,
@@ -1457,7 +1457,7 @@ let vignettes_some = {
    "test_uncertain1": "The exhibition will be open for three months."
  },
  {
-   "FIELD1": 23,
+   "ID": 23,
    "name": "Felix' clothes",
    "author": "natalie",
    "final_selection": 1,
@@ -1481,7 +1481,7 @@ let vignettes_some = {
    "test_uncertain1": "Thomas and Felix are college students."
  },
  {
-   "FIELD1": 24,
+   "ID": 24,
    "name": "Mrs. Todd's math exams",
    "author": "natalie",
    "final_selection": 1,
@@ -1505,7 +1505,7 @@ let vignettes_some = {
    "test_uncertain1": "Mrs. Todd teaches the seventh grade."
  },
  {
-   "FIELD1": 34,
+   "ID": 34,
    "name": "Puzzles",
    "author": "elisa",
    "final_selection": 1,
@@ -1530,7 +1530,7 @@ let vignettes_some = {
  }],
  llh: [
    {
-   "FIELD1": 4,
+   "ID": 4,
    "name": "Picnic pictures",
    "author": "neele",
    "final_selection": 1,
@@ -1554,7 +1554,7 @@ let vignettes_some = {
    "test_uncertain1": "Beth invited her boyfriend to the picnic, too."
  },
  {
-   "FIELD1": 12,
+   "ID": 12,
    "name": "Gourmet desserts",
    "author": "micha",
    "final_selection": 1,
@@ -1578,7 +1578,7 @@ let vignettes_some = {
    "test_uncertain1": "Claire is a vegetarian."
  },
  {
-   "FIELD1": 27,
+   "ID": 27,
    "name": "Suzy's fruits",
    "author": "natalie",
    "final_selection": 1,
@@ -1602,7 +1602,7 @@ let vignettes_some = {
    "test_uncertain1": "Suzy’s parents plan to move to a larger apartment soon."
  },
  {
-   "FIELD1": 38,
+   "ID": 38,
    "name": "Dinosaurs",
    "author": "elisa",
    "final_selection": 1,
@@ -1627,7 +1627,7 @@ let vignettes_some = {
  }],
  lll: [
    {
-   "FIELD1": 22,
+   "ID": 22,
    "name": "Martha's cookies",
    "author": "bob",
    "final_selection": 1,
@@ -1651,7 +1651,7 @@ let vignettes_some = {
    "test_uncertain1": "Martha and her husband went to a Chinese restaurant."
  },
  {
-   "FIELD1": 6,
+   "ID": 6,
    "name": "Champagne reception",
    "author": "neele",
    "final_selection": 1,
@@ -1675,7 +1675,7 @@ let vignettes_some = {
    "test_uncertain1": "Cedric and Tara know some of the guests from work."
  },
  {
-   "FIELD1": 14,
+   "ID": 14,
    "name": "Stand-up comedy show",
    "author": "micha",
    "final_selection": 1,
@@ -1699,7 +1699,7 @@ let vignettes_some = {
    "test_uncertain1": "Lennard is going to Los Angeles next."
  },
  {
-   "FIELD1": 17,
+   "ID": 17,
    "name": "Emails from a broken laptop",
    "author": "bob",
    "final_selection": 1,
