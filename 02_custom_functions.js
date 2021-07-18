@@ -120,8 +120,8 @@ function create_block(b, type) { // blockString
   t1.title = b.name;
   t1.QUD =  b.background;
   t1.critical_question = ``;
-  t1.optionLeft = "certainly false";
-  t1.optionRight = "certainly true";
+  t1.optionLeft = '<p style="font-family: sans-serif">certainly false</p>';
+  t1.optionRight = '<p style="font-family: sans-serif">certainly true</p>';
   t1.condition = "test";
   t1.block = 'test_question1';
   t1.prompt = '<b>' + b.allQ[block_mapper[blockString[0]]] + '</b>';
@@ -140,8 +140,8 @@ function create_block(b, type) { // blockString
   t2.title = b.name;
   t2.QUD = b.background;
   t2.critical_question = ``;
-  t2.optionLeft = "certainly false";
-  t2.optionRight = "certainly true";
+  t2.optionLeft = '<p style="font-family: sans-serif">certainly false</p>';
+  t2.optionRight = '<p style="font-family: sans-serif">certainly true</p>';
   t2.condition = "critical";
   t2.block = blockString[0];
   t2.prompt = '<b>' + b.critical_question[block_mapper[blockString[0]]] + '</b>';
@@ -159,8 +159,8 @@ function create_block(b, type) { // blockString
   t3.title = b.name;
   t3.QUD =  b.background;
   t3.critical_question = ``;
-  t3.optionLeft = "certainly false";
-  t3.optionRight = "certainly true";
+  t3.optionLeft = '<p style="font-family: sans-serif">certainly false</p>';
+  t3.optionRight = '<p style="font-family: sans-serif">certainly true</p>';
   t3.condition = "critical";
   t3.block = blockString[1];
   t3.prompt = `<b>` + b.critical_question[block_mapper[blockString[1]]] + `</b>`;
@@ -178,8 +178,8 @@ function create_block(b, type) { // blockString
   t4.title = b.name;
   t4.QUD = b.background;
   t4.critical_question = ``;
-  t4.optionLeft = "certainly false";
-  t4.optionRight = "certainly true";
+  t4.optionLeft = '<p style="font-family: sans-serif">certainly false</p>';
+  t4.optionRight = '<p style="font-family: sans-serif">certainly true</p>';
   t4.condition = "critical";
   t4.test_question = "no";
   t4.block = blockString[2];
@@ -197,8 +197,8 @@ function create_block(b, type) { // blockString
   t5.title = b.name;
   t5.QUD =  b.background;
   t5.critical_question = ``;
-  t5.optionLeft = "certainly false";
-  t5.optionRight = "certainly true";
+  t5.optionLeft = '<p style="font-family: sans-serif">certainly false</p>';
+  t5.optionRight = '<p style="font-family: sans-serif">certainly true</p>';
   t5.condition = "critical";
   t5.test_question = "no";
   t5.block = blockString[2];
@@ -216,8 +216,8 @@ function create_block(b, type) { // blockString
   t6.title = b.name;
   t6.QUD =  b.background;
   t6.critical_question = ``;
-  t6.optionLeft = "certainly false";
-  t6.optionRight = "certainly true";
+  t6.optionLeft = '<p style="font-family: sans-serif">certainly false</p>';
+  t6.optionRight = '<p style="font-family: sans-serif">certainly true</p>';
   t6.condition = "test";
   t6.block = 'test_question2';
   t6.prompt = `<b>` + b.allQ[0] + `</b>`;
@@ -236,8 +236,8 @@ function create_block(b, type) { // blockString
   t7.title = b.name;
   t7.QUD =  b.background;
   t7.critical_question = ``;
-  t7.optionLeft = "certainly false";
-  t7.optionRight = "certainly true";
+  t7.optionLeft = '<p style="font-family: sans-serif">certainly false</p>';
+  t7.optionRight = '<p style="font-family: sans-serif">certainly true</p>';
   t7.condition = "test";
   t7.block = 'test_question3';
   t7.prompt = `<b>` + b.allQ[2] + `</b>`;
@@ -257,8 +257,8 @@ function create_block(b, type) { // blockString
   t8.title = b.name;
   t8.QUD =  b.background;
   t8.critical_question = ``;
-  t8.optionLeft = "certainly false";
-  t8.optionRight = "certainly true";
+  t8.optionLeft = '<p style="font-family: sans-serif">certainly false</p>';
+  t8.optionRight = '<p style="font-family: sans-serif">certainly true</p>';
   t8.condition = "test";
   t8.block = 'test_question4';
   t8.prompt = `<b>` + b.allQ[3] + `</b>`;
@@ -287,8 +287,8 @@ function create_block(b, type) { // blockString
     default:
       t9.critical_question = '<b>' + utterance_mapper[blockString[3]] + '</b>';
   }
-  t9.optionLeft = "certainly false";
-  t9.optionRight = "certainly true";
+  t9.optionLeft = '<p style="font-family: sans-serif">certainly false</p>';
+  t9.optionRight = '<p style="font-family: sans-serif">certainly true</p>';
   t9.condition = "critical";
   t9.block = type;
   t9.prompt = `<b>` + b.critical_question[block_mapper[blockString[3]]] + `</b>`;
@@ -313,8 +313,8 @@ function create_block(b, type) { // blockString
     default:
       t10.critical_question = '<b>' + utterance_mapper[blockString[3]] + '</b>';
   }
-  t10.optionLeft = "certainly false";
-  t10.optionRight = "certainly true";
+  t10.optionLeft = '<p style="font-family: sans-serif">certainly false</p>';
+  t10.optionRight = '<p style="font-family: sans-serif">certainly true</p>';
   t10.condition = "critical";
   t10.block = blockString[0];
   t10.prompt = `<b>` + b.critical_question[block_mapper[blockString[0]]] + `</b>`;
@@ -339,8 +339,8 @@ function create_block(b, type) { // blockString
     default:
       t11.critical_question = '<b>' + utterance_mapper[blockString[3]] + '</b>';
   }
-  t11.optionLeft = "certainly false";
-  t11.optionRight = "certainly true";
+  t11.optionLeft = '<p style="font-family: sans-serif">certainly false</p>';
+  t11.optionRight = '<p style="font-family: sans-serif">certainly true</p>';
   t11.condition = "critical";
   t11.block = blockString[1];
   t11.prompt = `<b>` + b.critical_question[block_mapper[blockString[1]]] + `</b>`;

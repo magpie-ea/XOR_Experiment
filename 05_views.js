@@ -53,9 +53,9 @@ const instructions = magpieViews.view_generator("instructions", {
   trials: 1,
   name: 'instrucions',
   title: 'Instructions',
-  text: `In the following, you will be presented with <b> 8 short stories </b>.
+  text: `In the following, you will be presented with <b> 8 short stories</b>.
             Please read them very carefully, even if they appear to be repeated and you think that you remember them well enough.
-            We ask you to <b> rate <font color="steelblue">statements</font> about each short story</b>.
+            We ask you to <b> rate statements about each short story</b>.
             Please indicate, using an adjustable slider, <b> how likely you think a statement
             is true based on what you've read.</b>
             <br />
@@ -78,7 +78,7 @@ const begin_experiment = magpieViews.view_generator("instructions", {
   trials: 1,
   name: 'begin_experiment',
   title: 'Begin Experiment',
-  text: `Next, the main part of the experiment will start. Please provide a rating of how likely the <font color="steelblue"><b>statement in the blue box</b></font> is true, given the provided story. The exact rating is a matter of taste and you might want to give a higher or lower rating. Just follow your intuition.`,
+  text: `Next, the main part of the experiment will start. Please provide a rating of how likely it is that the <font color="steelblue"><b>statement in the blue box</b></font> is true, given the provided story. The exact rating is a matter of taste and you might want to give a higher or lower rating. Just follow your intuition.`,
   buttonText: 'Begin experiment'
 });
 
