@@ -349,9 +349,10 @@ function create_block(b, type) { // blockString
 
   // return both prior question blocks for xor, and make only one prior question for some
   if (type == "xor") {
-    return (_.flattenDeep([t1, _.shuffle([t2, t3, _.shuffle([t4, t5])]), t6, t7, t8, t9, _.shuffle([t10, t11]) ]));
+    // remove second round of rel and comp for second pilot
+    return (_.flattenDeep([t1, _.shuffle([t2, t3, _.shuffle([t4, t5])]), t6, t7, t8, t9 ])); // , _.shuffle([t10, t11])
   } else {
-    return (_.flattenDeep([t1, _.shuffle([t2, t3, t4]), t6, t7, t8, t9, _.shuffle([t10, t11]) ]));
+    return (_.flattenDeep([t1, _.shuffle([t2, t3, t4]), t6, t7, t8, t9 ])); // , _.shuffle([t10, t11])
 
   }
 

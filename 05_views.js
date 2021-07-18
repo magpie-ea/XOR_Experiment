@@ -23,10 +23,7 @@ const intro = magpieViews.view_generator("intro", {
   trials: 1,
   name: 'intro',
   // If you use JavaScripts Template String `I am a Template String`, you can use HTML <></> and javascript ${} inside
-  text: `Welcome to an XPrag Experiment.
-            <br />
-            <br />
-            Thank you for your participation in our study!
+  text: `Thank you for your participation in our study!
             Your anonymous data makes an important contribution to our understanding of how humans use language.
             <br />
             <br />

@@ -369,7 +369,7 @@ lhl: [ {
    "background": "Jake and Bill went jogging together in the afternoon. Afterwards they were very hungry and went to a restaurant. Later Jake ran into Bill’s wife and told her about their lunch.",
    "utterance_or": "Jake told Bill’s wife: 'Bill ordered a starter or a side dish with his main course.'",
    "utterance_disj1": "Jake told Bill’s wife: 'Bill ordered a starter with his main course.'",
-   "utterance_disj2": "Jake later told Bill’s wife: 'Bill ordered a side dish with his main course.'",
+   "utterance_disj2": "Jake told Bill’s wife: 'Bill ordered a side dish with his main course.'",
    "question_rel": "It is important for Bill's wife to know whether Bill ordered both a starter and a side dish with his main course.",
    "question_comp": "Jake knows whether Bill ordered both a starter and a side dish with his main course.",
    "question_pri1": "If Bill ordered a starter, it is likely that he also ordered a side dish with his main course.",
