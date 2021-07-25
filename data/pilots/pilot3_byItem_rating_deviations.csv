@@ -1,0 +1,25 @@
+title,block,mean_deviation
+Attendance,prior,97.4
+College,competence,61.333333333333336
+Crime,relevance,55.5
+Crime,prior,50.5
+Dinosaurs,competence,54
+Emails from a broken laptop,relevance,75.36363636363636
+Emails from a broken laptop,competence,57.63636363636363
+Emails from a broken laptop,prior,52.90909090909091
+Eyewitness,relevance,52.833333333333336
+Gigi's exams,prior,55.81818181818182
+Gigi's exams,competence,51.18181818181818
+Greg's movie,competence,52.2
+Harry Potter,prior,60.666666666666664
+Harvard admission exams,prior,54.142857142857146
+Hotel check,prior,71.85714285714286
+Jimmy's trip,competence,65.42857142857143
+Mrs. Gibbs' worry,prior,59.833333333333336
+Presents,relevance,58.07692307692308
+Restaurant,prior,64.25
+Suzy's fruits,prior,55.857142857142854
+Suzy's fruits,relevance,54.285714285714285
+Swiss watch prototype testing,prior,72.1
+The game,prior,77.71428571428571
+Tony's clubbing,relevance,58.9
