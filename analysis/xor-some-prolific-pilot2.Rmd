@@ -389,7 +389,7 @@ left_join(d_long_place_holder, d_critical_long_expectedCats, by = c("main_type",
          block = factor(block, levels = c("relevance", "competence", "prior", "target"))) -> d_long_plot_full
 
 # save preprocessed df for plotting for comparison with third pilot
-d_long_plot_full %>% write_csv("../data/pilots/pilot2_byItem_plotting.csv")
+# d_long_plot_full %>% write_csv("../data/pilots/pilot2_byItem_plotting.csv")
 
 d_long_plot_full %>%
   ggplot(., aes(x = block, y = response, color = block)) +
@@ -644,6 +644,9 @@ d_critical_zScored_wide <- d_critical_zScored %>%
     values_fn = mean # getting means for double prior measurement in "xor"
   ) 
   
+#d_critical_zScored_wide %>%
+#  write_csv("../data/pilots/pilot2_critical_zScore_wide_tidy.csv")
+
 d_critical_zScored_wide %>%
   ggplot(., aes(x = relevance, y = target)) +
   geom_point(size = 2, alpha = 0.7) +

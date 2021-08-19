@@ -1,0 +1,189 @@
+---
+title: "XOR power analysis"
+author: "Polina Tsvilodub"
+date: "8/17/2021"
+output: github_document
+---
+
+In this document, I conduct a simulation-based power analysis for the XOR study, based on [pilot 2](https://github.com/magpie-ea/magpie-xor-experiment/blob/master/analysis/xor-some-prolific-pilot2.md) (N=118) and [pilot 3](https://github.com/magpie-ea/magpie-xor-experiment/blob/master/analysis/xor-some-prolific-pilot3.md) (N = 50). That is, the desired main analysis is conducted on data simulated based on a model fit to this combined pilot data, as if the data came from different numbers of subjects. The significance statistics of interest are computed for each simulated number of subjects, by repeatedly simulating the target analysis, yielding the power analysis.
+
+Due to computational tractability reasons, the power analysis is conducted using the package `simr` which allows for simulation-based power analysis of frequentist GLMMs. The main resource for this script is [this](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.12504) tutorial.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+library(tidyverse)
+#library(brms)
+#library(tidybayes)
+library(broom)
+library(simr)
+```
+## Read Data
+
+First, the preprocessed and tidy wide pilot data is read and combined. It comprises data from N = 140 subjects after exclusions in total.
+```{r, echo=FALSE}
+pilot1 <- read_csv("./../data/pilots/pilot2_critical_zScore_wide_tidy.csv") %>%
+  select(-competence_wUtt, -relevance_wUtt)
+pilot2 <- read_csv("./../data/pilots/pilot3_critical_zScore_wide_tidy.csv")
+
+d_both <- pilot1 %>% mutate(pilot = 1) %>% 
+  rbind(., pilot2 %>% mutate(pilot = 2)
+        )
+# the data read here should be tidy, in correct format, bad workers should be excluded already
+# z-scored data should be used and simulated!
+
+# separate some and xor data!
+d_both_some <- d_both %>% filter(main_type == "some") 
+d_both_xor <- d_both %>% filter(main_type == "xor")
+```
+Sanity check the combined data (as can be seen, z-scored data is used):
+```{r, echo=FALSE}
+d_both %>%
+  ggplot(., aes(x = relevance, y = target)) +
+  geom_point(size = 2, alpha = 0.7) +
+  geom_smooth(method = "lm") +
+  ylab("Inference strength ratings") +
+  facet_wrap(~main_type, ncol = 1) -> p.rel
+
+d_both %>%
+  ggplot(., aes(x = competence, y = target)) +
+  geom_point(size = 2, alpha = 0.7) +
+  geom_smooth(method = "lm") +
+  ylab("") +
+  facet_wrap(~main_type, ncol = 1) -> p.comp
+
+d_both %>%
+  ggplot(., aes(x = prior, y = target)) +
+  geom_point(size = 2, alpha = 0.7) +
+  geom_smooth(method = "lm") +
+  ylab("") +
+  facet_wrap(~main_type, ncol = 1) -> p.pri
+
+gridExtra::grid.arrange(p.rel, p.comp, p.pri, ncol = 3) 
+```
+
+## Fit sample model
+As the first step, the desired model is fit on data from both pilots (frequentist). Maximal models of interest for xor, then for some, were attempted, but by-subject random effects result in singular matrix errors. Furthermore, simulations on different Ns below can only be conducted if there are by-subject random intercepts only. 
+Essentially, two separate power analyses are conducted (one for "some", one for "or"). 
+
+```{r, warning=FALSE, message=FALSE}
+# fit frequentist model
+# remove some random effects due to singular matrix error
+model_xor <- lmer(target ~ prior*competence*relevance + 
+    (1 | submission_id) +
+    (1 | title),
+    data = d_both_xor
+    )
+
+isSingular(model_xor)
+summary(model_xor)
+```
+
+```{r, warning=FALSE, message=FALSE}
+model_some <- lmer(target ~ prior*competence*relevance + 
+    (1 | submission_id) +
+    (1 | title),
+    data = d_both_some
+    )
+
+isSingular(model_some)
+summary(model_some)
+```
+
+## Simulate 
+
+The `simr` package provides several handy functions for power analysis. 
+
+First, there are functions for simulating data extended along different axes, necessary for simulating different numbers of subjects in order to determine the minimal N required for a certain power.  
+
+Second, there are functions for repeatedly computing the target model for a given dataset, and extracting significance statistics of interest from each fit. This is necessary for computing the power (as the proportion of significant results among the simulations). 
+
+However, the significance statistics are only computed for one given fixed effect estimate, so a wrapper is written to iterate over all *simple fixed effects* which would be the estimates of interest, if the SI account was borne out.
+Intermediate results of the simulations are written out as csvs for backup.
+
+Below, numbers of subjects ranging between N = 50 and N = 200 are simulated in steps of 10. There are 4 simulated observations per subject (because we have 8 vignettes / subject in the experiment, half for some and half for xor).
+
+```{r, results='hide', warning=FALSE, message=FALSE}
+# check power of the pilot source models for a given effect, as an example
+p_xor <- powerSim(model_xor, 
+                  fixed("prior", "z"), 
+                  progress = FALSE)
+p_some <- powerSim(model_some, 
+                   fixed("prior", "z"), 
+                   progress = FALSE)
+```
+
+```{r}
+p_xor
+p_some
+```
+
+```{r, results='hide', warning=FALSE, message=FALSE}
+N_subj = c(seq(from = 50, to = 200, by = 10))
+
+# following step necessary for iterating through Ns, n parameter has to be the maximal desired N
+# fit extended xor model
+model_xor_ext <- extend(model_xor, along="submission_id", n=200)
+# fit extended some model
+model_some_ext <- extend(model_some, along="submission_id", n=200)
+
+# wrapper for computing power for different effects for a given number of simulated models
+effects <- c("prior", "competence", "relevance")
+power_4_fe <- function(model, test, effects, nsim, N_subj) {
+  N = length(effects)
+  # (default alpha = 0.05 for the test)
+  powers <- map(effects, ~ powerCurve(model, fixed(.x, test),
+                                      nsim = nsim,
+                                      progress = FALSE,
+                                      along = "submission_id",
+                                      breaks = N_subj)['ps']$ps)
+  # [[which(effects == .x)]]$pval
+  # ugly code above takes apart the powerCurve object
+  # selects list of p-values from each simulation for each N 
+  
+  # put results in a tibble
+  power.sim <- tibble(
+       N_subj = rep(list(N_subj), times = N),
+      effect = effects,
+      pvalues = powers 
+    ) %>% unnest(col = c(N_subj, pvalues)) %>% 
+    rowwise() %>%
+    mutate(pvalues = list(pvalues$pval)) %>%
+    unnest(col = pvalues)
+  
+  # compute the power as proportion of significant p-values
+  power.sim %>% rowwise() %>%
+    mutate(sign_check = ifelse(pvalues < 0.05, 1, 0)) %>%
+    group_by(N_subj, effect) %>%
+    summarize(power = mean(sign_check)) -> power.sim.summary
+  
+ return(power.sim.summary) 
+}
+```
+
+Call the power simulations for xor and some, respectively. For each N, 1000 simulations are performed. The significance test chosen is the z-test (for no particular reason, for exploration). Alpha is 0.05. 
+```{r, results = 'hide', warning=FALSE, message=FALSE}
+# call the function
+xor_power_sim <- power_4_fe(model_xor_ext, "z", effects, 1000, N_subj)
+# write out results
+xor_power_sim %>% write_csv("../data/xor_power_sim_N50-200_iter1000.csv")
+
+some_power_sim <- power_4_fe(model_some_ext, "z", effects, 1000, N_subj)
+# write out results
+some_power_sim %>% write_csv("../data/some_power_sim_N50-200_iter1000.csv")
+```
+
+Visualize the results:
+```{r}
+xor_power_sim %>%
+  ggplot(., aes(x = N_subj, y = power, color = effect)) +
+  geom_line() +
+  geom_point() +
+  geom_hline(yintercept = 0.8, alpha = 0.7, linetype = 2) +
+  ggtitle("Power for XOR trials by N of subjects")
+
+some_power_sim %>%
+  ggplot(., aes(x = N_subj, y = power, color = effect)) +
+  geom_line() +
+  geom_point() +
+  geom_hline(yintercept = 0.8, alpha = 0.7, linetype = 2) +
+  ggtitle("Power for SOME trials by N of subjects")
+```

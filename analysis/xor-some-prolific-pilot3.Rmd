@@ -557,6 +557,9 @@ d_critical_zScored_wide <- d_critical_zScored %>%
     values_fn = mean # getting means for double prior measurement in "xor"
   ) 
   
+#d_critical_zScored_wide %>%
+#  write_csv("../data/pilots/pilot3_critical_zScore_wide_tidy.csv")
+
 d_critical_zScored_wide %>%
   ggplot(., aes(x = relevance, y = target)) +
   geom_point(size = 2, alpha = 0.7) +
