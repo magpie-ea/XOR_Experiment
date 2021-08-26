@@ -87,6 +87,55 @@ model_some <- lmer(target ~ prior*competence*relevance +
 isSingular(model_some)
 summary(model_some)
 ```
+### Explore model with main effect of SI trigger
+```{r, results='hide'}
+# Full model 
+# sum-code effect of SI trigger
+d_both <- d_both %>% mutate(
+  main_type = as.factor(main_type)
+)
+# some = 1, xor = -1
+contrasts(d_both$main_type) <- contr.sum(2)
+# try to fit maximal model with brm
+model_SI_brm <- brms::brm(target ~ prior*competence*relevance* main_type +
+                   (1 + prior + competence + relevance + main_type || submission_id) +
+                   (1 | title),
+                 data = d_both,
+                 control = list(adapt_delta = 0.95),
+                 cores = 4,
+                 iter = 2000)
+```
+```{r}
+summary(model_SI_brm)
+```
+
+```{r, results='hide'}
+## frequentist model for observed power exploration
+# does not converge with 4-way interaction
+model_SI <- lmer(target ~ prior*competence*relevance + main_type +
+                   (1 + prior + competence + relevance + main_type | submission_id) +
+                   (1 | title),
+                 data = d_both
+                 )
+summary(model_SI)
+# also try model with by-subj intercept only for post-hoc power
+model_SI_simple <- lmer(target ~ prior*competence*relevance*main_type +
+                   (1 | submission_id) +
+                   (1 | title),
+                 data = d_both
+                 )
+summary(model_SI_simple)
+```
+```{r, results='hide', warning=FALSE, message=FALSE}
+# check observed power for simple effect of trigger
+p_main_type <- powerSim(model_SI_simple, 
+                  fixed("main_type1", "z"), 
+                  progress = FALSE)
+```
+
+```{r}
+p_main_type
+```
 
 ## Simulate 
 
