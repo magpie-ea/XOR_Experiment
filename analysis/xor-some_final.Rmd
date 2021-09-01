@@ -1,0 +1,127 @@
+---
+title: "Xor & Some Final analysis"
+author: "Polina Tsvilodub"
+date: "8/31/2021"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(brms)
+library(tidyboot)
+library(tidybayes)
+```
+
+## Read Data
+
+First, the preprocessed and tidy wide pilot data is read and combined. It comprises data from N = 140 subjects after exclusions in total.
+```{r, echo=FALSE}
+pilot1 <- read_csv("./../data/pilots/pilot2_critical_zScore_wide_tidy.csv") %>%
+  select(-competence_wUtt, -relevance_wUtt)
+pilot2 <- read_csv("./../data/pilots/pilot3_critical_zScore_wide_tidy.csv")
+
+d_both <- pilot1 %>% mutate(pilot = 1) %>% 
+  rbind(., pilot2 %>% mutate(pilot = 2)
+        )
+# the data read here should be tidy, in correct format, bad workers should be excluded already
+# z-scored data should be used and simulated!
+
+# separate some and xor data!
+d_both_some <- d_both %>% filter(main_type == "some") 
+d_both_xor <- d_both %>% filter(main_type == "xor")
+```
+Sanity check the combined data (as can be seen, z-scored data is used):
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+d_both %>%
+  ggplot(., aes(x = relevance, y = target)) +
+  geom_point(size = 2, alpha = 0.7) +
+  geom_smooth(method = "lm") +
+  ylab("Inference strength ratings") +
+  facet_wrap(~main_type, ncol = 1) -> p.rel
+
+d_both %>%
+  ggplot(., aes(x = competence, y = target)) +
+  geom_point(size = 2, alpha = 0.7) +
+  geom_smooth(method = "lm") +
+  ylab("") +
+  facet_wrap(~main_type, ncol = 1) -> p.comp
+
+d_both %>%
+  ggplot(., aes(x = prior, y = target)) +
+  geom_point(size = 2, alpha = 0.7) +
+  geom_smooth(method = "lm") +
+  ylab("") +
+  facet_wrap(~main_type, ncol = 1) -> p.pri
+
+gridExtra::grid.arrange(p.rel, p.comp, p.pri, ncol = 3) 
+```
+
+## Model
+
+Next, fit the maximal model *across* experiments (i.e., *across SI trigger types*). For convergence reasons, correlation of random effects has to be set to 0. 
+```{r, results='hide', message=FALSE, warning=FALSE}
+# Full model 
+d_both <- d_both %>% mutate(
+  main_type = as.factor(main_type)
+)
+# some = 0, xor = 1
+contrasts(d_both$main_type) 
+# try to fit maximal model with brm
+model_SI <- brm(target ~ prior*competence*relevance* main_type +
+                   (1 + prior + competence + relevance + main_type || submission_id) +
+                   (1 | title),
+                 data = d_both,
+                 control = list(adapt_delta = 0.95),
+                 cores = 4,
+                 iter = 3000)
+```
+
+```{r}
+summary(model_SI)
+```
+
+## Extract conrtrasts of interest
+
+Next, extract posterior contrasts of interest: effects of each predictor \{prior, competence and relevance\} for each trigger.
+
+```{r}
+model_SI %>% spread_draws(b_Intercept, b_prior, b_competence, b_relevance,
+                          b_main_typexor, `b_prior:competence`,
+                          `b_prior:relevance`, `b_competence:relevance`,
+                          `b_prior:main_typexor`, `b_competence:main_typexor`,
+                          `b_relevance:main_typexor`, `b_prior:competence:relevance`, 
+                          `b_prior:competence:main_typexor`, `b_prior:relevance:main_typexor`,
+                          `b_competence:relevance:main_typexor`, 
+                          `b_prior:competence:relevance:main_typexor`) %>% 
+  mutate(
+    prior_xor = b_prior + b_main_typexor + `b_prior:main_typexor`,
+    prior_some = b_prior,
+    competence_xor = b_competence + b_main_typexor + `b_competence:main_typexor`,
+    competence_some = b_competence,
+    relevance_xor =  b_relevance + b_main_typexor + `b_relevance:main_typexor`,
+    relevance_some = b_relevance,
+    prior_some_vs_xor = -b_main_typexor - `b_prior:main_typexor`,
+    comp_some_vs_xor =  -b_main_typexor - `b_competence:main_typexor`,
+    rel_some_vs_xor =  -b_main_typexor - `b_relevance:main_typexor`
+  ) -> model_SI_posteriors
+
+# check P that the effects are positive / negative / no effect present
+model_SI_posteriors %>% select(prior_xor, prior_some, 
+                               competence_xor, competence_some,
+                               relevance_xor, relevance_some) %>%
+  gather(key, val) %>%
+  group_by(key) %>% mutate(positive = mean(val > 0.05),
+                           negative = mean(val < -0.05),
+                           no = mean(val %>% between(-0.05, 0.05))) %>%
+  summarise(positive_eff = mean(positive),
+            negative_eff = mean(negative),
+            no_eff = mean(no))
+
+```
+
+## Perform BF analysis
+
+Since we want to address a conjunctive hypothesis, we check if all three contrasts of interest within a trigger are credibly different from 0. (?)
+```{r}
+# which models are the bayes factors computed on??
+```
