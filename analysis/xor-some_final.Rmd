@@ -146,6 +146,21 @@ test_conjunction_of_all_hypotheses <-  function(posterior_hypotheses) {
 test_conjunction_of_all_hypotheses(posterior_hypotheses)
 ```
 
+```{r}
+# tiny update for separating the trigger words 
+test_conjunction_of_all_hypotheses2 <-  function(posterior_hypotheses, trigger) {
+  posterior_hypotheses %>% 
+    mutate(hypothesis_true = case_when(
+      key == paste('competence_', trigger, sep='') ~ positive_eff > 0.95,
+      key == paste('prior_', trigger, sep='') ~ negative_eff > 0.95,
+      key == paste('relevance_', trigger, sep='') ~ positive_eff > 0.95
+    )) %>% 
+    pull(hypothesis_true) %>% all()
+}
+# applied to the pilot data
+test_conjunction_of_all_hypotheses2(posterior_hypotheses, "xor")
+test_conjunction_of_all_hypotheses2(posterior_hypotheses, "some")
+```
 
 ## Experimenting with multiple regression
 
@@ -162,19 +177,3 @@ dummy_data <- tribble(
 # importantly: the intercept adjustment beta_mainxor doesn't come in!
 lm(target ~ main * REL, dummy_data)
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
