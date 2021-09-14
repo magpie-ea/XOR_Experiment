@@ -28,7 +28,7 @@ d_both <- pilot1 %>% mutate(pilot = 1) %>%
 
 # separate some and xor data!
 d_both_some <- d_both %>% filter(main_type == "some") 
-d_both_xor <- d_both %>% filter(main_type == "xor")
+d_both_xor  <- d_both %>% filter(main_type == "xor")
 ```
 Sanity check the combined data (as can be seen, z-scored data is used):
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
@@ -94,21 +94,19 @@ model_SI %>% spread_draws(b_Intercept, b_prior, b_competence, b_relevance,
                           `b_competence:relevance:main_typexor`, 
                           `b_prior:competence:relevance:main_typexor`) %>% 
   mutate(
-    prior_xor = b_prior + b_main_typexor + `b_prior:main_typexor`,
+    prior_xor = b_prior + `b_prior:main_typexor`,
     prior_some = b_prior,
-    competence_xor = b_competence + b_main_typexor + `b_competence:main_typexor`,
+    competence_xor = b_competence + `b_competence:main_typexor`,
     competence_some = b_competence,
-    relevance_xor =  b_relevance + b_main_typexor + `b_relevance:main_typexor`,
-    relevance_some = b_relevance,
-    prior_some_vs_xor = -b_main_typexor - `b_prior:main_typexor`,
-    comp_some_vs_xor =  -b_main_typexor - `b_competence:main_typexor`,
-    rel_some_vs_xor =  -b_main_typexor - `b_relevance:main_typexor`
+    relevance_xor =  b_relevance + `b_relevance:main_typexor`,
+    relevance_some = b_relevance
   ) -> model_SI_posteriors
 
 # check P that the effects are positive / negative / no effect present
-model_SI_posteriors %>% select(prior_xor, prior_some, 
-                               competence_xor, competence_some,
-                               relevance_xor, relevance_some) %>%
+posterior_hypotheses <- model_SI_posteriors %>% 
+  select(prior_xor, prior_some, 
+         competence_xor, competence_some,
+         relevance_xor, relevance_some) %>%
   gather(key, val) %>%
   group_by(key) %>% mutate(positive = mean(val > 0.05),
                            negative = mean(val < -0.05),
@@ -116,12 +114,67 @@ model_SI_posteriors %>% select(prior_xor, prior_some,
   summarise(positive_eff = mean(positive),
             negative_eff = mean(negative),
             no_eff = mean(no))
-
+posterior_hypotheses
 ```
 
 ## Perform BF analysis
 
-Since we want to address a conjunctive hypothesis, we check if all three contrasts of interest within a trigger are credibly different from 0. (?)
+We want to address a conjunctive hypothesis, one triplet for each trigger word, namely:
+
+1. the slope of 'competence' is positive
+2. the slope of 'prior' is negative
+3. the slope of 'relevance' is positive
+
+We judge there to be strong evidence for positivity of a slope variable $\beta_X$, if the posterior probability $P(\beta_X > \delta \mid D)$ is at least $.95$, for $\delta = 0.05$ the parameter that defines our 'region of practical equivalence'.
+A posterior odds ratio of at least $\frac{.95}{.05} = 19$ corresponds to a Bayes factor of at least 19 when prior odds are 1.
+
+The binary test of conformity with the theoretical predictions therefore is:
 ```{r}
-# which models are the bayes factors computed on??
+test_conjunction_of_all_hypotheses <-  function(posterior_hypotheses) {
+  posterior_hypotheses %>% 
+    mutate(hypothesis_true = case_when(
+      key == 'competence_some' ~ positive_eff > 0.95,
+      key == 'competence_xor'  ~ positive_eff > 0.95,
+      key == 'prior_some' ~ negative_eff > 0.95,
+      key == 'prior_xor'  ~ negative_eff > 0.95, 
+      key == 'relevance_some' ~ positive_eff > 0.95,
+      key == 'relevance_xor'  ~ positive_eff > 0.95
+    )) %>% 
+    pull(hypothesis_true) %>% all()
+}
+# applied to the pilot data
+test_conjunction_of_all_hypotheses(posterior_hypotheses)
 ```
+
+
+## Experimenting with multiple regression
+
+```{r}
+dummy_data <- tribble(
+  ~main, ~REL, ~target,
+  "some", 0, 4,
+  "some", 1, 6,
+  "xor", 0, 0,
+  "xor", 1, 12
+)
+# check that the slope of "REL" for "xor" is 12
+# this is calculated as betat_REL + beta_mainxor:REL
+# importantly: the intercept adjustment beta_mainxor doesn't come in!
+lm(target ~ main * REL, dummy_data)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
