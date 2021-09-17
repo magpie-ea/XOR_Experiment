@@ -1,0 +1,162 @@
+XOr-Some Bayesian Power analysis
+================
+Polina Tsvilodub
+9/14/2021
+
+For the main xor-some experiment, we conduct a simulation-based Bayesian
+power analysis (used in a (loose) sense of determining the required
+sample size here). This power analysis aims at determining how many
+participants are required in order to detect a theoretically motivated
+conjunctive effect of the predictors prior, relevance and competence
+with a confidence of at least .8. The simulations are based on an
+assumed effect size \(\beta = ±0.15\) for all predictors, and a region
+of practical equivalence (ROPE) \(\delta = 0.05\) for judging evidence
+for the directionality of a coefficient given the data. The simulations
+are further based on the maximal desired model justified theoretically
+and by the design:
+\(rating = trigger * prior * competence * relevance + REs\)
+
+In general, the power analysis proceeds as follows:
+
+  - the desired effect sizes of the critical predictors are set to
+    \(\mid 0.15\mid\)
+  - hypothetical experimental data is simulated by drawing samples from
+    a Normal distribution with the parameters described above
+  - the desired maximal Bayesian regression model is computed on the
+    simulated data
+  - the N of subjects for which the data is simulated is increased
+    iteratively in steps of 10 starting at 50
+  - for each N, the model is re-computed on the simulated samples for
+    k=100 iterations (the more, the better the power estimate, but there
+    are computational constraints)
+  - for each iteration \(i_k\), the conjunctive hypothesis of interest
+    is tested
+  - the power for the given number of participants is calculated as the
+    proportion of iterations for which the conjunctive hypothesis was
+    credible (i.e., if the posterior probability
+    \(P(\beta_X > \delta \mid D)\) is at least \(.95\), for
+    \(\delta = 0.05\) the parameter that defines our ROPE for the
+    conjunction of all three predictor coefficients, for all six
+    sub-hypotheses).
+  - we aim to determine the number of participants for which that
+    proportion is at least .8.
+
+## Simulate initial data
+
+We assume an effect size of 0.15 for the predictors prior, competence
+and relevance, and, therefore, simulate data as coming from a Normal
+distribution with \(\mu=±.15\) and \(\sigma=.05\) (because this
+\(\sigma\) would give us app. 95% of the data in the region we defined
+as a positive / negative effect). The target is simulated via
+\(\mathcal{N}(\mu_t, 1)\), with
+\(mu_t = \beta_0 + \beta_{pri} + \beta_{comp} + \beta_{rel} + \beta_{trigger} + interactions\).
+The coefficients for interactions and the trigger are assumed to be 0.
+
+From each participant, we get four data points for xor and four data
+points for some, one data point per condition (prior X competence X
+relevance, mapped to triggers at random). For each condition (for each
+trigger), there are four stories for which the random intercept may
+vary.
+
+Below, there is a toy example how data would be simulated for one
+subject (ignoring random effects for now).
+
+``` r
+# ignore group-level effects for now; the effects will be sampled based on pilot data
+
+# simulate toy data set for one subject 
+d_init <-
+  # create the 8 conditions
+  tibble(prior = rep(c(0, 1), each = 4),
+         comp = rep(c(0, 0, 1, 1), times = 2),
+         rel = rep(c(0,1), times = 4),
+         main_type = sample(rep(c("xor", "some"), times=4))) %>% 
+  rowwise() %>%
+  # sample effects based on condition
+  mutate(
+    subj_ID = 1, 
+    intercept = 0,
+    prior_obs = ifelse(prior == 0, rnorm(1, sd = 0.05), 
+                       rnorm(1, -0.15, 0.05)),
+    comp_obs = ifelse(comp == 0, rnorm(1, sd = 0.05), 
+                       rnorm(1, 0.15, 0.05)),
+    rel_obs = ifelse(rel == 0, rnorm(1, sd = 0.05), 
+                       rnorm(1, 0.15, 0.05)),
+    # sample response
+    # what do we do about the interactions? can they safely be ignored?
+    target = rnorm(1, 
+                   mean = (intercept + prior_obs + comp_obs + rel_obs), 
+                   sd = 1) # how to set / detrmine this properly?
+  )
+d_init
+```
+
+    ## # A tibble: 8 x 10
+    ## # Rowwise: 
+    ##   prior  comp   rel main_type subj_ID intercept prior_obs comp_obs rel_obs
+    ##   <dbl> <dbl> <dbl> <chr>       <dbl>     <dbl>     <dbl>    <dbl>   <dbl>
+    ## 1     0     0     0 xor             1         0  0.000316   0.176   0.0614
+    ## 2     0     0     1 xor             1         0  0.00961   -0.0402  0.0491
+    ## 3     0     1     0 xor             1         0 -0.000188   0.180  -0.0998
+    ## 4     0     1     1 some            1         0 -0.00878    0.191   0.190 
+    ## 5     1     0     0 some            1         0 -0.118     -0.0474 -0.0196
+    ## 6     1     0     1 some            1         0 -0.137      0.0410  0.176 
+    ## 7     1     1     0 xor             1         0 -0.117      0.133   0.0452
+    ## 8     1     1     1 some            1         0 -0.162      0.0983  0.143 
+    ## # … with 1 more variable: target <dbl>
+
+## Compute initial model
+
+Next, the seed model is computed on the initial simulated dataset. This
+model will only be updated in further steps when the model is re-fit.
+
+``` r
+# fit model on simulated data for first time  
+model_init <- brm(target ~ prior*comp*rel*main_type + 
+                    (1 + prior + competence + relevance + main_type || submission_id) +
+                   (1 | title),
+                  data = d_init,
+                  cores = 4,
+                  contol = list(adapt_delta = 0.95),
+                  iter = 3000)
+model_init
+```
+
+## Build pipeline for simulating more data and fitting models
+
+``` r
+# TODO
+# just old stuff below
+get_new_data <- function(d, N) {
+    if(N == 0) {
+      data <- d
+    } else if (N > 47) {
+      data <- add_predicted_draws(model=pilot_model, 
+                                     newdata = pilot_data %>% 
+                                       filter(workerid %in% sample(unique(pilot_data$workerid), N, replace = T)),
+                                     n = 1) %>% 
+                 mutate(workerid = paste(workerid, letters[1], sep = "_")) %>%
+                   rbind(., d)
+    } else {
+      data <- add_predicted_draws(model=pilot_model, 
+                                     newdata = pilot_data %>% 
+                                       filter(workerid %in% sample(unique(pilot_data$workerid), N, replace = F)),
+                                     n = 1) %>% 
+                 mutate(workerid = paste(workerid, letters[1], sep = "_")) %>%
+                   rbind(., d)
+    }
+    
+  }
+```
+
+## Extract contrasts of interest
+
+``` r
+# TODO
+```
+
+## Test H of interest
+
+``` r
+# TODO
+```
