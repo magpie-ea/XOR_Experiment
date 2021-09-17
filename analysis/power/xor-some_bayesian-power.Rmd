@@ -26,9 +26,11 @@ library(brms)
 ```
 
 ## Simulate initial data
-We assume an effect size of 0.15 for the predictors prior, competence and relevance, and, therefore, simulate data as coming from a Normal distribution with $\mu=±.15$ and $\sigma=.05$ (because this $\sigma$ would give us app. 95% of the data in the region we defined as a positive / negative effect). The target is simulated via $\mathcal{N}(\mu_t, 1)$, with $mu_t = \beta_0 + \beta_{pri} + \beta_{comp} + \beta_{rel} + \beta_{trigger} + interactions$. The coefficients for interactions and the trigger are assumed to be 0. 
+We assume an effect size of 0.15 for the predictors prior, competence and relevance, and, therefore, simulate data as coming from a Normal distribution with $\mu=±.15$ and $\sigma=.05$ (because this $\sigma$ would give us app. 95% of the data in the region we defined as a positive / negative effect). 
 
-From each participant, we get four data points for xor and four data points for some, one data point per condition (prior X competence X relevance, mapped to triggers at random). For each condition (for each trigger), there are four stories for which the random intercept may vary. 
+The target response variable is simulated via $\mathcal{N}(\mu_t, 1)$, with $mu_t = \beta_0 + \beta_{pri} + \beta_{comp} + \beta_{rel} + \beta_{trigger} + interactions$. The coefficients for interactions and the trigger effect are assumed to be 0. 
+
+From each participant, we get four data points for xor and four data points for some, one data point per condition (prior X competence X relevance, mapped to triggers at random). For each condition (and for each trigger), there are four stories for which the random intercept may vary. 
 
 Below, there is a toy example how data would be simulated for one subject (ignoring random effects for now).
 ```{r}
@@ -40,7 +42,7 @@ d_init <-
   tibble(prior = rep(c(0, 1), each = 4),
          comp = rep(c(0, 0, 1, 1), times = 2),
          rel = rep(c(0,1), times = 4),
-         main_type = sample(rep(c("xor", "some"), times=4))) %>% 
+         main_type = as.factor(sample(rep(c("xor", "some"), times=4)))) %>% 
   rowwise() %>%
   # sample effects based on condition
   mutate(
@@ -56,7 +58,7 @@ d_init <-
     # what do we do about the interactions? can they safely be ignored?
     target = rnorm(1, 
                    mean = (intercept + prior_obs + comp_obs + rel_obs), 
-                   sd = 1) # how to set / detrmine this properly?
+                   sd = 1) # how to set / determine this properly?
   )
 d_init
 ```
@@ -77,40 +79,187 @@ model_init
 
 ## Build pipeline for simulating more data and fitting models
 
+First, add random effects to the simulation based on random effects estimated on pilot data.
+```{r, eval=FALSE, warnings=FALSE, message=FALSE}
+# fit model on pilot data to get random effects estimates
+pilot1 <- read_csv("./../data/pilots/pilot2_critical_zScore_wide_tidy.csv") %>%
+  select(-competence_wUtt, -relevance_wUtt)
+pilot2 <- read_csv("./../data/pilots/pilot3_critical_zScore_wide_tidy.csv")
+
+d_both <- pilot1 %>% mutate(pilot = 1) %>% 
+  rbind(., pilot2 %>% mutate(pilot = 2)
+        )
+# Full model 
+d_both <- d_both %>% mutate(
+  main_type = as.factor(main_type)
+)
+# some = 0, xor = 1
+contrasts(d_both$main_type) 
+# try to fit maximal model with brm
+model_SI <- brm(target ~ prior*competence*relevance* main_type +
+                   (1 + prior + competence + relevance + main_type || submission_id) +
+                   (1 | title),
+                 data = d_both,
+                 control = list(adapt_delta = 0.95),
+                 cores = 4,
+                 iter = 3000)
+
+# Get the by-story estimates
+# check if this code can be less ugly
+story_rand_int <- c(ranef(model_SI)[['title']][1:(length(ranef(model_SI)[['title']])/4)])
+
+# get by-subj random intercepts and slopes
+# TODO
+
+# idea: sample from the vectors of observed estimates when simulating 
+# (across predictors (slopes for pri vs rel vs comp for subjects) 
+# and story types (comp X pri X rel condition of story))
+#### --> Is this okay? 
+```
+
+Build helper function for simulating data for a given number of subjects.
+[stuff from here on is not finished yet]
 ```{r, eval=FALSE}
-# TODO
-# just old stuff below
-get_new_data <- function(d, N) {
-    if(N == 0) {
-      data <- d
-    } else if (N > 47) {
-      data <- add_predicted_draws(model=pilot_model, 
-                                     newdata = pilot_data %>% 
-                                       filter(workerid %in% sample(unique(pilot_data$workerid), N, replace = T)),
-                                     n = 1) %>% 
-                 mutate(workerid = paste(workerid, letters[1], sep = "_")) %>%
-                   rbind(., d)
-    } else {
-      data <- add_predicted_draws(model=pilot_model, 
-                                     newdata = pilot_data %>% 
-                                       filter(workerid %in% sample(unique(pilot_data$workerid), N, replace = F)),
-                                     n = 1) %>% 
-                 mutate(workerid = paste(workerid, letters[1], sep = "_")) %>%
-                   rbind(., d)
-    }
+# TOFINISH
+# N = number of subjects to simulate
+get_new_data <- function(d, N) { # d probably unnecessary
     
-  }
+      data <-
+  # create the 8 conditions, manually, for double-checking
+        tibble(prior = rep(c(0, 0, 0, 0, 1, 1, 1, 1), times = N),
+         comp = rep(c(0, 0, 1, 1, 0, 0, 1, 1), times = N),
+         rel = rep(c(0, 1, 0, 1, 0, 1, 0, 1), times = N),
+         main_type = rep(sample(c("xor", "some", "xor", "some", "xor", "some", "xor", "some")), times=N),
+         # assign subject ID
+         subj_ID = rep(1:N, each = 8),
+         # prepare parameters 
+         intercept = 0,
+         # sample random effects
+         story_int = sample(story_rand_int, N*8, replace = T)
+         # TODO: analogously sample by-subj effects
+         ) %>% 
+  rowwise() %>%
+  # sample effects based on condition
+  mutate(
+    prior_obs = ifelse(prior == 0, rnorm(1, sd = 0.05), 
+                       rnorm(1, -0.15, 0.05)),
+    comp_obs = ifelse(comp == 0, rnorm(1, sd = 0.05), 
+                       rnorm(1, 0.15, 0.05)),
+    rel_obs = ifelse(rel == 0, rnorm(1, sd = 0.05), 
+                       rnorm(1, 0.15, 0.05)),
+    # sample response
+    # what do we do about the interactions? can they safely be ignored?
+    target = rnorm(1, 
+                   mean = (intercept + story_int + prior_obs + comp_obs + rel_obs), 
+                   sd = 1) # how to set / determine this properly?
+  )
+    
+    
+}
 
 ```
 
-## Extract contrasts of interest 
+Build helper function for simulating and computing regression model for k iterations (tracked as seeds). Also extract contrasts of interest here.
+```{r, eval=FALSE}
+# TODO:
+# just copied over old stuff below
 
-```{r}
-# TODO
+# simulate data and update
+sim_data_fit <- function(seed, N) {
+  set.seed(seed)
+  
+  # possibly add more participants
+  data <- get_new_data(d, N)
+  
+  # mutate main_type to factor
+  
+  # update model fit with new data
+  update(model_init,
+         newdata = data,
+         seed = seed) %>% 
+    # extract posterior draws
+    spread_draws(b_Intercept, b_syntax_dev1, b_trial_dev1, `b_syntax_dev1:trial_dev1`) %>%
+    # extract contrasts of interest, especially effect of syntax by-trial 
+  mutate(critical_subj = b_Intercept + b_syntax_dev1 - b_trial_dev1 - `b_syntax_dev1:trial_dev1`,
+         critical_pred = b_Intercept - b_syntax_dev1 - b_trial_dev1 + `b_syntax_dev1:trial_dev1`,
+         syntax_critical = critical_subj - critical_pred, # subject vs pred syntax
+         filler_subj = b_Intercept + b_syntax_dev1 + b_trial_dev1 + `b_syntax_dev1:trial_dev1`,
+         filler_pred = b_Intercept - b_syntax_dev1 + b_trial_dev1 - `b_syntax_dev1:trial_dev1`,
+         syntax_filler = filler_subj - filler_pred) %>% # subject vs predicate syntax
+  select(b_Intercept, b_syntax_dev1, b_trial_dev1, `b_syntax_dev1:trial_dev1`, critical_subj, critical_pred, syntax_critical, filler_subj, filler_pred, syntax_filler) %>%
+  gather(key, val) %>%
+  group_by(key) %>%
+    # compute summary statistics 
+  summarise( 
+    mean = mean(val),
+    lower = quantile(val, probs = 0.025),
+    upper = quantile(val, probs = 0.975)
+  )
+##########  
+  # use stuff below here
+  spread_draws(b_Intercept, b_prior, b_competence, b_relevance,
+                          b_main_typexor, `b_prior:competence`,
+                          `b_prior:relevance`, `b_competence:relevance`,
+                          `b_prior:main_typexor`, `b_competence:main_typexor`,
+                          `b_relevance:main_typexor`, `b_prior:competence:relevance`, 
+                          `b_prior:competence:main_typexor`, `b_prior:relevance:main_typexor`,
+                          `b_competence:relevance:main_typexor`, 
+                          `b_prior:competence:relevance:main_typexor`) %>% 
+  mutate(
+    prior_xor = b_prior + `b_prior:main_typexor`,
+    prior_some = b_prior,
+    competence_xor = b_competence + `b_competence:main_typexor`,
+    competence_some = b_competence,
+    relevance_xor =  b_relevance + `b_relevance:main_typexor`,
+    relevance_some = b_relevance
+  ) -> model_SI_posteriors
+
+# check P that the effects are positive / negative / no effect present
+posterior_hypotheses <- model_SI_posteriors %>% 
+  select(prior_xor, prior_some, 
+         competence_xor, competence_some,
+         relevance_xor, relevance_some) %>%
+  gather(key, val) %>%
+  group_by(key) %>% mutate(positive = mean(val > 0.05),
+                           negative = mean(val < -0.05),
+                           no = mean(val %>% between(-0.05, 0.05))) %>%
+  summarise(positive_eff = mean(positive),
+            negative_eff = mean(negative),
+            no_eff = mean(no))
+}
 ```
+
 
 ## Test H of interest 
 
-```{r}
+Run the simulations and test the hypothesis of interest for each iteration and compute the proportion of successful runs.
+```{r, eval=FALSE}
 # TODO
+test_conjunction_of_all_hypotheses <-  function(posterior_hypotheses) {
+  posterior_hypotheses %>% 
+    mutate(hypothesis_true = case_when(
+      key == 'competence_some' ~ positive_eff > 0.95,
+      key == 'competence_xor'  ~ positive_eff > 0.95,
+      key == 'prior_some' ~ negative_eff > 0.95,
+      key == 'prior_xor'  ~ negative_eff > 0.95, 
+      key == 'relevance_some' ~ positive_eff > 0.95,
+      key == 'relevance_xor'  ~ positive_eff > 0.95
+    )) %>% 
+    pull(hypothesis_true) %>% all()
+}
+
+# again old stuff below
+
+# add iterating over Ns
+sim1 <-
+  tibble(seed = 1:100) %>% 
+  mutate(tidy = map(seed, sim_data_fit, 23)) %>% 
+  unnest(tidy)
+
+# map each iter to test_conjunction_of_all_hypotheses
+sim1 %>%
+  filter(key == "syntax_critical") %>%
+  mutate(check_syntax = ifelse(lower > 0, 1, 0)) %>%
+  summarise(power_syntax = mean(check_syntax))
+
 ```
