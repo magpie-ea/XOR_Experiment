@@ -2,10 +2,12 @@
 title: "XOr-Some Bayesian Power analysis"
 author: "Polina Tsvilodub"
 date: "9/14/2021"
-output: github_document
+output: 
+  github_document:
+  pandoc_args: --webtex
 ---
 
-For the main xor-some experiment, we conduct a simulation-based Bayesian power analysis (used in a (loose) sense of determining the required sample size here). This power analysis aims at determining how many participants are required in order to detect a theoretically motivated conjunctive effect of the predictors prior, relevance and competence with a confidence of at least .8. The simulations are based on an assumed effect size $\beta = ±0.15$ for all predictors, and a region of practical equivalence (ROPE) $\delta = 0.05$ for judging evidence for the directionality of a coefficient given the data. The simulations are further based on the maximal desired model justified theoretically and by the design: $rating = trigger * prior * competence * relevance + REs$
+For the main xor-some experiment, we conduct a simulation-based Bayesian power analysis (used in a (loose) sense of determining the required sample size here). This power analysis aims at determining how many participants are required in order to detect a theoretically motivated conjunctive effect of the predictors prior, relevance and competence with a confidence of at least .8. The simulations are based on an assumed effect size $\beta = ±0.15$ for all predictors, and a region of practical equivalence (ROPE) $\delta = 0.05$ for judging evidence for the directionality of a coefficient given the data. The simulations are further based on the maximal desired model justified theoretically and by the design: `rating = trigger * prior * competence * relevance + REs`
 
 In general, the power analysis proceeds as follows: 
 
@@ -28,7 +30,7 @@ library(brms)
 ## Simulate initial data
 We assume an effect size of 0.15 for the predictors prior, competence and relevance, and, therefore, simulate data as coming from a Normal distribution with $\mu=±.15$ and $\sigma=.05$ (because this $\sigma$ would give us app. 95% of the data in the region we defined as a positive / negative effect). 
 
-The target response variable is simulated via $\mathcal{N}(\mu_t, 1)$, with $mu_t = \beta_0 + \beta_{pri} + \beta_{comp} + \beta_{rel} + \beta_{trigger} + interactions$. The coefficients for interactions and the trigger effect are assumed to be 0. 
+The target response variable is simulated via $\mathcal{N}(\mu_t, 1)$, with $\mu_t = \beta_0 + \beta_\text{pri} + \beta_\text{comp} + \beta_\text{rel} + \beta_\text{trigger} + \text{interactions}$. The coefficients for interactions and the trigger effect are assumed to be 0. 
 
 From each participant, we get four data points for xor and four data points for some, one data point per condition (prior X competence X relevance, mapped to triggers at random). For each condition (and for each trigger), there are four stories for which the random intercept may vary. 
 
@@ -59,6 +61,10 @@ d_init <-
     target = rnorm(1, 
                    mean = (intercept + prior_obs + comp_obs + rel_obs), 
                    sd = 1) # how to set / determine this properly?
+                           # MF: irrelvant; we should z-score anyway exactly like we 
+                           #     do for the real analysis 
+                           #     this also means that choices of mean and SD for 
+                           #     distributions to sample coefficents for are no that relevant
   )
 d_init
 ```
@@ -263,3 +269,64 @@ sim1 %>%
   summarise(power_syntax = mean(check_syntax))
 
 ```
+
+# MF's crowbar ignoramus approach
+
+```{r, eval = FALSE}
+# create fake data
+create_fake_data <- function(N = 100, seed = 1) {
+  set.seed(seed)
+  beta_rel  <- 0.15
+  beta_comp <- 0.15
+  beta_pri  <- 0.15
+  map_df(
+    1:N, 
+    function(i) {
+      tibble(
+        subj    = rep(str_c("subj_",i), times = 8),
+        trigger = rep(c('or', 'some'), times= 4), 
+        rel     = rnorm(8),
+        comp    = rnorm(8),
+        pri     = rnorm(8)
+      ) %>% 
+        group_by(subj) %>% 
+        mutate(
+          rel     = rel-mean(rel) / sd(rel),
+          comp    = comp-mean(comp) / sd(comp),
+          pri     = pri-mean(pri) / sd(pri)
+        ) %>% 
+        ungroup() %>% 
+        mutate(
+          target  = rnorm(8, beta_rel * rel + beta_comp * comp + beta_pri * pri)
+        )
+    }
+  )
+}
+initial_fake_data <- create_fake_data(N=100, seed = 3)
+
+# initial fit
+fit_initial <- brm(target ~ trigger * rel * comp * pri, initial_fake_data)
+
+# main results
+N <- 300
+k <-100
+
+results <- map_dbl(
+  1:k, 
+  function(i) {
+    fake_data <- create_fake_data(N=N, seed = i)
+    fit <- update(fit_initial, newdata = fake_data, seed = i, cores = 4)
+    lower_bounds <- rbind(
+      aida::summarize_sample_vector(tidybayes::tidy_draws(fit) %>% select(b_rel), "rel"),
+      aida::summarize_sample_vector(tidybayes::tidy_draws(fit) %>% select(b_comp), "comp"),
+      aida::summarize_sample_vector(tidybayes::tidy_draws(fit) %>% select(b_pri), "pri")
+    ) %>% pull("|95%")
+    min(lower_bounds)
+  }
+)
+
+message("Effective power for N=", N, " is:" , mean(results > 0.05))
+
+
+```
+

@@ -9,49 +9,47 @@ sample size here). This power analysis aims at determining how many
 participants are required in order to detect a theoretically motivated
 conjunctive effect of the predictors prior, relevance and competence
 with a confidence of at least .8. The simulations are based on an
-assumed effect size \(\beta = ±0.15\) for all predictors, and a region
-of practical equivalence (ROPE) \(\delta = 0.05\) for judging evidence
-for the directionality of a coefficient given the data. The simulations
-are further based on the maximal desired model justified theoretically
-and by the design:
-\(rating = trigger * prior * competence * relevance + REs\)
+assumed effect size *β* =  ± 0.15 for all predictors, and a region of
+practical equivalence (ROPE) *δ* = 0.05 for judging evidence for the
+directionality of a coefficient given the data. The simulations are
+further based on the maximal desired model justified theoretically and
+by the design: `rating = trigger * prior * competence * relevance + REs`
 
 In general, the power analysis proceeds as follows:
 
-  - the desired effect sizes of the critical predictors are set to
-    \(\mid 0.15\mid\)
-  - hypothetical experimental data is simulated by drawing samples from
+-   the desired effect sizes of the critical predictors are set to
+     ∣ 0.15∣
+-   hypothetical experimental data is simulated by drawing samples from
     a Normal distribution with the parameters described above
-  - the desired maximal Bayesian regression model is computed on the
+-   the desired maximal Bayesian regression model is computed on the
     simulated data
-  - the N of subjects for which the data is simulated is increased
+-   the N of subjects for which the data is simulated is increased
     iteratively in steps of 10 starting at 50
-  - for each N, the model is re-computed on the simulated samples for
+-   for each N, the model is re-computed on the simulated samples for
     k=100 iterations (the more, the better the power estimate, but there
     are computational constraints)
-  - for each iteration \(i_k\), the conjunctive hypothesis of interest
-    is tested
-  - the power for the given number of participants is calculated as the
+-   for each iteration *i*<sub>*k*</sub>, the conjunctive hypothesis of
+    interest is tested
+-   the power for the given number of participants is calculated as the
     proportion of iterations for which the conjunctive hypothesis was
     credible (i.e., if the posterior probability
-    \(P(\beta_X > \delta \mid D)\) is at least \(.95\), for
-    \(\delta = 0.05\) the parameter that defines our ROPE for the
-    conjunction of all three predictor coefficients, for all six
-    sub-hypotheses).
-  - we aim to determine the number of participants for which that
+    *P*(*β*<sub>*X*</sub> &gt; *δ* ∣ *D*) is at least .95, for
+    *δ* = 0.05 the parameter that defines our ROPE for the conjunction
+    of all three predictor coefficients, for all six sub-hypotheses).
+-   we aim to determine the number of participants for which that
     proportion is at least .8.
 
 ## Simulate initial data
 
 We assume an effect size of 0.15 for the predictors prior, competence
 and relevance, and, therefore, simulate data as coming from a Normal
-distribution with \(\mu=±.15\) and \(\sigma=.05\) (because this
-\(\sigma\) would give us app. 95% of the data in the region we defined
-as a positive / negative effect).
+distribution with *μ* =  ± .15 and *σ* = .05 (because this *σ* would
+give us app. 95% of the data in the region we defined as a positive /
+negative effect).
 
-The target response variable is simulated via \(\mathcal{N}(\mu_t, 1)\),
+The target response variable is simulated via 𝒩(*μ*<sub>*t*</sub>, 1),
 with
-\(mu_t = \beta_0 + \beta_{pri} + \beta_{comp} + \beta_{rel} + \beta_{trigger} + interactions\).
+*μ*<sub>*t*</sub> = *β*<sub>0</sub> + *β*<sub>pri</sub> + *β*<sub>comp</sub> + *β*<sub>rel</sub> + *β*<sub>trigger</sub> + interactions.
 The coefficients for interactions and the trigger effect are assumed to
 be 0.
 
@@ -90,22 +88,26 @@ d_init <-
     target = rnorm(1, 
                    mean = (intercept + prior_obs + comp_obs + rel_obs), 
                    sd = 1) # how to set / determine this properly?
+                           # MF: irrelvant; we should z-score anyway exactly like we 
+                           #     do for the real analysis 
+                           #     this also means that choices of mean and SD for 
+                           #     distributions to sample coefficents for are no that relevant
   )
 d_init
 ```
 
-    ## # A tibble: 8 x 10
+    ## # A tibble: 8 × 10
     ## # Rowwise: 
     ##   prior  comp   rel main_type subj_ID intercept prior_obs comp_obs rel_obs
     ##   <dbl> <dbl> <dbl> <fct>       <dbl>     <dbl>     <dbl>    <dbl>   <dbl>
-    ## 1     0     0     0 xor             1         0    0.0594  1.96e-2  0.124 
-    ## 2     0     0     1 xor             1         0   -0.0349 -1.25e-4  0.134 
-    ## 3     0     1     0 some            1         0    0.0817  1.31e-1 -0.0629
-    ## 4     0     1     1 xor             1         0    0.0488  2.18e-1  0.140 
-    ## 5     1     0     0 some            1         0   -0.170  -8.30e-2 -0.130 
-    ## 6     1     0     1 some            1         0   -0.101  -2.61e-2  0.148 
-    ## 7     1     1     0 some            1         0   -0.157   1.68e-1  0.0443
-    ## 8     1     1     1 xor             1         0   -0.130   1.14e-1  0.202 
+    ## 1     0     0     0 xor             1         0   -0.0205   0.0310  0.0954
+    ## 2     0     0     1 some            1         0    0.0529  -0.0629  0.203 
+    ## 3     0     1     0 xor             1         0   -0.0547   0.0834 -0.0116
+    ## 4     0     1     1 xor             1         0    0.0287   0.0989  0.184 
+    ## 5     1     0     0 some            1         0   -0.0863   0.0843 -0.0205
+    ## 6     1     0     1 some            1         0   -0.215    0.0499  0.159 
+    ## 7     1     1     0 xor             1         0   -0.0881   0.0897 -0.0566
+    ## 8     1     1     1 some            1         0   -0.129    0.160   0.158 
     ## # … with 1 more variable: target <dbl>
 
 ## Compute initial model
@@ -315,4 +317,62 @@ sim1 %>%
   filter(key == "syntax_critical") %>%
   mutate(check_syntax = ifelse(lower > 0, 1, 0)) %>%
   summarise(power_syntax = mean(check_syntax))
+```
+
+# MF’s crowbar ignoramus approach
+
+``` r
+# create fake data
+create_fake_data <- function(N = 100, seed = 1) {
+  set.seed(seed)
+  beta_rel  <- 0.15
+  beta_comp <- 0.15
+  beta_pri  <- 0.15
+  map_df(
+    1:N, 
+    function(i) {
+      tibble(
+        subj    = rep(str_c("subj_",i), times = 8),
+        trigger = rep(c('or', 'some'), times= 4), 
+        rel     = rnorm(8),
+        comp    = rnorm(8),
+        pri     = rnorm(8)
+      ) %>% 
+        group_by(subj) %>% 
+        mutate(
+          rel     = rel-mean(rel) / sd(rel),
+          comp    = comp-mean(comp) / sd(comp),
+          pri     = pri-mean(pri) / sd(pri)
+        ) %>% 
+        ungroup() %>% 
+        mutate(
+          target  = rnorm(8, beta_rel * rel + beta_comp * comp + beta_pri * pri)
+        )
+    }
+  )
+}
+initial_fake_data <- create_fake_data(N=100, seed = 3)
+
+# initial fit
+fit_initial <- brm(target ~ trigger * rel * comp * pri, initial_fake_data)
+
+# main results
+N <- 300
+k <-100
+
+results <- map_dbl(
+  1:k, 
+  function(i) {
+    fake_data <- create_fake_data(N=N, seed = i)
+    fit <- update(fit_initial, newdata = fake_data, seed = i, cores = 4)
+    lower_bounds <- rbind(
+      aida::summarize_sample_vector(tidybayes::tidy_draws(fit) %>% select(b_rel), "rel"),
+      aida::summarize_sample_vector(tidybayes::tidy_draws(fit) %>% select(b_comp), "comp"),
+      aida::summarize_sample_vector(tidybayes::tidy_draws(fit) %>% select(b_pri), "pri")
+    ) %>% pull("|95%")
+    min(lower_bounds)
+  }
+)
+
+message("Effective power for N=", N, " is:" , mean(results > 0.05))
 ```
