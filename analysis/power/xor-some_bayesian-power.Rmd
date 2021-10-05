@@ -283,33 +283,32 @@ create_fake_data <- function(N = 100, seed = 1) {
     1:N, 
     function(i) {
       tibble(
-        subj    = rep(str_c("subj_",i), times = 8),
-        trigger = rep(c('or', 'some'), times= 4), 
-        rel     = rnorm(8),
-        comp    = rnorm(8),
-        pri     = rnorm(8)
+        subj    = rep(str_c("subj_",i), times = 4),
+        rel     = rnorm(4),
+        comp    = rnorm(4),
+        pri     = rnorm(4)
       ) %>% 
         group_by(subj) %>% 
         mutate(
-          rel     = rel-mean(rel) / sd(rel),
-          comp    = comp-mean(comp) / sd(comp),
-          pri     = pri-mean(pri) / sd(pri)
+          rel     = (rel-mean(rel)) / sd(rel),
+          comp    = (comp-mean(comp)) / sd(comp),
+          pri     = (pri-mean(pri)) / sd(pri)
         ) %>% 
         ungroup() %>% 
         mutate(
-          target  = rnorm(8, beta_rel * rel + beta_comp * comp + beta_pri * pri)
+          target  = rnorm(4, beta_rel * rel + beta_comp * comp + beta_pri * pri)
         )
     }
   )
 }
-initial_fake_data <- create_fake_data(N=100, seed = 3)
+initial_fake_data <- create_fake_data(N=100, seed = 1234)
 
 # initial fit
-fit_initial <- brm(target ~ trigger * rel * comp * pri, initial_fake_data)
+fit_initial <- brm(target ~ rel * comp * pri, initial_fake_data)
 
 # main results
 N <- 300
-k <-100
+k <-10
 
 results <- map_dbl(
   1:k, 
@@ -317,16 +316,14 @@ results <- map_dbl(
     fake_data <- create_fake_data(N=N, seed = i)
     fit <- update(fit_initial, newdata = fake_data, seed = i, cores = 4)
     lower_bounds <- rbind(
-      aida::summarize_sample_vector(tidybayes::tidy_draws(fit) %>% select(b_rel), "rel"),
-      aida::summarize_sample_vector(tidybayes::tidy_draws(fit) %>% select(b_comp), "comp"),
-      aida::summarize_sample_vector(tidybayes::tidy_draws(fit) %>% select(b_pri), "pri")
+      aida::summarize_sample_vector(brms::posterior_samples(fit)[,'b_rel'], "rel"),
+      aida::summarize_sample_vector(brms::posterior_samples(fit)[,'b_comp'], "comp"),
+      aida::summarize_sample_vector(brms::posterior_samples(fit)[,'b_pri'], "pri")
     ) %>% pull("|95%")
     min(lower_bounds)
   }
 )
 
 message("Effective power for N=", N, " is:" , mean(results > 0.05))
-
-
 ```
 
