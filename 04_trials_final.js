@@ -1,3 +1,12 @@
+let attention_check_data = [
+  {
+    optionLeft: "not at all",
+    optionRight: "absolutely",
+    QUD: "Please carefully read the text below and answer the question displayed below, given the information presented in the text.",
+    question: "John is a guy. Brandon is another one. Please adjust the slider all the way to the right in this task. They are both friends with Mary. <br> <br> Based on that, one could conclude that John has friends. How would you respond using the slider, given the text?"
+  }
+]
+
 // In this file you can specify the trial data for your experiment
 // info important to create tirals
 

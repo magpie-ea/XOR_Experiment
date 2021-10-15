@@ -202,6 +202,16 @@ const ex_trial = magpieViews.view_generator("slider_rating", {
 }
 );
 
+// attention check trial
+const attention_check = magpieViews.view_generator("slider_rating", {
+  trials: 1,
+  title: "Attention check",
+  name: 'attention_check',
+  trial_type: 'attention_check',
+  data: attention_check_data
+
+})
+
 // captcha
 // speaker and listeneers names to be sampled from for the botcaptcha
 var speaker = _.sample(["James", "John", "Robert", "Michael", "William", "David", "Richard", "Joseph", "Thomas", "Charles"]);

@@ -19,6 +19,7 @@ $("document")
             intro,
             botcaptcha,
             instructions,
+            attention_check,
             ex_trial,
             begin_experiment,
             // _.flatten(_.shuffle([[comp_trial, after_block1], [pri_trial, after_block2], [rel_trial, after_block3]])),
