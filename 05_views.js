@@ -50,7 +50,7 @@ const instructions = magpieViews.view_generator("instructions", {
   trials: 1,
   name: 'instrucions',
   title: 'Instructions',
-  text: `In the following, you will be presented with <b> 8 short stories</b>.
+  text: `In the following, you will be presented with <b> 16 short stories</b>.
             Please read them very carefully, even if they appear to be repeated and you think that you remember them well enough.
             We ask you to <b> rate statements about each short story</b>.
             Please indicate, using an adjustable slider, <b> how likely you think a statement
@@ -204,13 +204,25 @@ const ex_trial = magpieViews.view_generator("slider_rating", {
 
 // attention check trial
 const attention_check = magpieViews.view_generator("slider_rating", {
-  trials: 1,
+  trials: attention_check_data.length,
   title: "Attention check",
   name: 'attention_check',
   trial_type: 'attention_check',
-  data: attention_check_data
+  data: _.shuffle(attention_check_data)
+},
+{
+  stimulus_container_generator: function (config, CT) {
+    return `<div class='magpie-view'>
+                <h1 class='magpie-view-title'>${config.data[CT].title}</h1>
+                <p class='magpie-view-question magpie-view-qud' id='qud'>${config.data[CT].QUD}</p>
 
-})
+                  <p class='magpie-view-question' id='critical-utterance'>${config.data[CT].critical_question}</p>
+
+                  <p class='magpie-view-question' id='prompt'>${config.data[CT].prompt}</p>
+
+    </div>`;}
+}
+)
 
 // captcha
 // speaker and listeneers names to be sampled from for the botcaptcha

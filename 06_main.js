@@ -8,7 +8,7 @@ $("document")
         e.preventDefault();
       }
     };
-
+    console.log( _.shuffle(Array.from(attention_check).concat( Array.from(xor_trial))))
     // calls magpieInit
     // in debug mode this returns the magpie-object, which you can access in the console of your browser
     // e.g. >> window.magpie_monitor or window.magpie_monitor.findNextView()
@@ -17,17 +17,14 @@ $("document")
       // You have to specify all views you want to use in this experiment and the order of them
       views_seq: [
             intro,
-            botcaptcha,
             instructions,
-            attention_check,
             ex_trial,
             begin_experiment,
-            // _.flatten(_.shuffle([[comp_trial, after_block1], [pri_trial, after_block2], [rel_trial, after_block3]])),
+            attention_check,
             xor_trial,
             post_test,
             thanks
         ],
-
 
       // Here, you can specify all information for the deployment
       deploy: {
