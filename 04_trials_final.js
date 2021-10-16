@@ -1,9 +1,99 @@
 let attention_check_data = [
   {
-    optionLeft: "not at all",
-    optionRight: "absolutely",
-    QUD: "Please carefully read the text below and answer the question displayed below, given the information presented in the text.",
-    question: "John is a guy. Brandon is another one. Please adjust the slider all the way to the right in this task. They are both friends with Mary. <br> <br> Based on that, one could conclude that John has friends. How would you respond using the slider, given the text?"
+    title: 'Rumors',
+    QUD: "John and his wife are eating dinner. They have been extremely busy all day in connection with their stressful jobs as real estate agents. Please move the slider all the way to the right. They are discussing a rumor saying that a famous singer has committed suicide in the morning. ",
+    optionLeft: '<p style="font-family: sans-serif">certainly false</p>',
+    optionRight: '<p style="font-family: sans-serif">certainly true</p>',
+    condition: "attention_check",
+    critical_question: ``,
+    prompt: "John really liked that singer.",
+    question: '<font size="3"> How likely is it that the statement is true given the story?</font>',
+    block: 'attention_check',
+    expected: 100
+  },
+  {
+    title: 'Underage drinking',
+    QUD: "Edward is in a crowded bar IDing the patrons who are drinking alcohol. There are new laws and if there is even one incident of underage drinking today Edward will close down the bar. Please move the slider all the way to the right. He talks to the owner of the bar later that night.",
+    optionLeft: '<p style="font-family: sans-serif">certainly false</p>',
+    optionRight: '<p style="font-family: sans-serif">certainly true</p>',
+    condition: "attention_check",
+    critical_question: ``,
+    prompt: "Five people were drinking beer at the bar.",
+    question: '<font size="3"> How likely is it that the statement is true given the story?</font>',
+    block: 'attention_check',
+    expected: 100
+  },
+  {
+    title: 'Health inspector',
+    QUD: "One of the duties of a restaurant health inspector is to test whether the food doesn't contain more bacteria than allowed. Please move the slider all the way to the left. After an inspection, the inspector talks to the restaurant owner.",
+    optionLeft: '<p style="font-family: sans-serif">certainly false</p>',
+    optionRight: '<p style="font-family: sans-serif">certainly true</p>',
+    condition: "attention_check",
+    critical_question: ``,
+    prompt: "The restaurant owner had to pay a fine because some food contained bacteria.",
+    question: '<font size="3"> How likely is it that the statement is true given the story?</font>',
+    block: 'attention_check',
+    expected: 0
+  },
+  {
+    title: 'Shelter',
+    QUD: "Freddy is finally allowed to get a cat. Please move the slider all the way to the left. He and his mum go to the animal shelter to choose one they want to take home with them.",
+    optionLeft: '<p style="font-family: sans-serif">certainly false</p>',
+    optionRight: '<p style="font-family: sans-serif">certainly true</p>',
+    condition: "attention_check",
+    critical_question: ``,
+    prompt: "Freddy liked a little white kitten the most.",
+    question: '<font size="3"> How likely is it that the statement is true given the story?</font>',
+    block: 'attention_check',
+    expected: 0
+  },
+  {
+    title: 'TV experts',
+    QUD: "Jason Barley and Richard Trellis are TV experts engaged in a live discussion of the current NBA season. They are debating about whether Greg Jones should be the Most Valuable Player of the season. Please click on the slider and leave it in the middle. Jason Barley thinks so, but Richard Trellis is less convinced.",
+    optionLeft: '<p style="font-family: sans-serif">certainly false</p>',
+    optionRight: '<p style="font-family: sans-serif">certainly true</p>',
+    condition: "attention_check",
+    critical_question: ``,
+    prompt: "Greg Jones secured victory for his team during the last seconds of a decisive games.",
+    question: '<font size="3"> How likely is it that the statement is true given the story?</font>',
+    block: 'attention_check',
+    expected: 50
+  },
+  {
+    title: 'Homework',
+    QUD: "Mr. Carpenter teaches at a university and gave his students a homework assignment last week. Please click on the slider and leave it in the middle. The students are supposed to submit their homework by putting it in a dedicated post box. Mr. Carpenter collects the submitted assignments.",
+    optionLeft: '<p style="font-family: sans-serif">certainly false</p>',
+    optionRight: '<p style="font-family: sans-serif">certainly true</p>',
+    condition: "attention_check",
+    critical_question: ``,
+    prompt: "All students submitted their homework on time.",
+    question: '<font size="3"> How likely is it that the statement is true given the story?</font>',
+    block: 'attention_check',
+    expected: 50
+  },
+  {
+    title: 'Quiz',
+    QUD: "Mrs. McCartney organized a quiz event at a nursing home. The residents are asked to hand in their answers on a sheet of paper in groups. Please move the slider all the way to the right. Mrs. McCartney is announcing the results of the first question.",
+    optionLeft: '<p style="font-family: sans-serif">certainly false</p>',
+    optionRight: '<p style="font-family: sans-serif">certainly true</p>',
+    condition: "attention_check",
+    critical_question: ``,
+    prompt: "The residents really like Mrs. McCartney's events.",
+    question: '<font size="3"> How likely is it that the statement is true given the story?</font>',
+    block: 'attention_check',
+    expected: 100
+  },
+  {
+    title: 'Chocolate flavors',
+    QUD: "A chocolate brand recently introduced new flavors. Please move the slider all the way to the left. To get people to try them, the company offers a discount price if you buy chocolate bars in all of the new flavors at the same time. Anna thinks that it's only worth the price if all of the flavors are good.",
+    optionLeft: '<p style="font-family: sans-serif">certainly false</p>',
+    optionRight: '<p style="font-family: sans-serif">certainly true</p>',
+    condition: "attention_check",
+    critical_question: ``,
+    prompt: "Anna already tried the new salted caramel chocolate bar.",
+    question: '<font size="3"> How likely is it that the statement is true given the story?</font>',
+    block: 'attention_check',
+    expected: 0
   }
 ]
 
