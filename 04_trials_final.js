@@ -49,7 +49,7 @@ let attention_check_data = [
   },
   {
     title: 'TV experts',
-    QUD: "Jason Barley and Richard Trellis are TV experts engaged in a live discussion of the current NBA season. They are debating about whether Greg Jones should be the Most Valuable Player of the season. Please click on the slider and leave it in the middle. Jason Barley thinks so, but Richard Trellis is less convinced.",
+    QUD: "Jason Barley and Richard Trellis are TV experts engaged in a live discussion of the current NBA season. They are debating about whether Greg Jones should be the Most Valuable Player of the season. Please click on the slider handle and leave it in the middle. Jason Barley thinks so, but Richard Trellis is less convinced.",
     optionLeft: '<p style="font-family: sans-serif">certainly false</p>',
     optionRight: '<p style="font-family: sans-serif">certainly true</p>',
     condition: "attention_check",
@@ -61,7 +61,7 @@ let attention_check_data = [
   },
   {
     title: 'Homework',
-    QUD: "Mr. Carpenter teaches at a university and gave his students a homework assignment last week. Please click on the slider and leave it in the middle. The students are supposed to submit their homework by putting it in a dedicated post box. Mr. Carpenter collects the submitted assignments.",
+    QUD: "Mr. Carpenter teaches at a university and gave his students a homework assignment last week. Please click on the slider handle and leave it in the middle. The students are supposed to submit their homework by putting it in a dedicated post box. Mr. Carpenter collects the submitted assignments.",
     optionLeft: '<p style="font-family: sans-serif">certainly false</p>',
     optionRight: '<p style="font-family: sans-serif">certainly true</p>',
     condition: "attention_check",
@@ -104,7 +104,7 @@ let attention_check_data = [
 let vignettes_or = {
   lll: [
     {
-   "ID": 7,
+   "ID": 1,
    "name": "Jimmy's trip",
    "author": "micha",
    "final_selection": 1,
@@ -133,7 +133,7 @@ let vignettes_or = {
    "test_uncertain2": "Jimmy’s brother has been to New York City last year."
  },
 //  {
-//    "ID": 15,
+//    "ID": 2,
 //    "name": "Harold's pet",
 //    "author": "bob",
 //    "final_selection": 1,
@@ -1906,29 +1906,12 @@ const trials_practice = [{
   question: '<font size="3"> How likely is it that the statement in the blue box is true given the story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[3] + '</i></font>',
   block: 'practice'
 }
-//   {
-//     title: 'Joe´s shopping',
-//     QUD: '<font size="4" color= "#00BFFF"> EXAMPLE </font>  <br><br> <font size="6"> Joe\'s shopping </font>  <br /> ' + "<br /> Joe went shopping yesterday, while his wife Sue was at home with the kids. He bought flowers for his wife on the way home.",
-//     optionLeft: "certainly false",
-//     optionRight: "certainly true",
-//     condition: "example",
-//     question: `<br> ------------------------------- <br/>` + questions[3] + ' <br /> ------------------------------- <br/> <font size="2"> How likely do you think it is that the statement is true given the information in the background story?</font> <br/> <br/> <i> <font color="8B0000">' + explanations[3] + '</i></font>',
-//     block: 'practice'
-// }
+
 ];
 
 
 // call function to create each block with the shuffled 8 eight_stories and the correct string
-// flatten the array, as it is encapusulated
-// comp_block = _.flatten(_.map(_.shuffle(eight_stories), function (x) {
-//   return (create_block(x, "comp"));
-// }));
-// pri_block = _.flatten(_.map(_.shuffle(eight_stories), function (x) {
-//   return (create_block(x, "pri"));
-// }));
-// rel_block = _.flatten(_.map(_.shuffle(eight_stories), function (x) {
-//   return (create_block(x, 'rel'));
-// }));
+
 console.log("Log the practice trials")
 console.log(trials_practice)
 
@@ -1941,5 +1924,4 @@ some_block = _.map(_.shuffle(some_stories), function (x) {
   return create_block(x, "some"); // 'xor'
 });
 console.log(some_block)
-
-var main_block = _.flatten(_.shuffle(_.concat(xor_block, some_block)));
+var main_block = _.shuffle(_.concat(xor_block, some_block));

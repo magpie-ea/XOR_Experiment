@@ -202,43 +202,27 @@ const ex_trial = magpieViews.view_generator("slider_rating", {
 }
 );
 
-// attention check trial
-const attention_check = magpieViews.view_generator("slider_rating", {
-  trials: attention_check_data.length,
-  title: "Attention check",
-  name: 'attention_check',
-  trial_type: 'attention_check',
-  data: _.shuffle(attention_check_data)
+const main_trial_data = main_block.concat(attention_check_data)
+const main_trials = magpieViews.view_generator("slider_rating", {
+  trials: attention_check_data.length + _.flatten(main_block).length,
+  name: "main_trials",
+  trial_type: "main_slider",
+  data: _.flatten(_.shuffle(main_trial_data))
 },
-{
+{ // custom view allowing to add custom backgrounds of different view elements
   stimulus_container_generator: function (config, CT) {
-    return `<div class='magpie-view'>
-                <h1 class='magpie-view-title'>${config.data[CT].title}</h1>
-                <p class='magpie-view-question magpie-view-qud' id='qud'>${config.data[CT].QUD}</p>
+            return `<div class='magpie-view'>
+                        <h1 class='magpie-view-title'>${config.data[CT].title}</h1>
+                        <p class='magpie-view-question magpie-view-qud' id='qud'>${config.data[CT].QUD}</p>
 
-                  <p class='magpie-view-question' id='critical-utterance'>${config.data[CT].critical_question}</p>
+                          <p class='magpie-view-question' id='critical-utterance'>${config.data[CT].critical_question}</p>
 
-                  <p class='magpie-view-question' id='prompt'>${config.data[CT].prompt}</p>
+                          <p class='magpie-view-question' id='prompt'>${config.data[CT].prompt}</p>
 
-    </div>`;}
+            </div>`;} // <p class='magpie-view-question' id='question'>${config.data[CT].question}</p>
 }
-)
+) 
 
-// captcha
-// speaker and listeneers names to be sampled from for the botcaptcha
-var speaker = _.sample(["James", "John", "Robert", "Michael", "William", "David", "Richard", "Joseph", "Thomas", "Charles"]);
-var listener = _.sample(["Mary", "Patricia", "Jennifer", "Linda", "Elizabeth", "Barbara", "Susan", "Jessica", "Sarah", "Margaret"]);
-
-
-const botcaptcha = custom_botcaptcha({
-  name: 'botcaptcha',
-  trials: 1,
-  story: speaker + ' says to ' + listener + ': "It\'s a beautiful day, isn\'t it?"',
-  question: "Who is " + speaker + " talking to?",
-  speaker: speaker,
-  listener: listener
-
-});
 
 
 /** trial (magpie's Trial Type Views) below
