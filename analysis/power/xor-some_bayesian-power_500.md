@@ -137,8 +137,8 @@ fit_initial <- brm(bf(target ~ rel * comp * pri,
     ## 
     ## SAMPLING FOR MODEL 'ba1d84526fb4d3f52dfdcc0b1a659da2' NOW (CHAIN 1).
     ## Chain 1: 
-    ## Chain 1: Gradient evaluation took 2.2e-05 seconds
-    ## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.22 seconds.
+    ## Chain 1: Gradient evaluation took 2.3e-05 seconds
+    ## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.23 seconds.
     ## Chain 1: Adjust your expectations accordingly!
     ## Chain 1: 
     ## Chain 1: 
@@ -155,15 +155,15 @@ fit_initial <- brm(bf(target ~ rel * comp * pri,
     ## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
     ## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
     ## Chain 1: 
-    ## Chain 1:  Elapsed Time: 0.055536 seconds (Warm-up)
-    ## Chain 1:                0.058989 seconds (Sampling)
-    ## Chain 1:                0.114525 seconds (Total)
+    ## Chain 1:  Elapsed Time: 0.051216 seconds (Warm-up)
+    ## Chain 1:                0.056423 seconds (Sampling)
+    ## Chain 1:                0.107639 seconds (Total)
     ## Chain 1: 
     ## 
     ## SAMPLING FOR MODEL 'ba1d84526fb4d3f52dfdcc0b1a659da2' NOW (CHAIN 2).
     ## Chain 2: 
-    ## Chain 2: Gradient evaluation took 1.2e-05 seconds
-    ## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.12 seconds.
+    ## Chain 2: Gradient evaluation took 1e-05 seconds
+    ## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.1 seconds.
     ## Chain 2: Adjust your expectations accordingly!
     ## Chain 2: 
     ## Chain 2: 
@@ -180,15 +180,15 @@ fit_initial <- brm(bf(target ~ rel * comp * pri,
     ## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
     ## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
     ## Chain 2: 
-    ## Chain 2:  Elapsed Time: 0.055428 seconds (Warm-up)
-    ## Chain 2:                0.061373 seconds (Sampling)
-    ## Chain 2:                0.116801 seconds (Total)
+    ## Chain 2:  Elapsed Time: 0.051632 seconds (Warm-up)
+    ## Chain 2:                0.055 seconds (Sampling)
+    ## Chain 2:                0.106632 seconds (Total)
     ## Chain 2: 
     ## 
     ## SAMPLING FOR MODEL 'ba1d84526fb4d3f52dfdcc0b1a659da2' NOW (CHAIN 3).
     ## Chain 3: 
-    ## Chain 3: Gradient evaluation took 1.1e-05 seconds
-    ## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.11 seconds.
+    ## Chain 3: Gradient evaluation took 9e-06 seconds
+    ## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.09 seconds.
     ## Chain 3: Adjust your expectations accordingly!
     ## Chain 3: 
     ## Chain 3: 
@@ -205,15 +205,15 @@ fit_initial <- brm(bf(target ~ rel * comp * pri,
     ## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
     ## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
     ## Chain 3: 
-    ## Chain 3:  Elapsed Time: 0.054635 seconds (Warm-up)
-    ## Chain 3:                0.062066 seconds (Sampling)
-    ## Chain 3:                0.116701 seconds (Total)
+    ## Chain 3:  Elapsed Time: 0.051368 seconds (Warm-up)
+    ## Chain 3:                0.054247 seconds (Sampling)
+    ## Chain 3:                0.105615 seconds (Total)
     ## Chain 3: 
     ## 
     ## SAMPLING FOR MODEL 'ba1d84526fb4d3f52dfdcc0b1a659da2' NOW (CHAIN 4).
     ## Chain 4: 
-    ## Chain 4: Gradient evaluation took 1.7e-05 seconds
-    ## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.17 seconds.
+    ## Chain 4: Gradient evaluation took 1e-05 seconds
+    ## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.1 seconds.
     ## Chain 4: Adjust your expectations accordingly!
     ## Chain 4: 
     ## Chain 4: 
@@ -230,9 +230,9 @@ fit_initial <- brm(bf(target ~ rel * comp * pri,
     ## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
     ## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
     ## Chain 4: 
-    ## Chain 4:  Elapsed Time: 0.100662 seconds (Warm-up)
-    ## Chain 4:                0.090778 seconds (Sampling)
-    ## Chain 4:                0.19144 seconds (Total)
+    ## Chain 4:  Elapsed Time: 0.05362 seconds (Warm-up)
+    ## Chain 4:                0.056917 seconds (Sampling)
+    ## Chain 4:                0.110537 seconds (Total)
     ## Chain 4:
 
 ## Build pipeline for simulating more data and fitting models
@@ -246,7 +246,7 @@ here.
 start_N <- 100
 step <- 20
 stop_N <-340
-seed <- 100
+seed <- 500
 
 sim_data_fit <- function(N, k){
  results <- map_dbl(
@@ -281,7 +281,7 @@ sim_power <- function(seed, start_N, step, stop_N) {
   write_csv(sim_full, paste("./results/power_sim_full_N", start_N, "-N", stop_N, "_iter", seed, ".csv", sep=""), append = T, col_names = T)
 }
 
-power_df <- sim_power(seed, start_N, step, stop_N)
+power_df_500 <- sim_power(seed, start_N, step, stop_N)
 ```
 
 Below, the results are summarized by simulated N of subjects to obtain
@@ -290,40 +290,40 @@ effects were \>0.05).
 
 ``` r
 # analyse power summary
-power_results <- power_df %>% group_by(N) %>% 
+power_results_500 <- power_df_500 %>% group_by(N) %>% 
   summarise(power = mean(lower_bounds > 0.05))
 ```
 
     ## `summarise()` ungrouping output (override with `.groups` argument)
 
 ``` r
-write_csv(power_results, "./results/power_sim_results_summary.csv")
+write_csv(power_results_500, "./results/power_sim_500_results_summary.csv")
 
-power_results
+power_results_500
 ```
 
     ## # A tibble: 13 x 2
     ##        N power
     ##    <dbl> <dbl>
-    ##  1   100  0.44
-    ##  2   120  0.62
-    ##  3   140  0.74
-    ##  4   160  0.81
-    ##  5   180  0.87
-    ##  6   200  0.92
-    ##  7   220  0.94
-    ##  8   240  0.96
-    ##  9   260  0.99
-    ## 10   280  0.99
-    ## 11   300  0.99
-    ## 12   320  1   
-    ## 13   340  1
+    ##  1   100 0.42 
+    ##  2   120 0.55 
+    ##  3   140 0.686
+    ##  4   160 0.772
+    ##  5   180 0.834
+    ##  6   200 0.888
+    ##  7   220 0.94 
+    ##  8   240 0.95 
+    ##  9   260 0.97 
+    ## 10   280 0.976
+    ## 11   300 0.982
+    ## 12   320 0.986
+    ## 13   340 0.994
 
 Finally, power results are visualized as a function of the N of
 subjects:
 
 ``` r
-power_results %>%
+power_results_500 %>%
   ggplot(., aes(x = N, y = power)) +
   geom_line() +
   geom_point() +
@@ -331,7 +331,7 @@ power_results %>%
   ggtitle("Power by N of subjects") 
 ```
 
-![](xor-some_bayesian-power_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](xor-some_bayesian-power_500_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 ``` r
 ggsave("./results/power_sim_results_plot.png")

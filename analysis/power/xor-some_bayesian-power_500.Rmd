@@ -88,7 +88,7 @@ Build helper function for simulating and computing regression model for k iterat
 start_N <- 100
 step <- 20
 stop_N <-340
-seed <- 100
+seed <- 500
 
 sim_data_fit <- function(N, k){
  results <- map_dbl(
@@ -123,24 +123,24 @@ sim_power <- function(seed, start_N, step, stop_N) {
   write_csv(sim_full, paste("./results/power_sim_full_N", start_N, "-N", stop_N, "_iter", seed, ".csv", sep=""), append = T, col_names = T)
 }
 
-power_df <- sim_power(seed, start_N, step, stop_N)
+power_df_500 <- sim_power(seed, start_N, step, stop_N)
 
 ```
 
 Below, the results are summarized by simulated N of subjects to obtain the power estimates (i.e., proportion of simulation runs where all three effects were >0.05).
 ```{r}
 # analyse power summary
-power_results <- power_df %>% group_by(N) %>% 
+power_results_500 <- power_df_500 %>% group_by(N) %>% 
   summarise(power = mean(lower_bounds > 0.05))
 
-write_csv(power_results, "./results/power_sim_results_summary.csv")
+write_csv(power_results_500, "./results/power_sim_500_results_summary.csv")
 
-power_results
+power_results_500
 ```
 
 Finally, power results are visualized as a function of the N of subjects:
 ```{r}
-power_results %>%
+power_results_500 %>%
   ggplot(., aes(x = N, y = power)) +
   geom_line() +
   geom_point() +
