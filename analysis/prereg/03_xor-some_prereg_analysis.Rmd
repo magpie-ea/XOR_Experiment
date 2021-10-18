@@ -1,0 +1,181 @@
+---
+title: "Xor-Some Preregistered Study: Analyses"
+author: "Polina Tsvilodub"
+date: "8/31/2021"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(brms)
+library(tidyboot)
+library(tidybayes)
+```
+
+Read data created in preprocessing script:
+```{r}
+d_critical_zScored_wide <- read_csv("./../../data/results_prereg_tidy_zScored_wide.csv")
+d_critical_zScored <- read_csv("./../../data/results_prereg_tidy_zScored_long.csv")
+```
+
+
+## Main analysis 
+
+Next, fit the maximal model *across* experiments (i.e., *across SI trigger types*). For convergence reasons, correlation of random effects has to be set to 0. 
+```{r, results='hide', message=FALSE, warning=FALSE}
+# Full model 
+d_critical_zScored_wide <- d_critical_zScored_wide %>% mutate(
+  main_type = as.factor(main_type)
+)
+# some = 0, xor = 1
+contrasts(d_critical_zScored_wide$main_type) 
+
+# set priors
+priors <- set_prior("student_t(1, 0, 2)", class = "b")
+
+model_SI <- brm(target ~ prior*competence*relevance* main_type +
+                  # (1 + prior + competence + relevance + main_type || submission_id) +
+                   (1 | title),
+                 data = d_critical_zScored_wide,
+                 prior = priors,
+                 sample_prior = T,
+                 control = list(adapt_delta = 0.95),
+                 cores = 4,
+                 iter = 3000)
+```
+
+```{r}
+summary(model_SI)
+```
+
+Next, extract posterior contrasts of interest: effects of each predictor \{prior, competence and relevance\} for each trigger.
+
+```{r}
+model_SI %>% spread_draws(b_Intercept, b_prior, b_competence, b_relevance,
+                          b_main_typexor, `b_prior:competence`,
+                          `b_prior:relevance`, `b_competence:relevance`,
+                          `b_prior:main_typexor`, `b_competence:main_typexor`,
+                          `b_relevance:main_typexor`, `b_prior:competence:relevance`, 
+                          `b_prior:competence:main_typexor`, `b_prior:relevance:main_typexor`,
+                          `b_competence:relevance:main_typexor`, 
+                          `b_prior:competence:relevance:main_typexor`) %>% 
+  mutate(
+    prior_xor = b_prior + `b_prior:main_typexor`,
+    prior_some = b_prior,
+    competence_xor = b_competence + `b_competence:main_typexor`,
+    competence_some = b_competence,
+    relevance_xor =  b_relevance + `b_relevance:main_typexor`,
+    relevance_some = b_relevance
+  ) -> model_SI_posteriors
+
+# check P that the effects are positive / negative / no effect present
+posterior_hypotheses <- model_SI_posteriors %>% 
+  select(prior_xor, prior_some, 
+         competence_xor, competence_some,
+         relevance_xor, relevance_some) %>%
+  gather(key, val) %>%
+  group_by(key) %>% mutate(positive = mean(val > 0.05),
+                           negative = mean(val < -0.05),
+                           no = mean(val %>% between(-0.05, 0.05))) %>%
+  summarise(positive_eff = mean(positive),
+            negative_eff = mean(negative),
+            no_eff = mean(no))
+posterior_hypotheses
+```
+
+#### Perform BF analysis
+
+We want to address a conjunctive hypothesis, one triplet for each trigger word, namely:
+
+1. the slope of 'competence' is positive
+2. the slope of 'prior' is negative
+3. the slope of 'relevance' is positive
+
+We judge there to be strong evidence for positivity of a slope variable $\beta_X$, if the posterior probability $P(\beta_X > \delta \mid D)$ is at least $.95$, for $\delta = 0.05$ the parameter that defines our 'region of practical equivalence'.
+A posterior odds ratio of at least $\frac{.95}{.05} = 19$ corresponds to a Bayes factor of at least 19 when prior odds are 1.
+
+The binary test of conformity with the theoretical predictions therefore is:
+```{r}
+test_conjunction_of_all_hypotheses <-  function(posterior_hypotheses) {
+  posterior_hypotheses %>% 
+    mutate(hypothesis_true = case_when(
+      key == 'competence_some' ~ positive_eff > 0.95,
+      key == 'competence_xor'  ~ positive_eff > 0.95,
+      key == 'prior_some' ~ negative_eff > 0.95,
+      key == 'prior_xor'  ~ negative_eff > 0.95, 
+      key == 'relevance_some' ~ positive_eff > 0.95,
+      key == 'relevance_xor'  ~ positive_eff > 0.95
+    )) %>% 
+    pull(hypothesis_true) %>% all()
+}
+# applied to the pilot data
+test_conjunction_of_all_hypotheses(posterior_hypotheses)
+```
+
+## Exploratory analyses
+
+Model with binary predictors:
+```{r}
+d_critical_zScored %>% 
+  select(submission_id, title, main_type, block_extended, response_centered, prior_class, class_condition) %>% 
+  unique() %>% 
+  pivot_wider(
+    names_from = class_condition, 
+    values_from = prior_class
+  )  %>%
+  mutate(relevance = factor(relevance, levels = c(1, 0)),
+         competence = factor(competence, levels = c(1, 0)),
+         prior = factor(prior, levels = c(1, 0)),
+         main_type = as.factor(main_type)) %>% 
+  filter(block_extended == "target") -> d_critical_wide_cat_zScored
+# sum code predictors
+# low prior: -1, high prior:: 1 
+contrasts(d_critical_wide_cat_zScored$prior) <- contr.sum(2)
+# low comp : -1, high comp : 1
+contrasts(d_critical_wide_cat_zScored$competence) <- contr.sum(2)
+# low rel: -1, high rel: 1
+contrasts(d_critical_wide_cat_zScored$relevance) <- contr.sum(2)
+# leave main type dummy coded
+contrasts(d_critical_wide_cat_zScored$main_type) 
+
+# xor, maximal model with interactions and maximal REs
+model_xor_cat_zScored <- brm(
+  response_centered ~ prior*competence*relevance*main_type + 
+    (1 + prior + competence + relevance + main_type || submission_id) +
+    (1 | title),
+  data = d_critical_wide_cat_zScored,
+  prior = priors,
+  sample_prior = T,
+  family = "gaussian",
+  cores = 4,
+  iter = 3000
+)
+
+```
+```{r}
+summary(model_xor_cat_zScored)
+```
+
+Model with aggregated by-story ratings:
+```{r, results='hide'}
+d_critical_zScored_wide_byItem <- d_critical_zScored_wide %>% ungroup() %>%
+  group_by(title, main_type) %>%
+  summarize(mean_response = mean(target),
+            mean_prior = mean(prior),
+            mean_relevance = mean(relevance),
+            mean_competence = mean(competence))
+
+
+model_means <- brm(mean_response ~ mean_prior + mean_relevance + mean_competence + main_type,
+                       data = d_critical_zScored_wide_byItem,
+                       prior = priors,
+                       sample_prior = T,
+                       family = "gaussian",
+                       cores = 4,
+                       iter = 3000
+                       )
+```
+
+```{r}
+summary(model_means)
+```
