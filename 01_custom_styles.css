@@ -8,9 +8,10 @@
 } */
 
 /* Display all titles in red */
-/*.magpie-view-title {
-    color: red;
-}*/
+.magpie-view-title { 
+    margin-top:0;
+    padding:0;
+} 
 
 /* Example of declaring your own style */
 .custom-border {

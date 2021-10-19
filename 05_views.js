@@ -53,8 +53,10 @@ const instructions = magpieViews.view_generator("instructions", {
   text: `In the following, you will be presented with <b> 16 short stories</b>.
             Please read them very carefully, even if they appear to be repeated and you think that you remember them well enough.
             We ask you to <b> rate statements about each short story</b>.
-            Please indicate, using an adjustable slider, <b> how likely you think a statement
+            Please indicate, using an adjustable slider, <b>how likely it is that a statement
             is true based on what you've read.</b>
+            <br />
+            Notice that there will also be simple attention checking trials. You will recognize them immediately when you read the important text on each trial carefully - those trials contain instructions for you to move the slider in a certain way. Please follow those instructions.
             <br />
             <br />
             The story is given at the top.
@@ -203,11 +205,18 @@ const ex_trial = magpieViews.view_generator("slider_rating", {
 );
 
 const main_trial_data = main_block.concat(attention_check_data)
+//console.log(typeof(main_trial_data[0]))
+var main_trials_shuffled = _.shuffle(main_trial_data)
+// make sure attention checks don't appear as first trial
+while(Array.isArray(main_trials_shuffled[0]) == false){
+  main_trials_shuffled = _.shuffle(main_trials_shuffled)
+}
+
 const main_trials = magpieViews.view_generator("slider_rating", {
-  trials: attention_check_data.length + _.flatten(main_block).length,
+  trials: _.flatten(main_trials_shuffled).length,
   name: "main_trials",
   trial_type: "main_slider",
-  data: _.flatten(_.shuffle(main_trial_data))
+  data: _.flatten(main_trials_shuffled)
 },
 { // custom view allowing to add custom backgrounds of different view elements
   stimulus_container_generator: function (config, CT) {
