@@ -6,7 +6,7 @@ let attention_check_data = [
     optionRight: '<p style="font-family: sans-serif">certainly true</p>',
     condition: "attention_check",
     critical_question: ``,
-    prompt: "John really liked that singer.",
+    prompt: "<b>John really liked that singer.</b>",
     question: '<font size="3"> How likely is it that the statement is true given the story?</font>',
     block: 'attention_check',
     expected: 100
@@ -18,7 +18,7 @@ let attention_check_data = [
     optionRight: '<p style="font-family: sans-serif">certainly true</p>',
     condition: "attention_check",
     critical_question: ``,
-    prompt: "Five people were drinking beer at the bar.",
+    prompt: "<b>Five people were drinking beer at the bar.</b>",
     question: '<font size="3"> How likely is it that the statement is true given the story?</font>',
     block: 'attention_check',
     expected: 100
@@ -30,7 +30,7 @@ let attention_check_data = [
     optionRight: '<p style="font-family: sans-serif">certainly true</p>',
     condition: "attention_check",
     critical_question: ``,
-    prompt: "The restaurant owner had to pay a fine because some food contained bacteria.",
+    prompt: "<b>The restaurant owner had to pay a fine because some food contained bacteria.</b>",
     question: '<font size="3"> How likely is it that the statement is true given the story?</font>',
     block: 'attention_check',
     expected: 0
@@ -42,7 +42,7 @@ let attention_check_data = [
     optionRight: '<p style="font-family: sans-serif">certainly true</p>',
     condition: "attention_check",
     critical_question: ``,
-    prompt: "Freddy liked a little white kitten the most.",
+    prompt: "<b>Freddy liked a little white kitten the most.</b>",
     question: '<font size="3"> How likely is it that the statement is true given the story?</font>',
     block: 'attention_check',
     expected: 0
@@ -54,7 +54,7 @@ let attention_check_data = [
     optionRight: '<p style="font-family: sans-serif">certainly true</p>',
     condition: "attention_check",
     critical_question: ``,
-    prompt: "Greg Jones secured victory for his team during the last seconds of a decisive games.",
+    prompt: "<b>Greg Jones secured victory for his team during the last seconds of a decisive games.</b>",
     question: '<font size="3"> How likely is it that the statement is true given the story?</font>',
     block: 'attention_check',
     expected: 50
@@ -66,7 +66,7 @@ let attention_check_data = [
     optionRight: '<p style="font-family: sans-serif">certainly true</p>',
     condition: "attention_check",
     critical_question: ``,
-    prompt: "All students submitted their homework on time.",
+    prompt: "<b>All students submitted their homework on time.</b>",
     question: '<font size="3"> How likely is it that the statement is true given the story?</font>',
     block: 'attention_check',
     expected: 50
@@ -78,7 +78,7 @@ let attention_check_data = [
     optionRight: '<p style="font-family: sans-serif">certainly true</p>',
     condition: "attention_check",
     critical_question: ``,
-    prompt: "The residents really like Mrs. McCartney's events.",
+    prompt: "<b>The residents really like Mrs. McCartney's events.</b>",
     question: '<font size="3"> How likely is it that the statement is true given the story?</font>',
     block: 'attention_check',
     expected: 100
@@ -90,7 +90,7 @@ let attention_check_data = [
     optionRight: '<p style="font-family: sans-serif">certainly true</p>',
     condition: "attention_check",
     critical_question: ``,
-    prompt: "Anna already tried the new salted caramel chocolate bar.",
+    prompt: "<b>Anna already tried the new salted caramel chocolate bar.</b>",
     question: '<font size="3"> How likely is it that the statement is true given the story?</font>',
     block: 'attention_check',
     expected: 0
