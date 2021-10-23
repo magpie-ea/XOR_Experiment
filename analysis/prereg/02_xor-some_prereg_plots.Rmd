@@ -12,9 +12,9 @@ library(tidyboot)
 
 Read data created in preprocessing script:
 ```{r}
-d_critical_zScored_wide <- read_csv("./../../data/results_prereg_tidy_zScored_wide.csv")
-d_critical_zScored <- read_csv("./../../data/results_prereg_tidy_zScored_long.csv")
-d_test_raw <- read_csv("./../../results_prereg_raw_test.csv")
+d_critical_zScored_wide <- read_csv("./../../data/main/results_prereg_tidy_N18_zScored_wide.csv")
+d_critical_zScored <- read_csv("./../../data/main/results_prereg_tidy_N18_zScored_long.csv")
+d_test_raw <- read_csv("./../../data/main/results_prereg_raw_N18_test.csv")
 ```
 
 ## Plots
