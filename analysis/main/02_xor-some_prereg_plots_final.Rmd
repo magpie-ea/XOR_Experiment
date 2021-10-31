@@ -1,0 +1,71 @@
+---
+title: 'Xor-Some Preregistered Study: Visualizations'
+author: "Polina Tsvilodub"
+date: "10/18/2021"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(tidyboot)
+```
+
+Read data created in preprocessing script:
+```{r}
+d_critical_zScored_wide <- read_csv("./../../data/main/results_prereg_tidy_final_zScored_wide.csv")
+d_critical_zScored <- read_csv("./../../data/main/results_prereg_tidy_final_zScored_long.csv")
+d_test <- read_csv("./../../data/main/results_prereg_raw_final_test.csv")
+```
+
+## Plots
+
+Comprehension question performance:
+```{r}
+d_test_ci <- d_test %>% group_by(test_condition) %>% 
+  tidyboot_mean(column = response) 
+
+d_test %>% 
+  ggplot(., aes(x = test_condition, y = response)) +
+  geom_point(size = 2, alpha = 0.3, position = position_jitter(width = 0.1)) +
+  geom_point(data = d_test_ci, aes(x = test_condition, y = mean), color = "red", 
+             size = 4) +
+  facet_wrap(~main_type)
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+d_critical_zScored_wide %>%
+  ggplot(., aes(x = relevance, y = target)) +
+  geom_point(size = 2, alpha = 0.7) +
+  ylab("Inference strength ratings") +
+  geom_smooth(method = "lm") +
+  facet_wrap(~main_type, ncol = 1) -> p.rel.z
+
+d_critical_zScored_wide %>%
+  ggplot(., aes(x = competence, y = target)) +
+  geom_point(size = 2, alpha = 0.7) +
+  geom_smooth(method = "lm") +
+  ylab("") +
+  facet_wrap(~main_type, ncol = 1) -> p.comp.z
+
+d_critical_zScored_wide %>%
+  ggplot(., aes(x = prior, y = target)) +
+  geom_point(size = 2, alpha = 0.7) +
+  geom_smooth(method = "lm") +
+  ylab("") +
+  facet_wrap(~main_type, ncol = 1) -> p.pri.z
+
+gridExtra::grid.arrange(p.rel.z, p.comp.z, p.pri.z, ncol = 3) 
+```
+
+```{r}
+d_critical_zScored %>% 
+  filter(block == "xor" | block == "some") %>%
+  ggplot(., aes(x = prior_class, y = response_centered)) +
+  geom_point(size = 2, alpha = 0.5) +
+  geom_smooth(method="lm") +
+  ylab("Inference strength ratings") +
+  facet_wrap(block~class_condition) +
+  xlab("Anticipated categorization of the items") +
+  ggtitle("Inference strength ratings by-predictor")
+  
+```
