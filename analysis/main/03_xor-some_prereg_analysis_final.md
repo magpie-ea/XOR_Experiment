@@ -7,39 +7,8 @@ Read data created in preprocessing script:
 
 ``` r
 d_critical_zScored_wide <- read_csv("./../../data/main/results_prereg_tidy_final_zScored_wide.csv")
-```
-
-    ## Parsed with column specification:
-    ## cols(
-    ##   submission_id = col_double(),
-    ##   title = col_character(),
-    ##   main_type = col_character(),
-    ##   competence = col_double(),
-    ##   prior = col_double(),
-    ##   relevance = col_double(),
-    ##   target = col_double()
-    ## )
-
-``` r
 d_critical_zScored <- read_csv("./../../data/main/results_prereg_tidy_final_zScored_long.csv")
 ```
-
-    ## Parsed with column specification:
-    ## cols(
-    ##   .default = col_character(),
-    ##   submission_id = col_double(),
-    ##   ID = col_double(),
-    ##   RT = col_double(),
-    ##   experiment_id = col_double(),
-    ##   response = col_double(),
-    ##   trial_number = col_double(),
-    ##   prior_class = col_double(),
-    ##   block_mean = col_double(),
-    ##   block_sd = col_double(),
-    ##   response_centered = col_double()
-    ## )
-
-    ## See spec(...) for full column specifications.
 
 ## Main analysis
 
@@ -83,55 +52,55 @@ summary(model_SI)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 200) 
     ##                  Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)        0.02      0.01     0.00     0.05 1.00     4185     2325
-    ## sd(prior)            0.21      0.04     0.14     0.28 1.00     1493     1252
-    ## sd(competence)       0.10      0.05     0.01     0.19 1.00      721     1415
-    ## sd(relevance)        0.06      0.04     0.00     0.15 1.00     1031     1961
-    ## sd(main_typexor)     0.05      0.04     0.00     0.14 1.00     2068     2183
+    ## sd(Intercept)        0.02      0.01     0.00     0.05 1.00     4009     2428
+    ## sd(prior)            0.21      0.04     0.14     0.28 1.00     1593     2875
+    ## sd(competence)       0.10      0.05     0.01     0.19 1.01      764     1530
+    ## sd(relevance)        0.06      0.04     0.00     0.15 1.00     1233     2253
+    ## sd(main_typexor)     0.05      0.04     0.00     0.13 1.00     2492     2888
     ## 
     ## ~title (Number of levels: 64) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     0.25      0.04     0.18     0.33 1.00     1892     3244
+    ## sd(Intercept)     0.25      0.04     0.18     0.33 1.00     2247     3349
     ## 
     ## Population-Level Effects: 
     ##                                         Estimate Est.Error l-95% CI u-95% CI
     ## Intercept                                   0.12      0.06     0.01     0.23
     ## prior                                      -0.16      0.04    -0.23    -0.09
     ## competence                                  0.22      0.04     0.13     0.30
-    ## relevance                                   0.04      0.04    -0.04     0.12
-    ## main_typexor                               -0.29      0.08    -0.45    -0.14
+    ## relevance                                   0.04      0.04    -0.05     0.12
+    ## main_typexor                               -0.29      0.08    -0.44    -0.14
     ## prior:competence                            0.06      0.03     0.00     0.12
     ## prior:relevance                            -0.02      0.03    -0.08     0.04
-    ## competence:relevance                        0.05      0.04    -0.03     0.12
+    ## competence:relevance                        0.04      0.04    -0.03     0.12
     ## prior:main_typexor                          0.10      0.06    -0.01     0.21
-    ## competence:main_typexor                    -0.07      0.06    -0.18     0.05
-    ## relevance:main_typexor                      0.04      0.06    -0.07     0.15
+    ## competence:main_typexor                    -0.07      0.06    -0.18     0.04
+    ## relevance:main_typexor                      0.04      0.06    -0.07     0.16
     ## prior:competence:relevance                 -0.00      0.03    -0.06     0.05
     ## prior:competence:main_typexor              -0.09      0.05    -0.19     0.02
     ## prior:relevance:main_typexor                0.02      0.05    -0.08     0.12
-    ## competence:relevance:main_typexor           0.03      0.05    -0.08     0.13
-    ## prior:competence:relevance:main_typexor     0.01      0.05    -0.09     0.10
+    ## competence:relevance:main_typexor           0.03      0.05    -0.07     0.13
+    ## prior:competence:relevance:main_typexor     0.01      0.05    -0.09     0.11
     ##                                         Rhat Bulk_ESS Tail_ESS
-    ## Intercept                               1.00     2787     3617
-    ## prior                                   1.00     3906     4497
-    ## competence                              1.00     3046     3949
-    ## relevance                               1.00     3531     4307
-    ## main_typexor                            1.00     2788     3268
-    ## prior:competence                        1.00     4664     3609
-    ## prior:relevance                         1.00     3969     4603
-    ## competence:relevance                    1.00     3394     3971
-    ## prior:main_typexor                      1.00     4806     4760
-    ## competence:main_typexor                 1.00     3636     3525
-    ## relevance:main_typexor                  1.00     3514     3827
-    ## prior:competence:relevance              1.00     4368     4674
-    ## prior:competence:main_typexor           1.00     5600     4886
-    ## prior:relevance:main_typexor            1.00     3653     4605
-    ## competence:relevance:main_typexor       1.00     4031     4261
-    ## prior:competence:relevance:main_typexor 1.00     4802     4420
+    ## Intercept                               1.00     2793     3815
+    ## prior                                   1.00     3833     4300
+    ## competence                              1.00     2983     3732
+    ## relevance                               1.00     3692     4006
+    ## main_typexor                            1.00     2697     3386
+    ## prior:competence                        1.00     4792     4594
+    ## prior:relevance                         1.00     3936     4638
+    ## competence:relevance                    1.00     3725     4201
+    ## prior:main_typexor                      1.00     4852     4735
+    ## competence:main_typexor                 1.00     3592     4538
+    ## relevance:main_typexor                  1.00     4022     4343
+    ## prior:competence:relevance              1.00     4073     4727
+    ## prior:competence:main_typexor           1.00     4953     4738
+    ## prior:relevance:main_typexor            1.00     4215     4221
+    ## competence:relevance:main_typexor       1.00     4028     4707
+    ## prior:competence:relevance:main_typexor 1.00     4646     4396
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma     0.83      0.02     0.80     0.87 1.00     2854     3684
+    ## sigma     0.83      0.02     0.80     0.87 1.00     2791     3725
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -179,14 +148,14 @@ posterior_hypotheses
 ```
 
     ## # A tibble: 6 x 4
-    ##   key             positive_eff negative_eff   no_eff
-    ##   <chr>                  <dbl>        <dbl>    <dbl>
-    ## 1 competence_some       1.00       0        0.000167
-    ## 2 competence_xor        0.988      0        0.0118  
-    ## 3 prior_some            0          0.999    0.000667
-    ## 4 prior_xor             0.0103     0.603    0.386   
-    ## 5 relevance_some        0.400      0.0175   0.582   
-    ## 6 relevance_xor         0.763      0.000167 0.237
+    ##   key             positive_eff negative_eff no_eff
+    ##   <chr>                  <dbl>        <dbl>  <dbl>
+    ## 1 competence_some        1         0        0     
+    ## 2 competence_xor         0.987     0        0.0133
+    ## 3 prior_some             0         1        0     
+    ## 4 prior_xor              0.009     0.588    0.403 
+    ## 5 relevance_some         0.386     0.0197   0.594 
+    ## 6 relevance_xor          0.775     0.000667 0.224
 
 #### Perform BF analysis
 
@@ -225,6 +194,28 @@ test_conjunction_of_all_hypotheses(posterior_hypotheses)
 ```
 
     ## [1] FALSE
+
+### Plot posterior distributions
+
+``` r
+model_SI_posteriors %>% select(prior_xor, prior_some,
+                               competence_xor, competence_some,
+                               relevance_xor, relevance_some) %>%
+  pivot_longer(cols = everything(), names_to = "effect", values_to = "value") -> model_SI_posteriors_long
+
+
+model_SI_posteriors_long %>%
+  ggplot(.) + # 
+  stat_halfeye(aes(y = effect, x = value, 
+                   fill = stat(case_when(x %>% between(-0.05, 0.05) ~ "no effect", x < -0.05 ~ "negative effect", x > 0.05 ~ "positive effect"))
+                   ), 
+               alpha = .7) +
+  geom_vline(xintercept = c(-.05, .05), linetype = "dashed") +
+  scale_fill_manual(name = "Direction of effect", values = c("coral", "yellow3", "mediumseagreen")) +
+  ggtitle("Posterior effect distributions. Points indicate posterior means\nThick lines indicate 66% CrIs, thin lines 95% CrIs.")
+```
+
+![](03_xor-some_prereg_analysis_final_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 ## Exploratory analyses
 
@@ -281,55 +272,55 @@ summary(model_xor_cat_zScored)
     ## Group-Level Effects: 
     ## ~submission_id (Number of levels: 200) 
     ##                  Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)        0.02      0.01     0.00     0.05 1.00     4624     2514
-    ## sd(prior1)           0.20      0.04     0.12     0.27 1.01     1545     2130
-    ## sd(competence1)      0.11      0.05     0.01     0.20 1.00     1162     1511
-    ## sd(relevance1)       0.17      0.04     0.07     0.24 1.00     1272     1089
-    ## sd(main_typexor)     0.05      0.04     0.00     0.14 1.00     2403     2982
+    ## sd(Intercept)        0.02      0.01     0.00     0.05 1.00     4915     3288
+    ## sd(prior1)           0.20      0.04     0.12     0.27 1.00     1725     1570
+    ## sd(competence1)      0.11      0.05     0.01     0.20 1.00     1120     1679
+    ## sd(relevance1)       0.17      0.04     0.07     0.24 1.00     1350     1121
+    ## sd(main_typexor)     0.05      0.04     0.00     0.14 1.00     3203     2958
     ## 
     ## ~title (Number of levels: 64) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     0.17      0.04     0.09     0.25 1.00     1611     2595
+    ## sd(Intercept)     0.17      0.04     0.09     0.25 1.00     1980     2541
     ## 
     ## Population-Level Effects: 
     ##                                            Estimate Est.Error l-95% CI u-95% CI
     ## Intercept                                      0.18      0.04     0.10     0.27
     ## prior1                                        -0.18      0.05    -0.27    -0.09
     ## competence1                                    0.30      0.04     0.22     0.39
-    ## relevance1                                     0.05      0.05    -0.04     0.15
+    ## relevance1                                     0.05      0.04    -0.03     0.14
     ## main_typexor                                  -0.37      0.06    -0.49    -0.25
-    ## prior1:competence1                             0.09      0.04     0.00     0.17
-    ## prior1:relevance1                              0.01      0.04    -0.08     0.10
+    ## prior1:competence1                             0.08      0.04    -0.00     0.17
+    ## prior1:relevance1                              0.01      0.04    -0.08     0.09
     ## competence1:relevance1                         0.01      0.04    -0.07     0.10
-    ## prior1:main_typexor                            0.03      0.06    -0.09     0.15
-    ## competence1:main_typexor                      -0.17      0.06    -0.30    -0.05
+    ## prior1:main_typexor                            0.03      0.06    -0.09     0.14
+    ## competence1:main_typexor                      -0.18      0.06    -0.30    -0.06
     ## relevance1:main_typexor                       -0.11      0.06    -0.23     0.01
-    ## prior1:competence1:relevance1                  0.02      0.04    -0.07     0.11
-    ## prior1:competence1:main_typexor               -0.09      0.06    -0.21     0.04
-    ## prior1:relevance1:main_typexor                 0.06      0.06    -0.06     0.18
-    ## competence1:relevance1:main_typexor            0.09      0.06    -0.04     0.21
+    ## prior1:competence1:relevance1                  0.02      0.04    -0.07     0.10
+    ## prior1:competence1:main_typexor               -0.08      0.06    -0.20     0.04
+    ## prior1:relevance1:main_typexor                 0.06      0.06    -0.07     0.18
+    ## competence1:relevance1:main_typexor            0.09      0.06    -0.03     0.20
     ## prior1:competence1:relevance1:main_typexor    -0.15      0.06    -0.27    -0.02
     ##                                            Rhat Bulk_ESS Tail_ESS
-    ## Intercept                                  1.00     4473     3906
-    ## prior1                                     1.00     4122     4159
-    ## competence1                                1.00     3712     4024
-    ## relevance1                                 1.00     3768     3012
-    ## main_typexor                               1.00     4928     4073
-    ## prior1:competence1                         1.00     4208     4104
-    ## prior1:relevance1                          1.00     4258     3759
-    ## competence1:relevance1                     1.00     3803     3740
-    ## prior1:main_typexor                        1.00     4185     3045
-    ## competence1:main_typexor                   1.00     3391     3207
-    ## relevance1:main_typexor                    1.00     4131     3939
-    ## prior1:competence1:relevance1              1.00     3964     3271
-    ## prior1:competence1:main_typexor            1.00     4427     3559
-    ## prior1:relevance1:main_typexor             1.00     4366     4108
-    ## competence1:relevance1:main_typexor        1.00     4140     4363
-    ## prior1:competence1:relevance1:main_typexor 1.00     4443     3536
+    ## Intercept                                  1.00     6638     4938
+    ## prior1                                     1.00     5085     4754
+    ## competence1                                1.00     4649     4369
+    ## relevance1                                 1.00     5242     4924
+    ## main_typexor                               1.00     6351     4733
+    ## prior1:competence1                         1.00     4981     4421
+    ## prior1:relevance1                          1.00     4835     4430
+    ## competence1:relevance1                     1.00     5313     4820
+    ## prior1:main_typexor                        1.00     5529     4298
+    ## competence1:main_typexor                   1.00     4982     4106
+    ## relevance1:main_typexor                    1.00     5562     4460
+    ## prior1:competence1:relevance1              1.00     5307     4476
+    ## prior1:competence1:main_typexor            1.00     5066     4134
+    ## prior1:relevance1:main_typexor             1.00     3969     4478
+    ## competence1:relevance1:main_typexor        1.00     5213     4766
+    ## prior1:competence1:relevance1:main_typexor 1.00     5213     4392
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma     0.83      0.02     0.79     0.87 1.00     1851     2809
+    ## sigma     0.83      0.02     0.79     0.87 1.00     2026     3278
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -378,20 +369,40 @@ posterior_hypotheses_cat
 ```
 
     ## # A tibble: 6 x 4
-    ##   key             positive_eff negative_eff   no_eff
-    ##   <chr>                  <dbl>        <dbl>    <dbl>
-    ## 1 competence_some     1            0        0       
-    ## 2 competence_xor      0.990        0.000167 0.00967 
-    ## 3 prior_some          0            0.999    0.000667
-    ## 4 prior_xor           0.000333     0.997    0.00233 
-    ## 5 relevance_some      0.734        0.041    0.226   
-    ## 6 relevance_xor       0.0307       0.795    0.174
+    ##   key             positive_eff negative_eff  no_eff
+    ##   <chr>                  <dbl>        <dbl>   <dbl>
+    ## 1 competence_some        1           0      0      
+    ## 2 competence_xor         0.990       0      0.00983
+    ## 3 prior_some             0           0.999  0.00117
+    ## 4 prior_xor              0           0.997  0.003  
+    ## 5 relevance_some         0.740       0.0358 0.224  
+    ## 6 relevance_xor          0.027       0.793  0.180
 
 ``` r
 test_conjunction_of_all_hypotheses(posterior_hypotheses_cat)
 ```
 
     ## [1] FALSE
+
+``` r
+model_xor_cat_zScored_posteriors %>% select(prior_xor, prior_some,
+                               competence_xor, competence_some,
+                               relevance_xor, relevance_some) %>%
+  pivot_longer(cols = everything(), names_to = "effect", values_to = "value") -> model_xor_cat_posteriors_long
+
+
+model_xor_cat_posteriors_long %>%
+  ggplot(.) + # 
+  stat_halfeye(aes(y = effect, x = value, 
+                   fill = stat(case_when(x %>% between(-0.05, 0.05) ~ "no effect", x < -0.05 ~ "negative effect", x > 0.05 ~ "positive effect"))
+                   ), 
+               alpha = .7) +
+  geom_vline(xintercept = c(-.05, .05), linetype = "dashed") +
+  scale_fill_manual(name = "Direction of effect", values = c("coral", "yellow3", "mediumseagreen")) +
+  ggtitle("Posterior effect distributions. Points indicate posterior means\nThick lines indicate 66% CrIs, thin lines 95% CrIs.")
+```
+
+![](03_xor-some_prereg_analysis_final_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 Model with aggregated by-story ratings:
 
@@ -404,7 +415,7 @@ d_critical_zScored_wide_byItem <- d_critical_zScored_wide %>% ungroup() %>%
             mean_competence = mean(competence))
 
 
-model_means <- brm(mean_response ~ mean_prior + mean_relevance + mean_competence + main_type,
+model_means <- brm(mean_response ~ mean_prior * mean_relevance * mean_competence * main_type,
                        data = d_critical_zScored_wide_byItem,
                        prior = priors,
                        sample_prior = T,
@@ -420,22 +431,67 @@ summary(model_means)
 
     ##  Family: gaussian 
     ##   Links: mu = identity; sigma = identity 
-    ## Formula: mean_response ~ mean_prior + mean_relevance + mean_competence + main_type 
+    ## Formula: mean_response ~ mean_prior * mean_relevance * mean_competence * main_type 
     ##    Data: d_critical_zScored_wide_byItem (Number of observations: 64) 
     ## Samples: 4 chains, each with iter = 3000; warmup = 1500; thin = 1;
     ##          total post-warmup samples = 6000
     ## 
     ## Population-Level Effects: 
-    ##                 Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## Intercept           0.07      0.05    -0.03     0.16 1.00     7374     4236
-    ## mean_prior         -0.36      0.06    -0.48    -0.25 1.00     6762     4761
-    ## mean_relevance     -0.03      0.05    -0.12     0.06 1.00     7618     4847
-    ## mean_competence     0.33      0.04     0.25     0.42 1.00     7437     3954
-    ## main_typexor       -0.20      0.07    -0.33    -0.05 1.00     7239     4732
+    ##                                                        Estimate Est.Error
+    ## Intercept                                                  0.07      0.06
+    ## mean_prior                                                -0.31      0.09
+    ## mean_relevance                                             0.08      0.10
+    ## mean_competence                                            0.43      0.09
+    ## main_typexor                                              -0.21      0.08
+    ## mean_prior:mean_relevance                                  0.06      0.13
+    ## mean_prior:mean_competence                                 0.14      0.13
+    ## mean_relevance:mean_competence                             0.00      0.12
+    ## mean_prior:main_typexor                                   -0.05      0.14
+    ## mean_relevance:main_typexor                               -0.17      0.13
+    ## mean_competence:main_typexor                              -0.08      0.12
+    ## mean_prior:mean_relevance:mean_competence                  0.00      0.17
+    ## mean_prior:mean_relevance:main_typexor                    -0.05      0.20
+    ## mean_prior:mean_competence:main_typexor                   -0.22      0.20
+    ## mean_relevance:mean_competence:main_typexor                0.17      0.16
+    ## mean_prior:mean_relevance:mean_competence:main_typexor    -0.09      0.29
+    ##                                                        l-95% CI u-95% CI Rhat
+    ## Intercept                                                 -0.06     0.18 1.00
+    ## mean_prior                                                -0.50    -0.13 1.00
+    ## mean_relevance                                            -0.12     0.29 1.00
+    ## mean_competence                                            0.25     0.60 1.00
+    ## main_typexor                                              -0.37    -0.05 1.00
+    ## mean_prior:mean_relevance                                 -0.21     0.32 1.00
+    ## mean_prior:mean_competence                                -0.12     0.39 1.00
+    ## mean_relevance:mean_competence                            -0.24     0.24 1.00
+    ## mean_prior:main_typexor                                   -0.34     0.23 1.00
+    ## mean_relevance:main_typexor                               -0.41     0.09 1.00
+    ## mean_competence:main_typexor                              -0.31     0.15 1.00
+    ## mean_prior:mean_relevance:mean_competence                 -0.32     0.33 1.00
+    ## mean_prior:mean_relevance:main_typexor                    -0.43     0.34 1.00
+    ## mean_prior:mean_competence:main_typexor                   -0.59     0.17 1.00
+    ## mean_relevance:mean_competence:main_typexor               -0.16     0.48 1.00
+    ## mean_prior:mean_relevance:mean_competence:main_typexor    -0.68     0.48 1.00
+    ##                                                        Bulk_ESS Tail_ESS
+    ## Intercept                                                  5538     4571
+    ## mean_prior                                                 4675     4403
+    ## mean_relevance                                             3166     3922
+    ## mean_competence                                            3265     3603
+    ## main_typexor                                               5781     4601
+    ## mean_prior:mean_relevance                                  3567     4392
+    ## mean_prior:mean_competence                                 3278     4190
+    ## mean_relevance:mean_competence                             3188     3804
+    ## mean_prior:main_typexor                                    5071     4713
+    ## mean_relevance:main_typexor                                3647     4759
+    ## mean_competence:main_typexor                               4227     4219
+    ## mean_prior:mean_relevance:mean_competence                  3624     4265
+    ## mean_prior:mean_relevance:main_typexor                     4380     4258
+    ## mean_prior:mean_competence:main_typexor                    4858     4592
+    ## mean_relevance:mean_competence:main_typexor                3838     3832
+    ## mean_prior:mean_relevance:mean_competence:main_typexor     4892     4630
     ## 
     ## Family Specific Parameters: 
     ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sigma     0.25      0.02     0.21     0.30 1.00     6522     4390
+    ## sigma     0.26      0.03     0.22     0.33 1.00     5326     4883
     ## 
     ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -447,13 +503,21 @@ trigger.
 
 ``` r
 model_means %>% spread_draws(b_Intercept, b_mean_prior, b_mean_competence, b_mean_relevance,
-                          b_main_typexor) %>% 
+                          b_main_typexor, `b_mean_prior:mean_competence`,
+                          `b_mean_prior:mean_relevance`, `b_mean_relevance:mean_competence`,
+                          `b_mean_prior:main_typexor`, `b_mean_competence:main_typexor`,
+                          `b_mean_relevance:main_typexor`,
+                          `b_mean_prior:mean_relevance:mean_competence`, 
+                          `b_mean_prior:mean_competence:main_typexor`,
+                          `b_mean_prior:mean_relevance:main_typexor`,
+                          `b_mean_relevance:mean_competence:main_typexor`, 
+                          `b_mean_prior:mean_relevance:mean_competence:main_typexor`) %>% 
   mutate(
-    prior_xor = b_mean_prior,
+    prior_xor = b_mean_prior + `b_mean_prior:main_typexor`,
     prior_some = b_mean_prior,
-    competence_xor = b_mean_competence,
+    competence_xor = b_mean_competence + `b_mean_competence:main_typexor`,
     competence_some = b_mean_competence,
-    relevance_xor =  b_mean_relevance,
+    relevance_xor =  b_mean_relevance + `b_mean_relevance:main_typexor`,
     relevance_some = b_mean_relevance
   ) -> model_means_posteriors
 
@@ -478,17 +542,37 @@ posterior_hypotheses_means
 ```
 
     ## # A tibble: 6 x 4
-    ##   key             positive_eff negative_eff no_eff
-    ##   <chr>                  <dbl>        <dbl>  <dbl>
-    ## 1 competence_some       1             0      0    
-    ## 2 competence_xor        1             0      0    
-    ## 3 prior_some            0             1      0    
-    ## 4 prior_xor             0             1      0    
-    ## 5 relevance_some        0.0433        0.301  0.656
-    ## 6 relevance_xor         0.0433        0.301  0.656
+    ##   key             positive_eff negative_eff   no_eff
+    ##   <chr>                  <dbl>        <dbl>    <dbl>
+    ## 1 competence_some     1.00           0      0.000167
+    ## 2 competence_xor      1              0      0       
+    ## 3 prior_some          0              0.998  0.00183 
+    ## 4 prior_xor           0.000167       0.998  0.002   
+    ## 5 relevance_some      0.629          0.0975 0.273   
+    ## 6 relevance_xor       0.033          0.692  0.274
 
 ``` r
 test_conjunction_of_all_hypotheses(posterior_hypotheses_means)
 ```
 
     ## [1] FALSE
+
+``` r
+model_means_posteriors %>% select(prior_xor, prior_some,
+                               competence_xor, competence_some,
+                               relevance_xor, relevance_some) %>%
+  pivot_longer(cols = everything(), names_to = "effect", values_to = "value") -> model_mean_posteriors_long
+
+
+model_mean_posteriors_long %>%
+  ggplot(.) + # 
+  stat_halfeye(aes(y = effect, x = value, 
+                   fill = stat(case_when(x %>% between(-0.05, 0.05) ~ "no effect", x < -0.05 ~ "negative effect", x > 0.05 ~ "positive effect"))
+                   ), 
+               alpha = .7) +
+  geom_vline(xintercept = c(-.05, .05), linetype = "dashed") +
+  scale_fill_manual(name = "Direction of effect", values = c("coral", "yellow3", "mediumseagreen")) +
+  ggtitle("Posterior effect distributions. Points indicate posterior means\nThick lines indicate 66% CrIs, thin lines 95% CrIs.")
+```
+
+![](03_xor-some_prereg_analysis_final_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->

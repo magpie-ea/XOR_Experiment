@@ -13,7 +13,7 @@ library(tidybayes)
 ```
 
 Read data created in preprocessing script:
-```{r}
+```{r, message=FALSE, warning=FALSE, results='hide'}
 d_critical_zScored_wide <- read_csv("./../../data/main/results_prereg_tidy_final_zScored_wide.csv")
 d_critical_zScored <- read_csv("./../../data/main/results_prereg_tidy_final_zScored_long.csv")
 ```
@@ -111,6 +111,26 @@ test_conjunction_of_all_hypotheses <-  function(posterior_hypotheses) {
 # applied to the pilot data
 test_conjunction_of_all_hypotheses(posterior_hypotheses)
 ```
+### Plot posterior distributions
+
+```{r, fig.height = 6, fig.width=9}
+model_SI_posteriors %>% select(prior_xor, prior_some,
+                               competence_xor, competence_some,
+                               relevance_xor, relevance_some) %>%
+  pivot_longer(cols = everything(), names_to = "effect", values_to = "value") -> model_SI_posteriors_long
+
+
+model_SI_posteriors_long %>%
+  ggplot(.) + # 
+  stat_halfeye(aes(y = effect, x = value, 
+                   fill = stat(case_when(x %>% between(-0.05, 0.05) ~ "no effect", x < -0.05 ~ "negative effect", x > 0.05 ~ "positive effect"))
+                   ), 
+               alpha = .7) +
+  geom_vline(xintercept = c(-.05, .05), linetype = "dashed") +
+  scale_fill_manual(name = "Direction of effect", values = c("coral", "yellow3", "mediumseagreen")) +
+  ggtitle("Posterior effect distributions. Points indicate posterior means\nThick lines indicate 66% CrIs, thin lines 95% CrIs.")
+
+```
 
 ## Exploratory analyses
 
@@ -193,6 +213,27 @@ posterior_hypotheses_cat
 test_conjunction_of_all_hypotheses(posterior_hypotheses_cat)
 ```
 
+```{r, fig.height = 6, fig.width=9}
+model_xor_cat_zScored_posteriors %>% select(prior_xor, prior_some,
+                               competence_xor, competence_some,
+                               relevance_xor, relevance_some) %>%
+  pivot_longer(cols = everything(), names_to = "effect", values_to = "value") -> model_xor_cat_posteriors_long
+
+
+model_xor_cat_posteriors_long %>%
+  ggplot(.) + # 
+  stat_halfeye(aes(y = effect, x = value, 
+                   fill = stat(case_when(x %>% between(-0.05, 0.05) ~ "no effect", x < -0.05 ~ "negative effect", x > 0.05 ~ "positive effect"))
+                   ), 
+               alpha = .7) +
+  geom_vline(xintercept = c(-.05, .05), linetype = "dashed") +
+  scale_fill_manual(name = "Direction of effect", values = c("coral", "yellow3", "mediumseagreen")) +
+  ggtitle("Posterior effect distributions. Points indicate posterior means\nThick lines indicate 66% CrIs, thin lines 95% CrIs.")
+
+```
+
+
+
 Model with aggregated by-story ratings:
 ```{r, results='hide', message=FALSE, warning=FALSE}
 d_critical_zScored_wide_byItem <- d_critical_zScored_wide %>% ungroup() %>%
@@ -203,7 +244,7 @@ d_critical_zScored_wide_byItem <- d_critical_zScored_wide %>% ungroup() %>%
             mean_competence = mean(competence))
 
 
-model_means <- brm(mean_response ~ mean_prior + mean_relevance + mean_competence + main_type,
+model_means <- brm(mean_response ~ mean_prior * mean_relevance * mean_competence * main_type,
                        data = d_critical_zScored_wide_byItem,
                        prior = priors,
                        sample_prior = T,
@@ -221,13 +262,21 @@ Extract posterior contrasts of interest from by-story mean based model: effects 
 
 ```{r}
 model_means %>% spread_draws(b_Intercept, b_mean_prior, b_mean_competence, b_mean_relevance,
-                          b_main_typexor) %>% 
+                          b_main_typexor, `b_mean_prior:mean_competence`,
+                          `b_mean_prior:mean_relevance`, `b_mean_relevance:mean_competence`,
+                          `b_mean_prior:main_typexor`, `b_mean_competence:main_typexor`,
+                          `b_mean_relevance:main_typexor`,
+                          `b_mean_prior:mean_relevance:mean_competence`, 
+                          `b_mean_prior:mean_competence:main_typexor`,
+                          `b_mean_prior:mean_relevance:main_typexor`,
+                          `b_mean_relevance:mean_competence:main_typexor`, 
+                          `b_mean_prior:mean_relevance:mean_competence:main_typexor`) %>% 
   mutate(
-    prior_xor = b_mean_prior,
+    prior_xor = b_mean_prior + `b_mean_prior:main_typexor`,
     prior_some = b_mean_prior,
-    competence_xor = b_mean_competence,
+    competence_xor = b_mean_competence + `b_mean_competence:main_typexor`,
     competence_some = b_mean_competence,
-    relevance_xor =  b_mean_relevance,
+    relevance_xor =  b_mean_relevance + `b_mean_relevance:main_typexor`,
     relevance_some = b_mean_relevance
   ) -> model_means_posteriors
 
@@ -248,4 +297,23 @@ posterior_hypotheses_means
 
 ```{r}
 test_conjunction_of_all_hypotheses(posterior_hypotheses_means)
+```
+
+```{r, fig.height = 6, fig.width=9}
+model_means_posteriors %>% select(prior_xor, prior_some,
+                               competence_xor, competence_some,
+                               relevance_xor, relevance_some) %>%
+  pivot_longer(cols = everything(), names_to = "effect", values_to = "value") -> model_mean_posteriors_long
+
+
+model_mean_posteriors_long %>%
+  ggplot(.) + # 
+  stat_halfeye(aes(y = effect, x = value, 
+                   fill = stat(case_when(x %>% between(-0.05, 0.05) ~ "no effect", x < -0.05 ~ "negative effect", x > 0.05 ~ "positive effect"))
+                   ), 
+               alpha = .7) +
+  geom_vline(xintercept = c(-.05, .05), linetype = "dashed") +
+  scale_fill_manual(name = "Direction of effect", values = c("coral", "yellow3", "mediumseagreen")) +
+  ggtitle("Posterior effect distributions. Points indicate posterior means\nThick lines indicate 66% CrIs, thin lines 95% CrIs.")
+
 ```
