@@ -42,6 +42,8 @@ d_native <- d %>%
 
 cat(" Number of participants after excluding non-natives: ", d_native %>% distinct(submission_id) %>% count() %>% pull() )
 
+d_native %>% distinct(languages)
+
 cat(" Mean age: ", d_native %>% pull(age) %>% mean(., na.rm = T) )
 d_native  %>% count(gender) %>% mutate(n = n/80)
 ```
@@ -187,6 +189,26 @@ d_test_fail <- d_test %>%
 cat(" Subjects failing the comprehension trials: ", d_test_fail %>% distinct(submission_id) %>% pull() %>% length())
 ```
 
+Perform an alternative exclusion based on comprehension question EXCLUDING the test_false1 question from the vignette with the ID=64 which had an incorrect prior classification.
+```{r}
+# get participants failing comprehension questions
+d_test_alternative <- d_test %>%
+  group_by(submission_id) %>%
+  filter(ID != 64 && test_question != "test_false1") %>%
+  mutate(passed_filler_trial = case_when(test_condition == "true" ~ response >= 60,
+                                   test_condition == "false" ~ response <= 40,
+                                   test_condition == "uncertain" ~ response %in% (10:90)),
+         mean_comprehension = mean(passed_filler_trial),
+         passed_filler = mean_comprehension >= 0.8
+         ) 
+
+d_test_fail_alternative <- d_test_alternative %>% 
+  filter(passed_filler == F)
+
+cat(" Subjects failing the comprehension trials without misclassified trial: ", d_test_fail_alternative %>% distinct(submission_id) %>% pull() %>% length())
+```
+
+
 Write out data for plotting:
 ```{r}
 d_test %>% write_csv("./../../data/main/results_prereg_raw_final_test.csv")
@@ -200,12 +222,13 @@ d_full_clean <- anti_join(d_full_clean, d_test_fail, by = "submission_id")
 
 cat(" Nr. of participants left after cleaning: ", d_full_clean %>% distinct(submission_id) %>% pull() %>% length())
 ```
-Exclude the 201st participant for target N=200:
+[-Exclude the 201st participant for target N=200-]
+The exclusion of the last participant isn't necessary anymore, since we only have 200 subjects left upon exclusions due to the initially incorrect native language check.
 ```{r, results='hide'}
-d_full_clean %>% arrange(., desc(submission_id)) %>% distinct() %>% pull(submission_id)
+#d_full_clean %>% arrange(., desc(submission_id)) %>% distinct() %>% pull(submission_id)
 
 # exclude participant with last submission_id
-d_full_clean <- d_full_clean %>% filter(submission_id != 2620)
+#d_full_clean <- d_full_clean %>% filter(submission_id != 2620)
 
 cat(" Nr. of participants left after cleaning and N=200 extraction: ", d_full_clean %>% distinct(submission_id) %>% pull() %>% length())
 
@@ -267,6 +290,29 @@ d_critical_zScored_wide <- d_critical_zScored %>%
     values_from = response_centered, 
     values_fn = mean # getting means for double prior measurement in "xor"
   ) 
+
+# write out a wide df with both prior ratings for exploratory analysis
+d_critical_zScored_xor <- d_critical_zScored %>% 
+  ungroup() %>%
+  select(submission_id, title, main_type, block_extended, response_centered) %>% 
+  unique() %>% 
+  filter(main_type == "xor")
+
+d_critical_zScored_wide_xor_priors <- d_critical_zScored_xor %>% group_by(title, block_extended) %>% 
+  mutate(
+    block_extended = ifelse(block_extended == "prior", 
+                            paste(block_extended, which(block_extended == "prior")%%2, sep="_"),
+                            block_extended)
+  ) %>% ungroup() %>%
+  pivot_wider(
+    names_from = block_extended, 
+    values_from = response_centered 
+  ) %>%
+  filter(!is.na(prior_1), !is.na(prior_0)) # not sure where the NAs came from
+
+## no idea why it didn't work with just pivot_wider(names_from = block_extended, values_from = response_centered, names_repair = "unique")
+
+d_critical_zScored_wide_xor_priors %>% write_csv("./../../data/main/results_prereg_tidy_final_zScored_wide_xor_priors.csv")
 ```
 
 Write out z-scored data

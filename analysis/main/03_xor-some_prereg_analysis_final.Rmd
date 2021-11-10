@@ -16,6 +16,7 @@ Read data created in preprocessing script:
 ```{r, message=FALSE, warning=FALSE, results='hide'}
 d_critical_zScored_wide <- read_csv("./../../data/main/results_prereg_tidy_final_zScored_wide.csv")
 d_critical_zScored <- read_csv("./../../data/main/results_prereg_tidy_final_zScored_long.csv")
+d_critical_zScored_wide_xor_priors <- read_csv("./../../data/main/results_prereg_tidy_final_zScored_wide_xor_priors.csv")
 ```
 
 
@@ -316,4 +317,49 @@ model_mean_posteriors_long %>%
   scale_fill_manual(name = "Direction of effect", values = c("coral", "yellow3", "mediumseagreen")) +
   ggtitle("Posterior effect distributions. Points indicate posterior means\nThick lines indicate 66% CrIs, thin lines 95% CrIs.")
 
+```
+
+A non-preregistered, but nevertheless possibly interesting exploratory analysis including the two individual prior ratings of the conditionals in the xor condition as predictors (as opposed to the mean of the two used in the preceding models):
+```{r, results='hide', message=FALSE, warning=FALSE}
+
+# set priors
+priors <- set_prior("student_t(1, 0, 2)", class = "b")
+
+model_xor_priors <- brm(target ~ prior_0*prior_1*competence*relevance +
+                   (1 + prior_0 + prior_1 + competence + relevance || submission_id) +
+                   (1 | title),
+                 data = d_critical_zScored_wide_xor_priors,
+                 prior = priors,
+                 sample_prior = T,
+                 control = list(adapt_delta = 0.95),
+                 cores = 4,
+                 iter = 3000)
+```
+
+```{r}
+summary(model_xor_priors)
+```
+
+Check the intervals of intervals, computing them separately using only one prior estimate, to see if we get different results:
+```{r}
+model_xor_priors %>% spread_draws(b_Intercept, b_prior_0, b_prior_1, b_competence, b_relevance) %>% 
+  mutate(
+    prior0_xor = b_prior_0,
+    prior1_xor = b_prior_1,
+    competence_xor = b_competence,
+    relevance_xor =  b_relevance
+  ) -> model_xor_priors_posteriors
+
+# check P that the effects are positive / negative / no effect present
+posterior_hypotheses_xor_priors <- model_xor_priors_posteriors %>% 
+  select(prior0_xor, prior1_xor, 
+         competence_xor, relevance_xor) %>%
+  gather(key, val) %>%
+  group_by(key) %>% mutate(positive = mean(val > 0.05),
+                           negative = mean(val < -0.05),
+                           no = mean(val %>% between(-0.05, 0.05))) %>%
+  summarise(positive_eff = mean(positive),
+            negative_eff = mean(negative),
+            no_eff = mean(no))
+posterior_hypotheses_xor_priors
 ```
