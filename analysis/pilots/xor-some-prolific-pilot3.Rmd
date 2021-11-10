@@ -1,14 +1,16 @@
 ---
-title: "XOR-Some Prolific Pilot 2"
+title: "XOR-Some Prolific Pilot 3"
 author: "Polina Tsvilodub"
-date: "4/2/2021"
+date: "7/24/2021"
 output: github_document
 ---
 
-In this second pilot on Prolific we gather a more substantial amount of pilot data for the xor-some study on Prolific. The structure of the experiment was as follows:
-Participants read instructions, completed three example trials, and then completed 8 main blocks consisting of 4 xor and 4 some items. Each main block had the following structure: Participants read the background story, answered one comprehension question, then answered competence / relevance / prior questions in randomized order; then they read another 3 comprehension questions, after which the critical utterance was added below the background story. They answered the inference strength question, and then competence / relevance questions in randomized order again.
+In this third pilot on Prolific we gather pilot data for the vignettes that were substantially updated based on the results from the [second pilot](https://github.com/magpie-ea/magpie-xor-experiment/blob/master/analysis/xor-some-prolific-pilot2.md). The used vignettes were selected based on manual comparison and comprise 38 out of 64 vignettes. 
 
-N=118 participants were recruited for this pilot and compensated 2 pounds/participant. 8 items (4 some + 4 xor) were sampled at random for each participant such that each participant saw one item in each condition (relevance X competence X prior = 8 unique conditions). 
+The structure of the experiment was as follows:
+Participants read instructions, completed three example trials, and then completed 8 main blocks consisting of 4 xor and 4 some items. Each main block had the following structure: Participants read the background story, answered one comprehension question, then answered competence / relevance / prior questions in randomized order; then they read another 3 comprehension questions, after which the critical utterance was added below the background story. They answered the inference strength question. The second round of relevance/competence questions was removed for the pilot.
+
+N=50 participants were recruited for this pilot and compensated 2 pounds/participant. 8 items (4 some + 4 xor) were sampled at random for each participant such that each participant saw one item in each condition (relevance X competence X prior = 8 unique conditions). 
 
 ```{r libraries, include=FALSE}
 library(tidyverse)
@@ -22,14 +24,14 @@ knitr::opts_chunk$set(echo = TRUE, warnings = FALSE, message = FALSE)
 ```
 
 ```{r anonymization, include=FALSE}
-#d_raw <- read_csv("~/Documents/Research/XOR/raw_data/results_58_xor-some-Prolific-pilot2_N120.csv")
+#d_raw <- read_csv("~/Documents/Research/XOR/magpie-xor-experiment/data/pilots/results_63_xor-some-Prolific-pilot3_N50.csv")
 # remove IDs
-#d_raw %>% select(-prolific_id) %>% write_csv("../data/pilots/results_58_xor-some-Prolific-pilot2_N120.csv") 
+# d_raw %>% select(-prolific_id) %>% write_csv("../data/pilots/results_63_xor-some-Prolific-pilot3_N50.csv") 
 ```
 
 ## Checks & Exclusions
 ```{r data, results='hide', include=FALSE}
-d <- read_csv("../data/pilots/results_58_xor-some-Prolific-pilot2_N120.csv")
+d <- read_csv("../../data/pilots/results_63_xor-some-Prolific-pilot3_N50.csv")
 ```
 
 Checking if there are any comments indicating technical issues which is not the case:
@@ -40,23 +42,25 @@ d %>% distinct(comments) %>% View()
 Check native languages. Participants not indicating English as (one of) their native language(s) are be excluded. We also compute some participant demographics.
 ```{r languages}
 d %>% distinct(languages)
-cat("Number of partiipants before excluding non-natives: ", d %>% distinct(submission_id) %>% count() %>% pull() ) 
+cat("Number of participants before excluding non-natives: ", d %>% distinct(submission_id) %>% count() %>% pull() ) 
 # exclude non-natives if necessary
 d_native <- d %>% 
  # filter(("en" | "En" | "bri") %in% languages)
   filter(grepl("[(en)(br)]", languages, ignore.case = T))
 
-cat("Number of partiipants after excluding non-natives: ", d_native %>% distinct(submission_id) %>% count() %>% pull() )
+cat(" Number of participants after excluding non-natives: ", d_native %>% distinct(submission_id) %>% count() %>% pull() )
 
-cat("Mean age: ", d_native %>% pull(age) %>% mean(., na.rm = T) )
-d_native %>% count(gender) %>% mutate(n = n/88)
+cat(" Mean age: ", d_native %>% pull(age) %>% mean(., na.rm = T) )
+d_native  %>% count(gender) %>% mutate(n = n/72)
 ```
 
 Next, we check whether all the conditions were used correctly.
 
 ```{r counts}
-# check xor/some vs. trial type
+# check xor/some vs. trial type; there are more xor critical conditions because there are 2 prior questions
 d_native %>% count(main_type, condition) 
+# check experimental conditions
+d_native %>% count(exp_condition)
 # check xor/some vs. experimental condition
 d_native %>% count(main_type, exp_condition)
 # count items used
@@ -73,15 +77,15 @@ ggplot(data = overall_timeSpent, aes(y=timeSpent, alpha = 0.7)) +
   ggtitle("Overall time participants took in mins")
 ```
 
-Investigate very fast completion times:
+Investigate very fast completion times (we have none in this pilot):
 ```{r}
  d_native %>% mutate(timeSpent = round(timeSpent, 2)) %>%
   filter(timeSpent < 8) -> fast_completions
 
 # check if their responses look somehow peculiar
-fast_completions %>%
-  ggplot(., aes(x = response)) +
-  geom_histogram()
+#fast_completions %>%
+#  ggplot(., aes(x = response)) +
+#  geom_histogram()
 
 cat("number of fast-responders (below 8 mins):", fast_completions %>% distinct(submission_id) %>% pull() %>% length())
 ```
@@ -147,7 +151,7 @@ cat(" Subjects providing the same ratings throughout the trials: ", d_main_fail 
 # get participants failing comprehension questions
 d_test <- d_test %>%
   group_by(submission_id) %>%
-  mutate(passed_filler_trial = case_when(test_condition == "true" ~ response >= 70,
+  mutate(passed_filler_trial = case_when(test_condition == "true" ~ response >= 60,
                                    test_condition == "false" ~ response <= 40,
                                    test_condition == "uncertain" ~ response %in% (0:90)),
          mean_comprehension = mean(passed_filler_trial),
@@ -181,106 +185,13 @@ d_full_clean <- anti_join(d_full_clean, d_test_fail, by = "submission_id")
 cat(" Nr. of participants left after cleaning: ", d_full_clean %>% distinct(submission_id) %>% pull() %>% length())
 ```
 
-Check exclusions if applying exclusion ranges as suggested by Bob -- then almost twice as many participants are excluded based on their comprehension questions performance (I believe mainly due to a lower bound on correct responses in the uncertain questions). 
-```{r}
-# true comprehension questions: 50-100
-# uncertain comprehension questions: 25-75
-# false comprehension questions: 0-50
-# get participants failing example trials
-
-d_exmpl2 <- d_exmpl %>% group_by(submission_id) %>% 
-  mutate(example_condition = ifelse(grepl("as certainly true", question), "true", 
-                                    ifelse(grepl("as certainly false", question), "false",
-                                           "uncertain")),
-         passed_example_trial = case_when(example_condition == "true" ~ response >= 50,
-                                    example_condition == "false" ~ response <= 50,
-                                    example_condition == "uncertain" ~ response %in% (25:75)),
-       #  check if all trials passed
-         passed_example = case_when(sum(passed_example_trial) == 0 ~ FALSE,
-                                    TRUE ~ TRUE)
-         ) %>% filter(passed_example == F)
-
-cat("Subjects failing the example trials: ", d_exmpl2 %>% distinct(submission_id) %>% pull() %>% length())
-
-# apply exclusion criteria to main trials
-# check range of responses per participant
-d_main_fail <- d_main %>% group_by(submission_id) %>%
-  mutate(passed_main = case_when(max(response) - min(response) <= 10 ~ FALSE,
-                                 TRUE ~ TRUE)
-         ) %>% filter(passed_main == F)
-cat(" Subjects providing the same ratings throughout the trials: ", d_main_fail %>% distinct(submission_id) %>% pull() %>% length())
-
-# get participants failing comprehension questions
-d_test2 <- d_test %>%
-  group_by(submission_id) %>%
-  mutate(passed_filler_trial = case_when(test_condition == "true" ~ response >= 50,
-                                   test_condition == "false" ~ response <= 50,
-                                   test_condition == "uncertain" ~ response %in% (25:75)),
-         mean_comprehension = mean(passed_filler_trial),
-         passed_filler = mean_comprehension >= 0.8
-         ) 
-
-d_test_fail2 <- d_test2 %>% 
-  filter(passed_filler == F)
-
-cat(" Subjects failing the comprehension trials: ", d_test_fail2 %>% distinct(submission_id) %>% pull() %>% length())
-
-```
-Now we explore applying exclusion criteria on z-scored data. Here it might make sense to exclude participants whose >=0.8 of responses are more than 2 SD from the mean (?). 
-```{r}
-# group by extended block, exmpl / filler / critical, maybe polarity of filler exmpl question
-# add block extension, put all data together somehow
-d_critical_fail_zScored <- d_main %>% 
-  mutate(block_extended = ifelse(
-    !(ifelse(is.na(critical_question), F, T)), 
-    block, 
-    ifelse(block %in% c("some", "xor"), "target", str_c(block, "_wUtt", ""))
-  )  
-  ) %>% 
-  filter(!(grepl("test", block_extended))) %>%
-  group_by(submission_id, block_extended) %>%
-  mutate(subj_block_mean = mean(response),
-         subj_block_sd = sd(response),
-         response_centered = (response - subj_block_mean)/subj_block_sd,
-         # catch the cases where sd is 0 
-         response_centered = ifelse(is.na(response_centered), 0, response_centered)) %>%
-  ungroup() %>%
-  # add by-block SDs, such that participants can be excluded based on being outside 2 SDs on a block
-  # or should this be based on by-subject SDs???? 
-  group_by(block_extended) %>%
-  mutate(block_mean = mean(response),
-         block_sd = sd(response),
-         passed_main_trial = case_when(abs(response_centered) <= 2*block_sd ~ T,
-                                       T ~ F),
-         mean_critical_passRate = mean(passed_main_trial))
-
-
-# get participants failing comprehension questions with z-scored data; here, by-subject SD are used for the exclusion
-d_test_fail_zScore <- d_test %>%
-  group_by(submission_id, test_condition) %>%
-  mutate(
-    subj_block_mean = mean(response),
-    subj_block_sd = sd(response),
-    response_centered = (response - subj_block_mean)/subj_block_sd,
-    response_centered = ifelse(is.na(response_centered), 0, response_centered),
-    passed_filler_trial = case_when(abs(response_centered) <= 2*subj_block_sd ~ T,
-                                   T ~ F),
-         mean_comprehension = mean(passed_filler_trial),
-         passed_filler = mean_comprehension >= 0.8
-         ) 
-
-d_test_fail_zScore <- d_test_fail_zScore %>% 
-  ungroup() %>%
-  filter(passed_filler == F)
-
-cat(" Subjects failing the comprehension trials when using z-scored raw data: ", d_test_fail_zScore %>% distinct(submission_id) %>% pull() %>% length())
-
-```
-
-
 ```{r clean}
-# get overall mean ratings / subject
+# get overall mean ratings / subject across comprehension and critical trials 
 d_full_clean %>% group_by(submission_id) %>% summarise(mean_rating = mean(response)) %>% arrange(mean_rating)
+
+# get mean ratings / subject in critical trials 
+d_full_clean %>% filter(condition == "critical") %>% group_by(submission_id) %>% summarise(mean_rating = mean(response)) %>% arrange(mean_rating)
+
 ```
 
 ```{r, echo=FALSE}
@@ -297,7 +208,7 @@ d_critical_long <- d_critical_long %>%
                         ifelse(block == "rel", "relevance", ifelse(block == "pri", "prior", block) )))
 ```
 
-Create more extensive condition labels, including information about whether a rating was produced with or without the utterance given.
+Create more extensive condition labels, including information about whether a rating was produced with or without the utterance given (no such condition in this pilot).
 
 ``` {r}
 # extending 'conditions' labels to include whether the utterance was present or not
@@ -319,7 +230,7 @@ d_critical_long %>%
   summarize(mean_observations = mean(n))
 ```
 
-Compute the average deviation from expected responses for each vignette, individually for each dimension (rel / comp / pri):
+Compute the average deviation from expected responses for each vignette, individually for each dimension (rel / comp / pri). Only half as many items deviate from expectations by >= 50 points compared to the last pilot.
 ```{r}
 d_critical_long %>% 
   filter(block != "xor" & block != "some") %>%
@@ -334,7 +245,7 @@ d_critical_long %>%
   # get the largest deviations - over 50 
   filter(mean_deviation >= 50) -> d_critical_deviations
 
-#d_critical_deviations %>% write_csv("../data/pilots/pilot2_byItem_rating_deviations.csv")
+# d_critical_deviations %>% write_csv("../data/pilots/pilot3_byItem_rating_deviations.csv")
 
 print(d_critical_deviations)
 
@@ -360,37 +271,39 @@ d_critical_long %>%
   filter(item_sd >= 25) -> d_critical_sd
 d_critical_sd
 
-#d_critical_sd %>% write_csv("../data/pilots/pilot2_byItem_rating_SDs.csv")
+# d_critical_sd %>% write_csv("../data/pilots/pilot3_byItem_rating_SDs.csv")
+```
+
+Get the vignettes and dimensions that were strongly deviating from expectations in the previous pilot and still did not improve:
+```{r}
+deviating_item_pilot2 <- read_csv("../../data/pilots/pilot2_byItem_rating_deviations.csv") %>% select(-mean_deviation)
+d_critical_deviations %>% select(-mean_deviation) %>% semi_join(., deviating_item_pilot2)
 ```
 
 Visually check the spread of by-item ratings among subjects for each question:
-```{r, fig.height=25, fig.width=10}
+```{r, echo=FALSE, fig.height=25, fig.width=10}
 d_critical_long_grandMeans <- d_critical_long %>% 
   mutate(title = paste(title, exp_condition, sep = "_"),
          block = ifelse(block == "xor" | block == "some", "target", block)) %>%
-  filter(block == class_condition | block == "target") %>%
+  filter(block == class_condition | (block == "target" & class_condition == "relevance")) %>%
   group_by(main_type, block) %>% summarize(mean_resp = mean(response))
 
 d_critical_long_expectedCats <- d_critical_long %>% 
   mutate(title = paste(title, exp_condition, sep = "_"),
          block = ifelse(block == "xor" | block == "some", "target", block)) %>%
-  filter(block == class_condition | block == "target") %>%
+  filter(block == class_condition | (block == "target" & class_condition == "relevance")) %>%
   group_by(main_type, block, title) %>% summarize(mean_resp_block = mean(response))
 
 d_critical_long %>% 
   mutate(title = paste(title, exp_condition, sep = "_"),
          block = ifelse(block == "xor" | block == "some", "target", block)) %>%
   left_join(., d_critical_long_grandMeans, by = c("main_type", "block")) %>% 
-  filter(block == class_condition | ((block == "target") & (class_condition == "relevance"))) -> d_long_place_holder
+  filter(block == class_condition | ((block == "target") & (class_condition == "relevance"))) -> d_long_plot_data
 
 
-left_join(d_long_place_holder, d_critical_long_expectedCats, by = c("main_type", "block", "title")) %>% 
+left_join(d_long_plot_data, d_critical_long_expectedCats, by = c("main_type", "block", "title")) %>% 
   mutate(expected_block = ifelse(block != "target", prior_class * 100, NA),
          block = factor(block, levels = c("relevance", "competence", "prior", "target"))) -> d_long_plot_full
-
-# save preprocessed df for plotting for comparison with third pilot
-# d_long_plot_full %>% write_csv("../data/pilots/pilot2_byItem_plotting.csv")
-
 d_long_plot_full %>%
   ggplot(., aes(x = block, y = response, color = block)) +
   geom_point(alpha = 0.7, position = position_jitter(width = 0.1)) +
@@ -403,7 +316,54 @@ d_long_plot_full %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   ggtitle("By-item by-question raw ratings\nBlack dots indicate by-block means within-item, lines and triangles indicate grand by-block means\nRed dots indicate expected rating")
 ```
-For the following items, participants seem  to *disagree* in their judgments for all of the predictors: Emails from a broken laptop, Gift unwrapping, Martha's cookies, Suzie's fruits, Brad's clothes, Crime, maybe more..
+
+Visually compare the updated vignettes (pilot 2 vs current pilot)
+```{r, echo=FALSE}
+# add column indicating which pilot it is
+d_long_plot_full <- d_long_plot_full %>%
+  mutate(pilot = "updated")
+
+d_long_plot_pilot2 <- read_csv("../../data/pilots/pilot2_byItem_plotting.csv") %>% 
+  mutate(pilot = "old")
+# only keep data for those items that were also tested in the current pilot
+d_long_plot_pilot2 <- semi_join(d_long_plot_pilot2, d_long_plot_full, by = c("title"))
+
+d_long_plot_both_pilots <- bind_rows(d_long_plot_full, d_long_plot_pilot2)
+```
+
+```{r, echo=FALSE, fig.width=8, fig.height=15}
+# plot old and updated some items side-by-side
+# the vignettes for which only an "updated" plot occurs are new items that were added instead of some other vignettes 
+d_long_plot_both_pilots %>%
+  filter(main_type == "some") %>%
+  ggplot(., aes(x = block, y = response, color = block)) +
+  geom_point(alpha = 0.7, position = position_jitter(width = 0.1)) +
+  geom_hline(aes(yintercept = mean_resp), alpha = 0.7) +
+  geom_point(aes(y = mean_resp), color = "black", shape = 2) +
+  geom_point(aes(y = mean_resp_block, fill = block), color = "black") +
+  geom_point(aes(y = expected_block), color="red", size = 2.5, na.rm = T) +
+  ylab("Raw responses to respective questions") +
+  facet_wrap(title~pilot, ncol = 4) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  ggtitle("By-item by-question raw ratings, old vs. updated SOME vignettes\nBlack dots indicate by-block means within-item, lines and triangles indicate grand by-block means\nRed dots indicate expected rating")
+```
+
+```{r, echo=FALSE, fig.width=8, fig.height=15}
+# plot old and updated xor items side-by-side 
+d_long_plot_both_pilots %>%
+  filter(main_type == "xor") %>%
+  ggplot(., aes(x = block, y = response, color = block)) +
+  geom_point(alpha = 0.7, position = position_jitter(width = 0.1)) +
+  geom_hline(aes(yintercept = mean_resp), alpha = 0.7) +
+  geom_point(aes(y = mean_resp), color = "black", shape = 2) +
+  geom_point(aes(y = mean_resp_block, fill = block), color = "black") +
+  geom_point(aes(y = expected_block), color="red", size = 2.5, na.rm = T) +
+  ylab("Raw responses to respective questions") +
+  facet_wrap(title~pilot, ncol = 4) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  ggtitle("By-item by-question raw ratings, old vs. updated XOR vignettes\nBlack dots indicate by-block means within-item, lines and triangles indicate grand by-block means\nRed dots indicate expected rating")
+```
+
 
 Check by-vignette by-predictor empirical means, to see if the range is somewhat covered:
 ```{r}
@@ -417,9 +377,8 @@ d_critical_long %>%
 ```
 
 ## Plots
-Plot main rel / comp / prior questions by main condition and by prior classification of the item (x-axis), separated into with / without critical utterance (shape, color). The prior questions were only used without the utterance. 
-```{r}
-
+```{r, echo=FALSE, eval=FALSE}
+# Plot main rel / comp / prior questions by main condition and by prior classification of the item (x-axis), separated into with / without critical utterance (shape, color). The prior questions were only used without the utterance. 
 d_critical_long %>% 
   filter(block != "xor" & block != "some") %>%
   filter(block == class_condition) %>%
@@ -429,30 +388,30 @@ d_critical_long %>%
 d_critical_long %>% 
   filter(block != "xor" & block != "some") %>%
   filter(block == class_condition) %>%
-  ggplot(., aes(x = as.factor(prior_class), y = response, shape = w_utterance, color = w_utterance)) +
+  ggplot(., aes(x = as.factor(prior_class), y = response)) +
   geom_point(size = 2, alpha = 0.6, position = position_jitter(width = 0.1)) +
-  geom_point(data = d_critical_summary, aes(x = as.factor(prior_class), y = mean_response, shape = w_utterance), 
+  geom_point(data = d_critical_summary, aes(x = as.factor(prior_class), y = mean_response), 
              color = "red", size = 3) +
   ylab("Responses to respective predictor question") +
   xlab("Anticipated categorization of the items (low / high)") +
   facet_wrap(main_type~class_condition) # get ratings from the respective trials only 
  
 ```
-
+First, compare the two prior ratings in the xor condition:
 ```{r, fig.height=3}
 # check whether the ratings in the two prior questions are the same in xor 
 d_critical_long %>% 
   filter(block != "xor" & block != "some") %>%
   filter(block == class_condition) %>%
   filter(block == "prior", main_type == "xor") %>%
-  mutate(priorQ_nr = rep(c(1,2), 396),
+  mutate(priorQ_nr = rep(c(1,2), nrow(.)/2),
          unique_ID = paste(submission_id, ID, sep="_")) -> d_xor_priors
 d_xor_priors %>% group_by(priorQ_nr, prior_class) %>%
   summarise(mean = mean(response)) -> d_xor_priors_summary
 
 d_xor_priors %>%
   ggplot(., aes(x = as.factor(priorQ_nr), y = response )) +
-  geom_point(size = 2, alpha = 0.6, position = position_jitter(width = 0.1)) +
+  geom_point(size = 2, alpha = 0.6) +
   geom_point(data = d_xor_priors_summary, aes(x = as.factor(priorQ_nr), y = mean), color = "red", size = 3) +
   geom_path(aes(group = "unique_ID"), alpha = 0.6) +
   ylab("Responses to prior questions") +
@@ -460,6 +419,7 @@ d_xor_priors %>%
   facet_wrap(~as.factor(prior_class)) + # get ratings from the respective trials only 
   ggtitle("Xor prior question ratings.\nLines indicate the two responses provided by one participant for a specific item.")
 ```
+
 ```{r}
 # check analytically how many subjects rate prior questions differently
 d_xor_priors %>% select(-trial_number, -RT, -prompt) %>% 
@@ -467,28 +427,14 @@ d_xor_priors %>% select(-trial_number, -RT, -prompt) %>%
   mutate(response_difference = abs(`1` - `2`),
          bigDifference = ifelse(response_difference > 15, T, F)) -> d_xor_priors_differences
 
-# 41 responses with difference > 15 between first and second rating
+# 19 responses with difference > 15 between first and second rating
 d_xor_priors_differences %>% count(bigDifference)
 
 # proportion of big differences in prior responses by prior type (high vs low)
 d_xor_priors_differences %>% group_by(prior_class) %>% summarise(prop_big_diffs = mean(bigDifference))
 ```
 
-Plot inference ratings as a function of *anticipated* rating of the explanatory factor, similar to the paper: 
-``` {r}
-d_critical_long %>% 
-  filter(block == "xor" | block == "some") %>%
-  ggplot(., aes(x = prior_class, y = response)) +
-  geom_point(size = 2, alpha = 0.5) +
-  geom_smooth(method="lm") +
-  ylab("Inference strength ratings") +
-  facet_wrap(block~class_condition) +
-  xlab("Anticipated categorization of the items") +
-  ggtitle("Inference strength ratings by-predictor")
-  
-```
-
-```{r}
+```{r, echo=FALSE, eval=FALSE}
 # make a versatile wide representation of the critical data
 d_critical_wide <- d_critical_long %>% 
   select(submission_id, title, main_type, block_extended, response) %>% 
@@ -499,9 +445,9 @@ d_critical_wide <- d_critical_long %>%
     values_fn = mean # getting means for double prior measurement in "xor"
   ) 
 ```
+```{r, echo=FALSE, eval=FALSE}
+# Plot inference strength ratings against raw predictor ratings from each participant across items:
 
-Plot inference strength ratings against raw predictor ratings from each participant across items:
-```{r}
 d_critical_wide %>%
   ggplot(., aes(x = relevance, y = target)) +
   geom_point(size = 2, alpha = 0.7) +
@@ -525,16 +471,15 @@ d_critical_wide %>%
 
 gridExtra::grid.arrange(p.rel, p.comp, p.pri, ncol = 3) 
 ```
-
-Plot mean ratings (across all participants) for each vignette (with its respective condition indicated in the facet title, in the order relevance/competence/prior), in each condition. For relevance and competence, the color indicates whether it was presented without the utterance or with. 
-```{r, fig.width=10, fig.height=30}
+```{r, fig.width=10, fig.height=30, echo=FALSE, eval=FALSE}
+# Plot mean ratings (across all participants) for each vignette (with its respective condition indicated in the facet title, in the order relevance/competence/prior), in each condition.
 bar.width = 0.8
 d_critical_long %>% 
   mutate(title = paste(title, exp_condition, sep = "_")) %>%
   filter(block == class_condition | block == "xor" | block == "some") %>%
   group_by(block_extended, title, w_utterance, main_type) %>%
   summarize(mean_rating = mean(response)) %>% 
-  ggplot(., aes(x = block_extended, y = mean_rating, fill = w_utterance)) +
+  ggplot(., aes(x = block_extended, y = mean_rating)) +
   geom_col(alpha = 0.7, width = bar.width, position = position_dodge(width = bar.width)) +
   #geom_point(size = 2, alpha = 0.5, position = position_jitter(width = 0.1)) +
   ylab("Mean responses to respective questions") +
@@ -543,69 +488,24 @@ d_critical_long %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   ggtitle("By-item by-question mean ratings")
 ```
-
-Plot by-item trends between predictor ratings and target inference strength ratings (relevance / competence ratings with utterance are omitted):
-```{r, fig.height=35, fig.width=15}
-# make a versatile wide representation of the critical data
-d_critical_predictorsXtarget <- d_critical_wide %>% 
-  pivot_longer(
-    cols = c(relevance, prior, competence, relevance_wUtt, competence_wUtt),
-    names_to = "predictors",
-    values_to = "predictor_response"
-  ) %>%
-  filter(predictors != "relevance_wUtt", predictors != "competence_wUtt") 
-
-d_critical_predictorsXtarget %>%
-  ggplot(., aes(x = predictor_response, y = target)) +
-  geom_point() +
-  facet_wrap(title~predictors, ncol= 6) +
-  xlab("Response to predictor questions") +
-  ylab("Inference strength rating") +
-  ggtitle("By-item Inference Strength Ratings vs. Predictor Ratings (left to right)")
-
-```
-
-Plot inference strength ratings against predictor ratings, by-item, using by-item mean ratings across participants. Error bars indicate the standard deviation of the mean:
-```{r, fig.height=10, fig.width=8}
-d_critical_predictorsXtarget_summary <- d_critical_predictorsXtarget %>% 
-  group_by(title, predictors, main_type) %>%
-  summarise(mean_target = mean(target),
-            mean_predictor = mean(predictor_response), 
-            sd_target = sd(target),
-            sd_predictor = sd(predictor_response))  
-
-
-d_critical_predictorsXtarget_summary %>%
-  ggplot(., aes(x = mean_predictor, y = mean_target)) +
-  geom_point() +
-  geom_errorbar(aes(ymin = mean_target - sd_target, ymax = mean_target + sd_target), alpha = 0.7) +
-  geom_errorbarh(aes(xmin = mean_predictor - sd_predictor, xmax = mean_predictor + sd_predictor), alpha = 0.7) +
-  geom_text(aes(label=title), size = 2.5, nudge_y = 4) +
-  geom_smooth(method = "lm") +
-  ylab("Mean inference strength rating") +
-  xlab("Mean predictor ratings") + 
-  facet_wrap(main_type~predictors)
-```
-
-
-``` {r}
+``` {r, echo=FALSE, eval=FALSE}
 
 # correlation plot for "some"
 GGally::ggpairs(
   filter(d_critical_wide, main_type == "some") %>%  
-    select(prior, competence, relevance, target, competence_wUtt, relevance_wUtt) 
+    select(prior, competence, relevance, target) 
 )
   
 # correlation plot for "or"
 GGally::ggpairs(
   filter(d_critical_wide, main_type == "xor") %>%  
-    select(prior, competence, relevance, target, competence_wUtt, relevance_wUtt)
+    select(prior, competence, relevance, target)
   )
 ```
 
+As planned, all the primary visualizations and analyses below are conducted on data z-scored by-subject by-block.
 
-## Explore z-scoring
-Visual exploration of z-scoring each measure (rel / comp / pri / target / comp-wUtterance / rel-wUtterance) per participant, collapsing some and or together. 
+Plot main rel / comp / prior questions by main condition and by prior classification of the item (x-axis): 
 ```{r}
 d_critical_zScored <- d_critical_long %>% group_by(submission_id, block_extended) %>%
   mutate(block_mean = mean(response),
@@ -623,17 +523,30 @@ d_critical_zScored %>%
 d_critical_zScored %>% 
   filter(block != "xor" & block != "some") %>%
   filter(block == class_condition) %>%
-  ggplot(., aes(x = as.factor(prior_class), y = response_centered, shape = w_utterance, color = w_utterance)) +
+  ggplot(., aes(x = as.factor(prior_class), y = response_centered, shape = w_utterance)) +
   geom_point(size = 2, alpha = 0.6, position = position_jitter(width = 0.1)) +
-  geom_point(data = d_critical_zScore_summary, aes(x = as.factor(prior_class), y = mean_response, shape = w_utterance), 
+  geom_point(data = d_critical_zScore_summary, aes(x = as.factor(prior_class), y = mean_response), 
              color = "red", size = 3) +
   ylab("Responses to respective predictor questions") +
   xlab("Anticipated categorization of the items (low / high)") +
   facet_wrap(main_type~class_condition) + # get ratings from the respective trials only 
   ggtitle("Centered responses to by-predictor questions")
 ```
+Plot inference ratings as a function of *anticipated* rating of the explanatory factor, similar to the paper: 
+``` {r}
+d_critical_zScored %>% 
+  filter(block == "xor" | block == "some") %>%
+  ggplot(., aes(x = prior_class, y = response_centered)) +
+  geom_point(size = 2, alpha = 0.5) +
+  geom_smooth(method="lm") +
+  ylab("Inference strength ratings") +
+  facet_wrap(block~class_condition) +
+  xlab("Anticipated categorization of the items") +
+  ggtitle("Inference strength ratings by-predictor")
+  
+```
 
-Plot z-scored predictor ratings against z-scored target inference ratings
+Plot the empirical predictor ratings against target inference ratings:
 ```{r}
 d_critical_zScored_wide <- d_critical_zScored %>% 
   select(submission_id, title, main_type, block_extended, response_centered) %>% 
@@ -645,7 +558,7 @@ d_critical_zScored_wide <- d_critical_zScored %>%
   ) 
   
 #d_critical_zScored_wide %>%
-#  write_csv("../data/pilots/pilot2_critical_zScore_wide_tidy.csv")
+#  write_csv("../data/pilots/pilot3_critical_zScore_wide_tidy.csv")
 
 d_critical_zScored_wide %>%
   ggplot(., aes(x = relevance, y = target)) +
@@ -670,6 +583,44 @@ d_critical_zScored_wide %>%
 
 gridExtra::grid.arrange(p.rel.z, p.comp.z, p.pri.z, ncol = 3) 
 ```
+Plot by-item trends between predictor ratings and target inference strength ratings (relevance / competence ratings with utterance are omitted):
+```{r, fig.height=35, fig.width=15}
+# make a versatile wide representation of the critical data
+d_critical_predictorsXtarget <- d_critical_zScored_wide %>% 
+  pivot_longer(
+    cols = c(relevance, prior, competence),
+    names_to = "predictors",
+    values_to = "predictor_response"
+  ) 
+d_critical_predictorsXtarget %>%
+  ggplot(., aes(x = predictor_response, y = target)) +
+  geom_point() +
+  facet_wrap(title~predictors, ncol= 6) +
+  xlab("Response to predictor questions") +
+  ylab("Inference strength rating") +
+  ggtitle("By-item Inference Strength Ratings vs. Predictor Ratings (left to right)")
+
+```
+
+Plot inference strength ratings against predictor ratings, by-item, using by-item mean ratings across participants.
+```{r, fig.height=10, fig.width=8}
+d_critical_predictorsXtarget_summary <- d_critical_predictorsXtarget %>% 
+  group_by(title, predictors, main_type) %>%
+  summarise(mean_target = mean(target),
+            mean_predictor = mean(predictor_response), 
+            sd_target = sd(target),
+            sd_predictor = sd(predictor_response))  
+
+
+d_critical_predictorsXtarget_summary %>%
+  ggplot(., aes(x = mean_predictor, y = mean_target)) +
+  geom_point() +
+  geom_text(aes(label=title), size = 2.5) +
+  geom_smooth(method = "lm") +
+  ylab("Mean inference strength rating") +
+  xlab("Mean predictor ratings") + 
+  facet_wrap(main_type~predictors)
+```
 
 Correlation plots of z-scored data:
 ``` {r}
@@ -677,330 +628,22 @@ Correlation plots of z-scored data:
 # correlation plot for "some"
 GGally::ggpairs(
   filter(d_critical_zScored_wide, main_type == "some") %>% ungroup() %>%  
-    select(prior, competence, relevance, target, competence_wUtt, relevance_wUtt)
+    select(prior, competence, relevance, target)
 )
   
 # correlation plot for "or"
 GGally::ggpairs(
   filter(d_critical_zScored_wide, main_type == "xor") %>%  ungroup() %>%
-    select(prior, competence, relevance, target, competence_wUtt, relevance_wUtt)
+    select(prior, competence, relevance, target)
   )
 
 
 ```
 
-
 ## Stats
 
-Maximal models on raw ratings:
-```{r, results='hide'}
-# xor, maximal model with interactions and maximal REs
-model_xor <- brm(
-  bf(target ~ prior*competence*relevance + 
-    (1 + prior + competence + relevance || submission_id) +
-    (1 | title),
-    decomp = "QR"
-  ), 
-  data = d_critical_wide %>% filter(main_type == "xor"),
-  family = "gaussian",
-  cores = 4,
-  iter = 3000
-)
-```
-
-```{r}
-summary(model_xor)
-```
-
-Exploring plots of posterior samples for pairwise parameters shows that there is a visible correlation between prior & competence, and a somewhat weaker correlation between competence & relevance. The interaction estimates also show a correlation with the main effects (as a rough overall judgment).   
-```{r}
-#shinystan::launch_shinystan(model_xor)
-```
-Plot correlations of main effects
-```{r}
-bayesplot::mcmc_pairs(model_xor, pars = c("b_prior", "b_competence", "b_relevance"))
-```
-
-```{r, results='hide'}
-# some, maximal model with interactions and maximal REs
-model_some <- brm(
-  bf(target ~ prior*competence*relevance + 
-    (1 + prior + competence + relevance || submission_id) +
-    (1 | title),
-    decomp = "QR"),
-  data = d_critical_wide %>% filter(main_type == "some"),
-  family = "gaussian",
-  cores = 4,
-  iter = 3000
-)
-```
-
-```{r}
-summary(model_some)
-```
-
-For "some", the correlation of prior and relevance is higher than for prior and competence; there is also a visible correlation of competence and relevance. 
-```{r}
-#shinystan::launch_shinystan(model_some)
-```
-```{r}
-bayesplot::mcmc_pairs(model_some, pars = c("b_prior", "b_competence", "b_relevance"))
-```
-
-#### Smaller models with raw data to check for collinearity 
-Models on raw data with only one predictor: 
-```{r, results='hide'}
-# xor
-model_xor_prior <- brm(
-  bf(target ~ prior + 
-    (1 + prior | submission_id) +
-    (1 | title),
-    decomp = "QR"),
-  data = d_critical_wide %>% filter(main_type == "xor"),
-  family = "gaussian",
-  control = list(adapt_delta = 0.99),
-  cores = 4,
-  iter = 3000
-)
-```
-
-```{r}
-summary(model_xor_prior)
-```
-
-```{r, results='hide'}
-# xor
-model_xor_comp <- brm(
-  bf(target ~ competence + 
-    (1 + competence | submission_id) +
-    (1 | title),
-    decomp = "QR"),
-  data = d_critical_wide %>% filter(main_type == "xor"),
-  family = "gaussian",
-  control = list(adapt_delta = 0.99),
-  cores = 4,
-  iter = 3000
-)
-```
-
-```{r}
-summary(model_xor_comp)
-```
-
-```{r, results='hide'}
-# xor
-model_xor_rel <- brm(
-  bf(target ~ relevance + 
-    (1 + relevance | submission_id) +
-    (1 | title),
-    decomp = "QR"),
-  data = d_critical_wide %>% filter(main_type == "xor"),
-  family = "gaussian",
-  control = list(adapt_delta = 0.99),
-  cores = 4,
-  iter = 3000
-)
-```
-
-```{r}
-summary(model_xor_rel)
-```
-
-```{r, results='hide'}
-# some
-model_some_rel <- brm(
-  bf(target ~ relevance + 
-    (1 + relevance | submission_id) +
-    (1 | title),
-    decomp = "QR"),
-  data = d_critical_wide %>% filter(main_type == "some"),
-  family = "gaussian",
-  control = list(adapt_delta = 0.99),
-  cores = 4,
-  iter = 3000
-)
-```
-
-```{r}
-summary(model_some_rel)
-```
-
-```{r, results='hide'}
-# some
-model_some_prior <- brm(
-  bf(target ~ prior + 
-    (1 + prior | submission_id) +
-    (1 | title),
-    decomp = "QR"),
-  data = d_critical_wide %>% filter(main_type == "some"),
-  family = "gaussian",
-  control = list(adapt_delta = 0.99),
-  cores = 4,
-  iter = 3000
-)
-```
-
-```{r}
-summary(model_some_prior)
-```
-
-```{r, results='hide'}
-# some
-model_some_comp <- brm(
-  bf(target ~ competence + 
-    (1 + competence | submission_id) +
-    (1 | title),
-    decomp = "QR"),
-  data = d_critical_wide %>% filter(main_type == "some"),
-  family = "gaussian",
-  control = list(adapt_delta = 0.92),
-  cores = 4,
-  iter = 3000
-)
-```
-
-```{r}
-summary(model_some_comp)
-```
-
-With two predictors:
-```{r, results='hide'}
-# xor
-model_xor_pri_comp <- brm(
-  bf(
-  target ~ prior*competence + 
-    (1 + prior*competence || submission_id) +
-    (1 | title),
-  decomp = "QR"
-  ),
-  data = d_critical_wide %>% filter(main_type == "xor"),
-  family = "gaussian",
-  cores = 4,
-  iter = 3000
-)
-```
-
-```{r}
-summary(model_xor_pri_comp)
-```
-
-```{r}
-bayesplot::mcmc_pairs(model_xor_pri_comp, pars = c("b_prior", "b_competence"))
-```
-
-```{r, results='hide'}
-# xor
-model_xor_pri_rel <- brm(
-  bf(target ~ prior*relevance + 
-    (1 + prior*relevance || submission_id) +
-    (1 | title),
-    decomp = "QR"),
-  data = d_critical_wide %>% filter(main_type == "xor"),
-  family = "gaussian",
-  control = list(adapt_delta = 0.92),
-  cores = 4,
-  iter = 3000
-)
-```
-
-```{r}
-summary(model_xor_pri_rel)
-```
-
-```{r}
-bayesplot::mcmc_pairs(model_xor_pri_rel, pars = c("b_prior", "b_relevance"))
-```
-
-```{r, results='hide'}
-# xor
-model_xor_rel_comp <- brm(
-  bf(target ~ relevance*competence + 
-    (1 + relevance*competence || submission_id) +
-    (1 | title),
-    decomp = "QR"),
-  data = d_critical_wide %>% filter(main_type == "xor"),
-  family = "gaussian",
-  cores = 4,
-  iter = 3000
-)
-```
-
-```{r}
-summary(model_xor_rel_comp)
-```
-
-```{r}
-bayesplot::mcmc_pairs(model_xor_rel_comp, pars = c("b_competence", "b_relevance"))
-```
-
-```{r, results='hide'}
-# some
-model_some_pri_comp <- brm(
-  bf(target ~ prior*competence + 
-    (1 + prior*competence || submission_id) +
-    (1 | title),
-    decomp = "QR"),
-  data = d_critical_wide %>% filter(main_type == "some"),
-  family = "gaussian",
-  cores = 4,
-  iter = 3000
-)
-```
-
-```{r}
-summary(model_some_pri_comp)
-```
-
-```{r}
-bayesplot::mcmc_pairs(model_some_pri_comp, pars = c("b_prior", "b_competence"))
-```
-
-```{r, results='hide'}
-# some
-model_some_pri_rel <- brm(
-  bf(target ~ prior*relevance + 
-    (1 + prior*relevance || submission_id) +
-    (1 | title),
-    decomp = "QR"),
-  data = d_critical_wide %>% filter(main_type == "some"),
-  family = "gaussian",
-  cores = 4,
-  iter = 3000
-)
-```
-
-```{r}
-summary(model_some_pri_rel)
-```
-
-```{r}
-bayesplot::mcmc_pairs(model_some_pri_rel, pars = c("b_prior", "b_relevance"))
-```
-
-```{r, results='hide'}
-# some
-model_some_rel_comp <- brm(
-  bf(target ~ relevance*competence + 
-    (1 + relevance*competence || submission_id) +
-    (1 | title),
-    decomp = "QR"),
-  data = d_critical_wide %>% filter(main_type == "some"),
-  family = "gaussian",
-  cores = 4,
-  iter = 3000
-)
-```
-
-```{r}
-summary(model_some_rel_comp)
-```
-
-```{r}
-bayesplot::mcmc_pairs(model_some_rel_comp, pars = c("b_competence", "b_relevance"))
-```
-
-#### Stats on z-scored data
-The same stats (full, one predictor, to predictors) on z-scored data:
+Our primary analysis is also conducted on z-scored data. 
+First, maximal models on the ratings provided by the subjects are run:
 ```{r, results='hide'}
 # xor, maximal model with interactions and maximal REs on z-scored data
 model_xor_zScored <- brm(
@@ -1019,6 +662,7 @@ model_xor_zScored <- brm(
 summary(model_xor_zScored)
 ```
 
+Plot correlations of main effects
 ```{r}
 bayesplot::mcmc_pairs(model_xor_zScored, pars = c("b_prior", "b_relevance", "b_competence"))
 ```
@@ -1041,11 +685,14 @@ model_some_zScored <- brm(
 summary(model_some_zScored)
 ```
 
+Plot correlations of main effects
 ```{r}
 bayesplot::mcmc_pairs(model_some_zScored, pars = c("b_prior", "b_relevance", "b_competence"))
 ```
 
-#### Smaller models with z-scored data
+#### Smaller models with z-scored data to check for collinearity 
+
+Models with only one predictor: 
 ```{r, results='hide'}
 # xor
 model_xor_zScored_prior <- brm(
@@ -1288,83 +935,6 @@ bayesplot::mcmc_pairs(model_some_zScored_rel_comp, pars = c("b_relevance", "b_co
 ```
 
 #### Stats with dichotomized predictors 
-Maximal model on raw inference ratings, using anticipated binary categorization of items as predictors 
-```{r, results='hide'}
-d_critical_long %>% 
-  select(submission_id, title, main_type, block_extended, response, prior_class, class_condition) %>% 
-  unique() %>% 
-  pivot_wider(
-    names_from = class_condition, 
-    values_from = prior_class
-  )  %>%
-  mutate(relevance = factor(relevance, levels = c(1, 0)),
-         competence = factor(competence, levels = c(1, 0)),
-         prior = factor(prior, levels = c(1, 0))) %>% 
-  filter(block_extended == "target") -> d_critical_wide_cat
-# sum code predictors
-# low prior: -1, high prior:: 1 
-contrasts(d_critical_wide_cat$prior) <- contr.sum(2)
-# low comp : -1, high comp : 1
-contrasts(d_critical_wide_cat$competence) <- contr.sum(2)
-# low rel: -1, high rel: 1
-contrasts(d_critical_wide_cat$relevance) <- contr.sum(2)
-
-# xor, maximal model with interactions and maximal REs
-model_xor_cat <- brm(
-  bf(response ~ prior*competence*relevance + 
-    (1 + prior + competence + relevance || submission_id) +
-    (1 | title),
-    decomp = "QR"),
-  data = d_critical_wide_cat %>% filter(main_type == "xor"),
-  family = "gaussian",
-  cores = 4,
-  iter = 3000
-)
-```
-
-```{r}
-summary(model_xor_cat)
-```
-We test the following hypotheses for the categorical predictors models (identical for both or and some):
-H1: For higher prior of the stronger alternative being true, the inference strength is lower
-H2: For higher speaker comptence, the inference strength is higher
-H3: For higher listener relevance, the inference strength is higher 
-```{r}
-# xor
-# test H1
-hypothesis(model_xor_cat, "prior1 < 0")
-# test H2
-hypothesis(model_xor_cat, "competence1 > 0")
-# test H3
-hypothesis(model_xor_cat, "relevance1 > 0")
-```
-
-```{r, results='hide'}
-model_some_cat <- brm(
-  bf(response ~ prior*competence*relevance + 
-    (1 + prior + competence + relevance || submission_id) +
-    (1 | title),
-    decomp = "QR"),
-  data = d_critical_wide_cat %>% filter(main_type == "some"),
-  family = "gaussian",
-  cores = 4,
-  iter = 3000
-)
-```
-
-```{r}
-summary(model_some_cat)
-```
-
-```{r}
-# some
-# test H1
-hypothesis(model_some_cat, "prior1 < 0")
-# test H2
-hypothesis(model_some_cat, "competence1 > 0")
-# test H3
-hypothesis(model_some_cat, "relevance1 > 0")
-```
 
 Maximal model on z-scored inference ratings, using anticipated binary categorization of items as predictors 
 ```{r, results='hide'}
@@ -1403,6 +973,14 @@ model_xor_cat_zScored <- brm(
 ```{r}
 summary(model_xor_cat_zScored)
 ```
+
+We test the following hypotheses for the categorical predictors models (identical for both or and some):
+
+H1: For higher prior of the stronger alternative being true, the inference strength is lower
+
+H2: For higher speaker comptence, the inference strength is higher
+
+H3: For higher listener relevance, the inference strength is higher 
 
 ```{r}
 # xor
@@ -1540,4 +1118,45 @@ model_some_cat_zScored_rel <- brm(
 summary(model_some_cat_zScored_rel)
 ```
 
+#### Tertiary analysis with by-item means (from paper)
 Now we explore the original analysis with the by-item means:
+```{r, results='hide'}
+d_critical_zScored_wide_byItem_xor <- d_critical_zScored_wide %>% ungroup() %>%
+  filter(main_type == "xor") %>%
+  group_by(title) %>%
+  summarize(mean_response = mean(target),
+            mean_prior = mean(prior),
+            mean_relevance = mean(relevance),
+            mean_competence = mean(competence))
+
+d_critical_zScored_wide_byItem_some <- d_critical_zScored_wide %>% ungroup() %>%
+  filter(main_type == "some") %>%
+  group_by(title) %>%
+  summarize(mean_response = mean(target),
+            mean_prior = mean(prior),
+            mean_relevance = mean(relevance),
+            mean_competence = mean(competence))
+
+model_xor_means <- brm(bf(mean_response ~ mean_prior + mean_relevance + mean_competence,
+                          decomp="QR"),
+                       data = d_critical_zScored_wide_byItem_xor,
+                       family = "gaussian",
+                       cores = 4,
+                       iter = 3000
+                       )
+
+model_some_means <- brm(bf(mean_response ~ mean_prior + mean_relevance + mean_competence,
+                          decomp="QR"),
+                       data = d_critical_zScored_wide_byItem_some,
+                       family = "gaussian",
+                       cores = 4,
+                       iter = 3000
+                       )
+```
+
+```{r}
+summary(model_xor_means)
+```
+```{r}
+summary(model_some_means)
+```

@@ -26,7 +26,7 @@ knitr::opts_chunk$set(echo = TRUE, warnings = FALSE, message = FALSE)
 ```
 
 ```{r data, results='hide'}
-d <- read_csv("../data/pilots/results_58_xor-some-Prolific-pilot1_N10.csv")
+d <- read_csv("../../data/pilots/results_58_xor-some-Prolific-pilot1_N10.csv")
 ```
 
 Checking if there are any comments indicating technical issues:

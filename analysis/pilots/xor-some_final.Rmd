@@ -16,9 +16,9 @@ library(tidybayes)
 
 First, the preprocessed and tidy wide pilot data is read and combined. It comprises data from N = 140 subjects after exclusions in total.
 ```{r, echo=FALSE}
-pilot1 <- read_csv("./../data/pilots/pilot2_critical_zScore_wide_tidy.csv") %>%
+pilot1 <- read_csv("./../../data/pilots/pilot2_critical_zScore_wide_tidy.csv") %>%
   select(-competence_wUtt, -relevance_wUtt)
-pilot2 <- read_csv("./../data/pilots/pilot3_critical_zScore_wide_tidy.csv")
+pilot2 <- read_csv("./../../data/pilots/pilot3_critical_zScore_wide_tidy.csv")
 
 d_both <- pilot1 %>% mutate(pilot = 1) %>% 
   rbind(., pilot2 %>% mutate(pilot = 2)
