@@ -1,2 +1,14 @@
 node_modules/
 .idea/
+*.aux
+*.bbl
+*.bbx
+*.bst
+*.cbx
+*.cls
+*.blg
+*.fff
+*.ttt
+*.log
+*.synctex.gz
+writing/paper/paper_draft.pdf
