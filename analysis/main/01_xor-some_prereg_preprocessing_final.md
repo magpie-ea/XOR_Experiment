@@ -284,8 +284,11 @@ cat(" Subjects providing the same ratings throughout the trials: ", d_main_fail 
 
 ``` r
 # get participants failing comprehension questions
+# Perform exclusions based on comprehension question EXCLUDING the test_false1 question from the vignette
+# with the ID=64 which had an incorrect prior classification.
 d_test <- d_test %>%
   group_by(submission_id) %>%
+  filter(ID != 64 && test_question != "test_false1") %>%
   mutate(passed_filler_trial = case_when(test_condition == "true" ~ response >= 60,
                                    test_condition == "false" ~ response <= 40,
                                    test_condition == "uncertain" ~ response %in% (10:90)),
@@ -299,31 +302,7 @@ d_test_fail <- d_test %>%
 cat(" Subjects failing the comprehension trials: ", d_test_fail %>% distinct(submission_id) %>% pull() %>% length())
 ```
 
-    ##  Subjects failing the comprehension trials:  33
-
-Perform an alternative exclusion based on comprehension question
-EXCLUDING the test\_false1 question from the vignette with the ID=64
-which had an incorrect prior classification.
-
-``` r
-# get participants failing comprehension questions
-d_test_alternative <- d_test %>%
-  group_by(submission_id) %>%
-  filter(ID != 64 && test_question != "test_false1") %>%
-  mutate(passed_filler_trial = case_when(test_condition == "true" ~ response >= 60,
-                                   test_condition == "false" ~ response <= 40,
-                                   test_condition == "uncertain" ~ response %in% (10:90)),
-         mean_comprehension = mean(passed_filler_trial),
-         passed_filler = mean_comprehension >= 0.8
-         ) 
-
-d_test_fail_alternative <- d_test_alternative %>% 
-  filter(passed_filler == F)
-
-cat(" Subjects failing the comprehension trials without misclassified trial: ", d_test_fail_alternative %>% distinct(submission_id) %>% pull() %>% length())
-```
-
-    ##  Subjects failing the comprehension trials without misclassified trial:  27
+    ##  Subjects failing the comprehension trials:  27
 
 Write out data for plotting:
 
@@ -340,21 +319,12 @@ d_full_clean <- anti_join(d_full_clean, d_test_fail, by = "submission_id")
 cat(" Nr. of participants left after cleaning: ", d_full_clean %>% distinct(submission_id) %>% pull() %>% length())
 ```
 
-    ##  Nr. of participants left after cleaning:  200
+    ##  Nr. of participants left after cleaning:  206
 
 \[-Exclude the 201st participant for target N=200-\] The exclusion of
 the last participant isn’t necessary anymore, since we only have 200
 subjects left upon exclusions due to the initially incorrect native
 language check.
-
-``` r
-#d_full_clean %>% arrange(., desc(submission_id)) %>% distinct() %>% pull(submission_id)
-
-# exclude participant with last submission_id
-#d_full_clean <- d_full_clean %>% filter(submission_id != 2620)
-
-cat(" Nr. of participants left after cleaning and N=200 extraction: ", d_full_clean %>% distinct(submission_id) %>% pull() %>% length())
-```
 
 Write out tidy data:
 
@@ -369,7 +339,7 @@ d_full_clean %>% group_by(submission_id) %>% summarise(mean_rating = mean(respon
 
     ## `summarise()` ungrouping output (override with `.groups` argument)
 
-    ## # A tibble: 200 x 2
+    ## # A tibble: 206 x 2
     ##    submission_id mean_rating
     ##            <dbl>       <dbl>
     ##  1          2528        37.7
@@ -382,7 +352,7 @@ d_full_clean %>% group_by(submission_id) %>% summarise(mean_rating = mean(respon
     ##  8          2363        42.3
     ##  9          2473        43.2
     ## 10          2382        43.5
-    ## # … with 190 more rows
+    ## # … with 196 more rows
 
 ``` r
 # get mean ratings / subject in critical trials 
@@ -391,7 +361,7 @@ d_full_clean %>% filter(condition == "critical") %>% group_by(submission_id) %>%
 
     ## `summarise()` ungrouping output (override with `.groups` argument)
 
-    ## # A tibble: 200 x 2
+    ## # A tibble: 206 x 2
     ##    submission_id mean_rating
     ##            <dbl>       <dbl>
     ##  1          2360        37.1
@@ -404,7 +374,7 @@ d_full_clean %>% filter(condition == "critical") %>% group_by(submission_id) %>%
     ##  8          2559        42.3
     ##  9          2609        42.6
     ## 10          2590        42.8
-    ## # … with 190 more rows
+    ## # … with 196 more rows
 
 ## Transformations
 
@@ -436,32 +406,72 @@ d_critical_zScored_wide <- d_critical_zScored %>%
     values_from = response_centered, 
     values_fn = mean # getting means for double prior measurement in "xor"
   ) 
-
-# write out a wide df with both prior ratings for exploratory analysis
-d_critical_zScored_xor <- d_critical_zScored %>% 
-  ungroup() %>%
-  select(submission_id, title, main_type, block_extended, response_centered) %>% 
-  unique() %>% 
-  filter(main_type == "xor")
-
-d_critical_zScored_wide_xor_priors <- d_critical_zScored_xor %>% group_by(title, block_extended) %>% 
-  mutate(
-    block_extended = ifelse(block_extended == "prior", 
-                            paste(block_extended, which(block_extended == "prior")%%2, sep="_"),
-                            block_extended)
-  ) %>% ungroup() %>%
-  pivot_wider(
-    names_from = block_extended, 
-    values_from = response_centered 
-  ) %>%
-  filter(!is.na(prior_1), !is.na(prior_0)) # not sure where the NAs came from
-
-d_critical_zScored_wide_xor_priors %>% write_csv("./../../data/main/results_prereg_tidy_final_zScored_wide_xor_priors.csv")
 ```
 
-Write out z-scored data
+``` r
+# create labels for first vs second prior question, order-based 
+d_critical_zScored %>% 
+  filter(block != "xor" & block != "some") %>%
+  filter(block == class_condition) %>%
+  filter(block == "prior", main_type == "xor") %>%
+  ungroup() %>%
+  mutate(priorQ_nr = rep(c(1,2), times=nrow(.)/2),
+         priorQ_factor = paste("prior", priorQ_nr, sep = "_"),
+         unique_ID = paste(submission_id, ID, sep="_")) -> d_xor_priors
+
+# create labels for the two questions
+d_xor_priors %>% group_by(ID, prompt) %>%
+  select(ID, prompt) %>% distinct() %>%
+  ungroup() %>%
+  mutate(
+    priorQ_label = rep(c("priorQ_1", "priorQ_2"), 32)
+  ) -> d_xor_priors_labels
+
+d_xor_priors_labels_full <- left_join(d_xor_priors, d_xor_priors_labels, by = c("prompt", "ID")) %>% 
+  select("prompt", "ID", "block_extended", "class_condition", "submission_id", "priorQ_factor", "priorQ_label")
+
+# create a df with both prior ratings for exploratory analysis
+d_critical_zScored_xor <- d_critical_zScored %>%
+  ungroup() %>%
+  filter(main_type == "xor") %>%
+  select(submission_id, title, main_type, block_extended, response_centered, prompt, ID, class_condition) %>% 
+  unique() %>% 
+  left_join(., d_xor_priors_labels_full, 
+            by = c("prompt", "ID", "block_extended", "class_condition", "submission_id")
+            ) %>%
+  filter(block_extended == class_condition | block_extended == "target") %>%
+  mutate(
+    block_xor_order = ifelse("prior" == block_extended, priorQ_factor, block_extended),
+    block_xor_type = ifelse("prior" == block_extended, priorQ_label, block_extended),
+  ) %>% select(-priorQ_factor, -priorQ_label)
+
+# create wide version for the order based question distinction
+d_critical_zScored_wide_xor_prior_order <- d_critical_zScored_xor %>% 
+  select(-block_extended, -block_xor_type, -class_condition, -prompt) %>%
+  unique() %>%
+  pivot_wider(
+    names_from = block_xor_order, 
+    values_from = response_centered
+  ) 
+
+# create wide version for the type based question distinction
+d_critical_zScored_wide_xor_prior_type <- d_critical_zScored_xor %>% 
+  select(-block_extended, -block_xor_order, -class_condition, -prompt) %>%
+  unique() %>%
+  pivot_wider(
+    names_from = block_xor_type, 
+    values_from = response_centered
+  ) 
+```
+
+Write out z-scored data:
 
 ``` r
 d_critical_zScored %>% write_csv("./../../data/main/results_prereg_tidy_final_zScored_long.csv")
 d_critical_zScored_wide %>% write_csv("./../../data/main/results_prereg_tidy_final_zScored_wide.csv")
+
+# write out dataframes wth xor priors
+d_critical_zScored_wide_xor_prior_order %>% write_csv("./../../data/main/results_prereg_tidy_final_zScored_wide_xor_priors-order.csv")
+
+d_critical_zScored_wide_xor_prior_type %>% write_csv("./../../data/main/results_prereg_tidy_final_zScored_wide_xor_priors-type.csv")
 ```

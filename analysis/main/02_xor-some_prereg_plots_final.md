@@ -9,6 +9,8 @@ Read data created in preprocessing script:
 d_critical_zScored_wide <- read_csv("./../../data/main/results_prereg_tidy_final_zScored_wide.csv")
 d_critical_zScored <- read_csv("./../../data/main/results_prereg_tidy_final_zScored_long.csv")
 d_test <- read_csv("./../../data/main/results_prereg_raw_final_test.csv")
+d_critical_zScored_wide_xor_priors_order <- read_csv("./../../data/main/results_prereg_tidy_final_zScored_wide_xor_priors-order.csv")
+d_critical_zScored_wide_xor_priors_type <- read_csv("./../../data/main/results_prereg_tidy_final_zScored_wide_xor_priors-type.csv")
 ```
 
 ## Plots
@@ -212,7 +214,42 @@ left_join(d_critical_predictorsXtarget_summary, d_critical_prior_classes, by = c
 
     ## `geom_smooth()` using formula 'y ~ x'
 
-    ## Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
-    ## increasing max.overlaps
-
 ![](02_xor-some_prereg_plots_final_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
+Plot the pairwise correlations of the predictors and the inference
+rating for “some”:
+
+``` r
+GGally::ggpairs(
+  filter(d_critical_zScored_wide, main_type == "some") %>% ungroup() %>%  
+    select(prior, competence, relevance, target)
+)
+```
+
+![](02_xor-some_prereg_plots_final_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+
+Plot the pairwise correlations of the predictors and the inference
+rating for “or”, by order of presentation of the two prior questions:
+
+``` r
+# correlation plot for "or"
+GGally::ggpairs(
+  filter(d_critical_zScored_wide_xor_priors_order, main_type == "xor") %>%  ungroup() %>%
+    select(prior_1, prior_2, competence, relevance, target)
+  )
+```
+
+![](02_xor-some_prereg_plots_final_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+
+Plot the pairwise correlations of the predictors and the inference
+rating for “or”, by type of prior questions:
+
+``` r
+# correlation plot for "or"
+GGally::ggpairs(
+  filter(d_critical_zScored_wide_xor_priors_type, main_type == "xor") %>%  ungroup() %>%
+    select(priorQ_1, priorQ_2, competence, relevance, target)
+  )
+```
+
+![](02_xor-some_prereg_plots_final_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
