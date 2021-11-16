@@ -3,46 +3,103 @@
 % The \pdf* commands provide metadata for the PDF output.
 % Do not use LaTeX style / commands like \emph{} inside these.
 \pdfauthor{Author Full Name(s)}
-\pdftitle{Full title}
-\pdfkeywords{keyword list, each, separated, by commas}
+\pdftitle{The role of priors, competence and relevance for the interpretation of disjunction}
+\pdfkeywords{exclusive disjunction, scalar implicature, pragmatics}
 
 % Optional short title inside square brackets, for the running headers.
 % If no short title is given, no title appears in the headers.
-\title[Short title]{Full title%
+\title[Exclusive disjunction]{The role of priors, competence and relevance for the interpretation of disjunction%
   \thanks{We thank \ldots}}
 
 % Optional short author inside square brackets, for the running headers.
 % If no short author is given, no authors print in the headers.
-\author[Author1, Author2, Author3]{% As many authors as you like, each separated by \AND.
-  \spauthor{Author1 Full Name \\ \institute{Institute1}} \AND
-  \spauthor{Author2 Full Name \\ \institute{Institute2}} \AND
-  \spauthor{Author3 Full Name \\ \institute{Institute3}}}
+\author[]{% As many authors as you like, each separated by \AND.
+  \spauthor{Michael Franke \\ \institute{Institute1}} \AND
+  \spauthor{Bob van Tiel \\ \institute{Institute2}} \AND
+  \spauthor{Polina Tsvilodub \\ \institute{Institute3}}}
 
 \begin{document}
 
 \maketitle
 
 \begin{abstract}
-  This is a minimal example document.
+  
+  Sentences containing disjunctions like ``Donald ate a pretzel or a donut'' are often taken as conveying that Donald ate a pretzel or a donut, but not both. That is, the listener might infer an \textit{exclusive reading of the disjunction}. Current standard accounts of disjunction interpretation posit that the exclusive interpretation of disjunctions is an instance of \textit{scalar implicature} (e.g., Horn, 1972). Prior work suggests that, among others, three factors influence the robustness of scalar implicatures: (1) \textit{relevance} of the stronger alternative to the listener, (2) the \textit{competence} of the speaker about the truth of the stronger alternative, and (3) the \textit{prior probability} that the stronger alternative is true (Sperber \& Wilson, 1995; Goodman \& Stuhlmüller, 2013; Degen, Tessler \& Goodman, 2015). While their influence was investigated experimentally for the interpretation of ``some'', the evidence is less conclusive in the case of disjunction interpretation. Therefore, we compare experimentally the interpretation of ``some'' and ``or'', while manipulating the three factors with respect to the stronger alternatives “all”, and “and”, respectively. Our results indicate that competence has a robust effect of the robustness of the implicature generation for both triggers, while prior and relevance exhibit different more intricate effects differing between the triggers.
+  
 \end{abstract}
 
 \begin{keywords}
-  keyword list, each, separated, by commas
+  exclusive disjunction, scalar implicature, pragmatics
 \end{keywords}
 
-\section{First section}
+\section{Introduction}
 
 First paragraph.
 
-\subsection{Subsequent subsection}
+\subsection{Scalar implicature}
 
 Second paragraph.
 
-\subsubsection{Nested subsubsection}
+\subsection{Related work}
 
 Third paragraph.
 
 Fourth paragraph.
+
+\section{Relevance, ompetence and prior pribability}
+We hypothesize that the implicature account holds for the interpretation of “some” (i.e., “some” → “some but not all”). That is, we expect the robustness of the implicature to be influenced by the three factors in the following way: 
+1.1) Relevance Hypothesis (“some”): The higher the intuitively judged contextual relevance of the “all” alternative, the higher the degree of endorsement of the upper-bounded reading “some but not all”.  
+1.2) Competence Hypothesis (“some”): The higher the intuitively judged knowledgeability of the speaker regarding the “all” alternative, the higher the degree of endorsement of the upper-bounded reading “some but not all”. 
+1.3) Prior Hypothesis (“some”): The lower the intuitively judged prior probability of the “all” alternative being true, the higher the degree of endorsement of the upper-bounded reading “some but not all”. 
+
+We further hypothesize that, if the implicature account holds, the exclusive reading of “or” (i.e., “A or B” → “either A or B, but not both”) will be influenced by the same three factors in an analogous way. We therefore test the same three hypotheses, mutatis mutandis, also for “or” and call them Relevance Hypothesis (“or”), Competence Hypothesis (“or”) and Prior Hypothesis (“or”).
+
+Finally, we also address the Identity Hypothesis that exclusive readings of disjunctions are a scalar implicature just like the “some → some but not all” case. If the Identity Hypothesis is correct, we expect that whichever factors positively or negatively affect the implicature readings of “some”, exactly these factors also affect the exclusive readings of “or”. In other words, the prediction of the Identity Hypothesis could still be confirmed even if the hypotheses related to the effects of relevance, competence and prior are not borne out, as long as the observed results are the same for “some” and “or”.
+
+\subsection{Relevance}
+
+\subsection{Competence}
+
+\subsection{Prior probability}
+
+\section{Methods}
+
+In this experiment we directly compare the interpretation of “some” and “or”, while manipulating the three factors with respect to the stronger alternatives “all”, and “and”, respectively. Specifically, we manipulate the contextual relevance of the stronger alternative to the listener, the speaker's competence about the truth of “all” / “and”, and the prior probability of “all” / “and” being true, to investigate the robustness of an exclusive reading of “or” under these manipulations, in direct comparison to the upper-bounded reading of “some”.
+To this end, we design context stories which were judged to score either high or low with respect to each factor of interest (high/low prior x high/low competence x high/low relevance => 8 unique conditions). 
+
+Participants were then asked to rate statements eliciting four judgements using a slider bar: the relevance of the “all”/“and”-alternative, the competence of the speaker about the alternative, the prior probability of ”all” / “and” being true, and, crucially, the likelihood of the exclusive reading of “or” or of the upper-bounded reading of “some”.
+
+This study is a two-by-two-by-two-by-two within-subjects rating task, conducted as a web-based experiment. The study proceeds as follows.
+Participants are welcomed to the experiment, read instructions and first see three labelled example trials showing the working of the slider. They see a simple story about a person shopping. They then see a question about the story that is clearly false (expected rating: 0), clearly true (expected rating: 100) and implied to be rather true (expected rating: 50-100), given the background story. These expected responses are labelled and explained. The continuous response slider ranges between “certainly true” and “certainly false”, converted to a rating between 0 and 100 in the background (as in the following main trials).   
+The main part of the experiment consists of eight critical stories, presented in blocks of 10 or 11 trials each, randomly shuffled with eight attention check stories. The attention checks consist of one trial, visually matching critical trials (s. "Data collection procedure" section for details). 
+Each critical story block has the following structure: Participants read a background story, followed by a comprehension statement which is either clearly true, clearly false, or uncertain (sampled at random for each story) which they are asked to rate using the slider. Then, they read statements presented in a box colored blue associated with the factors of interest and rate it using a slider bar. The factors of interest are relevance, competence and prior, in randomized order within-participants. In the “or”-condition, the prior statement consists of two symmetrical conditional sentences (see example below). Then, participants answer another three comprehension questions. These are followed by the critical utterance containing “or” / “some” appearing in a box colored red. Below, the target statement gathering the likelihood of the exclusive disjunction / the upper-bounded reading of “some” (i.e., the likelihood of the implicature) appears. Again, they rate the target statement using the slider. The background story remains on the screen throughout the trials. The four comprehension statements are sampled at random from six possible statements (two per type true / false / uncertain).
+The ratings are elicited by asking the subjects “How likely is it that the statement in the blue box is true given the story?”.
+We designed 32 different stories per trigger type (‘some’ vs. ‘or’), resulting in a total of 64 stories. Each subject sees eight randomly sampled stories (one per prior x competence x relevance condition out of four possible stories) such that they see four “or” and four “some” stories in randomized order.
+After the study, participants may fill out a socio-demographic questionnaire.
+
+Example transcript of an “or”-story and the associated statements:
+Story: “Bill and Eric went to a bar. Eric’s wife, Lily, promised to pick them up if Eric drank any alcohol. She phones up Bill to ask about their night.”
+Example comprehension statements: “Eric and Lily went to a bar together.” (false), “Eric and Bill went to see a football game.” (false), “Eric and Bill go out to a bar every weekend.” (uncertain), “Eric's wife has a driver’s licence.” (true)
+Competence statement: “Bill knows whether Eric drank both wine and vodka.”
+Relevance statement: “It is important for Lily to know whether her husband drank both wine and vodka.”
+Prior statements: “If Eric drank wine, it is likely that he drank vodka as well.”, “If Eric drank vodka, it is likely that he drank wine as well.”
+Critical utterance: “Bill tells Lily: 'Your husband drank wine or vodka.'”
+Implicature statement: “From what Bill said we may conclude that Eric did not drink both wine and vodka.”
+
+Example transcript of a “some”-story and the associated statements:
+Story: “Bernard just finished his final exam. He isn't the brightest student, but if he passes this one, he will be through to the next grade. During the break, he goes to the teacher's lounge. He cannot wait to ask his teacher whether he passed. Bernard's teacher only just started correcting his exam.”
+Example comprehension statements: “Bernard wants to get to the next grade.” (true), “Bernard wants to know his grade for his college application.” (false), “Bernard took a final exam in biology.” (uncertain), “Bernard is not the best student of his class.” (true)
+Competence statement: “Bernard’s teacher knows whether all of the answers Bernard gave on the exam are correct.”
+Prior statement: “If at least some of the answers Bernard gave on the exam are correct, then all of them are correct.”
+Relevance statement: “It is important for Bernard to know whether all of the answers he gave on the exam are correct.”
+Critical utterance: “Bernard’s teacher says: ‘Some of the answers you gave are correct.’”
+Implicature statement: “From what Bernard’s teacher said we may conclude that not all of Bernard’s answers are correct.”
+
+The experiment can be viewed under: https://magpie-xor-some.netlify.app/
+
+\section{Results}
+
+\section{DIscussion}
 
 
 \bibliography{your-bibliography-file}
