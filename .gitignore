@@ -10,5 +10,7 @@ node_modules/
 *.fff
 *.ttt
 *.log
+*.out
 *.synctex.gz
 writing/paper/paper_draft.pdf
+writing/ELM2/abstract.pdf
