@@ -1,0 +1,208 @@
+---
+title: "Xor-Some Preregistered Study: Analyses"
+author: "Polina Tsvilodub"
+date: "8/31/2021"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(brms)
+library(tidyboot)
+library(tidybayes)
+```
+
+Read data created in preprocessing script:
+```{r, message=FALSE, warning=FALSE, results='hide'}
+d_critical_zScored_wide <- read_csv("./../../data/main/results_prereg_tidy_final_zScored_wide.csv")
+d_critical_zScored <- read_csv("./../../data/main/results_prereg_tidy_final_zScored_long.csv")
+
+d_critical_zScored_wide_xor_prior_order <- read_csv("./../../data/main/results_prereg_tidy_final_zScored_wide_xor_priors-order.csv")
+
+d_critical_zScored_wide_xor_prior_type <- read_csv("./../../data/main/results_prereg_tidy_final_zScored_wide_xor_priors-type.csv")
+
+d_critical_zScored_wide_xor <- d_critical_zScored_wide %>% filter(main_type == "xor")
+```
+
+
+## Comparison of prior and relevance effects 
+
+Since we observed potential colinearity effects in the main preregistered analysis for the trigger "or", we further explore the effects of this colinearity on the strength of the individual effects in the regression models. 
+
+To do so, we compute individual models omitting one of the factors on the "or" data, and compute the Bayes Factor (BF) of the model omitting one of the colinear predictors, relative to the full model.
+
+```{r, results='hide', message=FALSE, warning=FALSE}
+# Full model 
+# set priors
+priors <- set_prior("student_t(1, 0, 2)", class = "b")
+
+model_SI <- brm(target ~ prior*competence*relevance +
+                   (1 + prior + competence + relevance || submission_id) +
+                   (1 | title),
+                 data = d_critical_zScored_wide_xor,
+                 prior = priors,
+                 sample_prior = T,
+                 control = list(adapt_delta = 0.95),
+                 cores = 4,
+                 iter = 20000,
+                 save_all_pars = TRUE
+                )
+```
+
+```{r}
+summary(model_SI)
+```
+
+```{r, results='hide', message=FALSE, warning=FALSE}
+# model with prior effect only
+model_prior_comp <- brm(target ~ prior*competence +
+                   (1 + prior + competence || submission_id) +
+                   (1 | title),
+                 data = d_critical_zScored_wide_xor,
+                 prior = priors,
+                 sample_prior = T,
+                 control = list(adapt_delta = 0.97),
+                 cores = 4,
+                 iter = 20000,
+                 save_all_pars = TRUE
+                 )
+```
+
+```{r}
+summary(model_prior_comp)
+```
+
+```{r, results='hide', message=FALSE, warning=FALSE}
+# model with relevance effect only
+model_rel_comp <- brm(target ~ relevance*competence +
+                   (1 + relevance + competence || submission_id) +
+                   (1 | title),
+                 data = d_critical_zScored_wide_xor,
+                 prior = priors,
+                 sample_prior = T,
+                 control = list(adapt_delta = 0.97),
+                 cores = 4,
+                 iter = 20000,
+                 save_all_pars = TRUE
+                 )
+```
+
+```{r}
+summary(model_rel_comp)
+```
+
+```{r, results='hide', message=FALSE, warning=FALSE}
+# model WITHOUT comptenece effect, for reasons of symmetry
+model_rel_pri <- brm(target ~ relevance*prior +
+                   (1 + relevance + prior || submission_id) +
+                   (1 | title),
+                 data = d_critical_zScored_wide_xor,
+                 prior = priors,
+                 sample_prior = T,
+                 control = list(adapt_delta = 0.97),
+                 cores = 4,
+                 iter = 20000,
+                 save_all_pars = TRUE
+                 )
+```
+
+```{r}
+summary(model_rel_pri)
+```
+
+```{r, message=FALSE, warning=FALSE}
+# computes the BFs 
+# in favor of the prior only model over full model for XOR
+bayes_factor(model_prior_comp, model_SI, silent = TRUE)
+# in favor of the relevance only model over the full model for XOR
+bayes_factor(model_rel_comp, model_SI, silent = TRUE)
+# in favor of the relevance model over the prior model
+bayes_factor(model_rel_comp, model_prior_comp, silent = TRUE)
+# and in vice versa in favor of the prior model over the relevance model
+bayes_factor(model_prior_comp, model_rel_comp, silent = TRUE)
+
+# for symmetry, in favor of model without competence over full model
+bayes_factor(model_rel_pri, model_SI, silent = TRUE)
+bayes_factor(model_rel_pri, model_rel_comp, silent = TRUE)
+bayes_factor(model_rel_pri, model_prior_comp, silent = TRUE)
+
+```
+
+In order to investigate the correlation between relevance and competence we observed for "or", we also compute a model without the competence effect. Since we also observed correlation between the remaining two factors prior and relevance, perhaps the best way to disentangle the effects is to fit single-predictor models, and compate them to an intercept only model.
+```{r, results='hide', message=FALSE, warning=FALSE}
+# intercept only model
+priors_int <- set_prior("student_t(3, 0.1, 2.5)", class = "Intercept")
+model_int <- brm(target ~ 1 +
+                   (1 | submission_id) +
+                   (1 | title),
+                 data = d_critical_zScored_wide_xor,
+                 prior = priors_int,
+                 sample_prior = T,
+                 control = list(adapt_delta = 0.97),
+                 cores = 4,
+                 iter = 20000,
+                 save_all_pars = TRUE
+                 )
+# single predictor models
+model_rel <- brm(target ~ relevance +
+                   (1 + relevance || submission_id) +
+                   (1 | title),
+                 data = d_critical_zScored_wide_xor,
+                 prior = priors,
+                 sample_prior = T,
+                 control = list(adapt_delta = 0.97),
+                 cores = 4,
+                 iter = 20000,
+                 save_all_pars = TRUE
+                 )
+
+model_comp <- brm(target ~ competence +
+                   (1 + competence || submission_id) +
+                   (1 | title),
+                 data = d_critical_zScored_wide_xor,
+                 prior = priors,
+                 sample_prior = T,
+                 control = list(adapt_delta = 0.97),
+                 cores = 4,
+                 iter = 20000,
+                 save_all_pars = TRUE
+                 )
+
+model_pri <- brm(target ~ prior +
+                   (1 + prior || submission_id) +
+                   (1 | title),
+                 data = d_critical_zScored_wide_xor,
+                 prior = priors,
+                 sample_prior = T,
+                 control = list(adapt_delta = 0.97),
+                 cores = 4,
+                 iter = 20000,
+                 save_all_pars = TRUE
+                 )
+```
+
+```{r}
+summary(model_int)
+summary(model_rel)
+summary(model_comp)
+summary(model_pri)
+```
+
+Below, the BFs in favor of the single predictors over the intercept-only model are computed. If these are large (let's say >10), they indicate that the respective factor is important for explaining the data. 
+```{r}
+bayes_factor(model_pri, model_int, silent = TRUE)
+bayes_factor(model_comp, model_int, silent = TRUE)
+bayes_factor(model_rel, model_int, silent = TRUE)
+```
+
+Below, the BFs in favor of the two-predictor models over the respective single-predictor models are computed. If these are large, they would indicate that 1) the added model complexity is justified by a better fit to the data and 2) that the second factor is "necessary" to explain the data.
+```{r}
+bayes_factor(model_prior_comp, model_pri, silent = TRUE)
+bayes_factor(model_prior_comp, model_comp, silent = TRUE)
+
+bayes_factor(model_rel_pri, model_pri, silent = TRUE)
+bayes_factor(model_rel_pri, model_rel, silent = TRUE)
+
+bayes_factor(model_rel_comp, model_rel, silent = TRUE)
+bayes_factor(model_rel_comp, model_comp, silent = TRUE)
+```
