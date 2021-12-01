@@ -181,15 +181,18 @@ d_critical_zScored %>% select(title, class_condition, prior_class) %>%
   distinct() -> d_critical_prior_classes
 
 left_join(d_critical_predictorsXtarget_summary, d_critical_prior_classes, by = c("title", "predictors" = "class_condition")) %>%
-  mutate(prior_class = as.factor(prior_class)) %>%
+  mutate(prior_class = factor(prior_class, levels = c(0,1), labels=c("low", "high"))) %>%
   ggplot(., aes(x = mean_predictor, y = mean_target)) +
   geom_point(aes(color = prior_class)) +
-  ggrepel::geom_text_repel(aes(label=title), size = 2.5) +
+  ggrepel::geom_text_repel(aes(label=title), size = 3.5) +
   geom_smooth(method = "lm") +
   ylab("Mean inference strength rating") +
   xlab("Mean predictor ratings") + 
-  facet_wrap(main_type~predictors) +
-  scale_fill_manual(name = "Prior classification of item")
+  facet_grid(cols=vars(predictors), rows=vars(main_type)) +
+  scale_fill_discrete(name = "Prior classification of item") +
+  theme(strip.text.y = element_text(size = 8))
+
+ggsave("../../writing/ELM2/byItem-ratings.pdf", width = 9, height = 6)
 ```
 
 Plot the pairwise correlations of the predictors and the inference rating for "some": 

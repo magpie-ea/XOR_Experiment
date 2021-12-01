@@ -125,6 +125,9 @@ model_SI_posteriors %>% select(prior_xor, prior_some,
 
 
 model_SI_posteriors_long %>%
+  mutate(effect = factor(effect, 
+                         levels = c("relevance_xor", "relevance_some", "prior_xor", "prior_some", "competence_xor", "competence_some"), 
+                         labels = c("Relevance (or)", "Relevance (some)", "Prior (or)", "Prior (some)", "Competence (or)", "Competence (some)"))) %>%
   ggplot(.) + # 
   stat_halfeye(aes(y = effect, x = value, 
                    fill = stat(case_when(x %>% between(-0.05, 0.05) ~ "no effect", x < -0.05 ~ "negative effect", x > 0.05 ~ "positive effect"))
@@ -134,6 +137,7 @@ model_SI_posteriors_long %>%
   scale_fill_manual(name = "Direction of effect", values = c("coral", "yellow3", "mediumseagreen")) +
   ggtitle("Posterior effect distributions. Points indicate posterior means\nThick lines indicate 66% CrIs, thin lines 95% CrIs.")
 
+ggsave("../../writing/ELM2/posterior-effects.pdf", width=7, height=4)
 ```
 
 ## Exploratory analyses
