@@ -1,0 +1,10 @@
+Model in favor,Model against,BF
+Prior,Int,0
+Comp,Int,0.2
+Rel,Int,0
+Prior*Comp,Prior,0.5
+Prior*Comp,Comp,0.1
+Rel*Pri,Prior,0
+Rel*Pri,Rel,0
+Rel*Comp,Rel,0.4
+Rel*Comp,Comp,0

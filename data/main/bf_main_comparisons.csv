@@ -1,0 +1,8 @@
+Model in favor,Model against,BF
+Prior*Comp,Pri*Comp*Rel,1088.4
+Rel*Comp,Pri*Comp*Rel,545.2
+Rel*Comp,Pri*Comp,0.6
+Prior*Comp,Rel*Comp,1.6
+Rel*Pri,Pri*Comp*Rel,38.1
+Rel*Pri,Rel*Comp,0.1
+Rel*Pri,Pri*Comp,0
