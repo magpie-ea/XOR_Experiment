@@ -1,0 +1,4 @@
+Model in favor,Model against,BF,SD
+Pri * Comp,Pri + Comp,0.3881523131262563,0.1
+Rel * Comp,Rel + Comp,1.4730794596466925,0.1
+Rel * Pri * Comp,Rel + Pri + Comp,0.039323447636844804,0.1

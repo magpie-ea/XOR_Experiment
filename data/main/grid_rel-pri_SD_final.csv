@@ -1,0 +1,5 @@
+model in favor,model against,SD,BF
+Rel * Comp,Prior * Comp,0.05,0.2723
+Rel * Comp,Prior * Comp,0.1,0.4511
+Rel * Comp,Prior * Comp,0.15,0.4808
+Rel * Comp,Prior * Comp,0.25,0.6
