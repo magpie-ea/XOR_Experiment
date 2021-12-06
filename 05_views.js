@@ -28,8 +28,7 @@ const intro = magpieViews.view_generator("intro", {
             <br />
             <br />
             Legal information:
-            By answering the following questions, you are participating in a study
-            being performed by scientists from the University of Osnabrück.
+            By answering the following questions, you are participating in a scientific study.
             <br />
             <br />
             You must be at least 18 years old to participate.
