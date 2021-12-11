@@ -181,18 +181,71 @@ d_critical_zScored %>% select(title, class_condition, prior_class) %>%
   distinct() -> d_critical_prior_classes
 
 left_join(d_critical_predictorsXtarget_summary, d_critical_prior_classes, by = c("title", "predictors" = "class_condition")) %>%
-  mutate(prior_class = factor(prior_class, levels = c(0,1), labels=c("low", "high"))) %>%
+  mutate(`Prior categorization` = factor(prior_class, levels = c(0,1),
+                                         labels=c("low", "high")),
+         Trigger = factor(main_type, levels = c("some", "xor"), 
+                            labels = c("Some", "Or")),
+         predictors = factor(predictors, levels = c("relevance", "competence", "prior"),
+                             labels = c("Relevance", "Competence", "Prior"))) -> df_by_predictor_4_plotting
+
+df_by_predictor_4_plotting %>%
   ggplot(., aes(x = mean_predictor, y = mean_target)) +
-  geom_point(aes(color = prior_class)) +
+  geom_point(aes(color = `Prior categorization`)) +
   ggrepel::geom_text_repel(aes(label=title), size = 3.5) +
   geom_smooth(method = "lm") +
   ylab("Mean inference strength rating") +
   xlab("Mean predictor ratings") + 
-  facet_grid(cols=vars(predictors), rows=vars(main_type)) +
-  scale_fill_discrete(name = "Prior classification of item") +
-  theme(strip.text.y = element_text(size = 8))
+  facet_grid(cols=vars(predictors), rows=vars(Trigger)) +
+  theme_bw() +
+  theme(legend.position = "top",
+        legend.text = element_text(size = 10),
+        axis.text = element_text(size = 10),
+        strip.text.x = element_text(size = 15),
+        strip.text.y = element_text(size = 15)) 
 
-ggsave("../../writing/ELM2/byItem-ratings.pdf", width = 9, height = 6)
+ggsave("../../writing/ELM2/byItem-ratings.pdf", width = 9, height = 7)
+```
+
+```{r, fig.height=10, fig.width=8}
+df_by_predictor_4_plotting %>% 
+  group_by(`Prior categorization`, Trigger, predictors) %>%
+  summarize(mean = mean(mean_predictor)) -> by_item_predictors_summary
+
+df_by_predictor_4_plotting %>%
+  ggplot(., aes(x = `Prior categorization`, y = mean_predictor)) +
+  geom_point(aes(color = Trigger, fill = Trigger), size = 3.5, alpha = 0.8,  position = position_jitter(width = 0.2)) +
+  #geom_col(data = by_item_predictors_summary, aes(y = mean, x = `Prior categorization`), alpha = 0.3) +
+  ylab("Mean predictor strength rating") +
+  xlab("Prior categorization of story w.r.t. predictor") + 
+  facet_grid(cols=vars(predictors)) + # , rows=vars(main_type)
+  theme_bw() +
+  theme(legend.position = "top",
+        legend.text = element_text(size = 10),
+        axis.text = element_text(size = 10),
+        strip.text.x = element_text(size = 15),
+        strip.text.y = element_text(size = 15)) 
+  
+ggsave("../../writing/ELM2/byItem-scatter.pdf", width = 9, height = 5)
+
+```
+
+```{r}
+df_by_predictor_4_plotting %>%
+  ggplot(., aes(x = `Prior categorization`, y = mean_predictor)) +
+  geom_point(aes(color = Trigger, fill = Trigger), size = 3.5, alpha = 0.8,  position = position_jitter(width = 0.2)) +
+  ggrepel::geom_text_repel(aes(label=title), size = 3.5) +
+  ylab("Mean predictor strength rating") +
+  xlab("Prior categorization of story w.r.t. predictor") + 
+  facet_grid(cols=vars(predictors), rows=vars(Trigger)) +  
+  theme_bw() +
+  theme(legend.position = "top",
+        legend.text = element_text(size = 10),
+        axis.text = element_text(size = 10),
+        strip.text.x = element_text(size = 15),
+        strip.text.y = element_text(size = 15)) 
+  
+ggsave("../../writing/ELM2/byItem-scatter-wTitles.pdf", width = 9, height = 7)
+
 ```
 
 Plot the pairwise correlations of the predictors and the inference rating for "some": 
