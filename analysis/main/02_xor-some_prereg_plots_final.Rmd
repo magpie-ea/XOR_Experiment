@@ -273,3 +273,51 @@ GGally::ggpairs(
     select(priorQ_1, priorQ_2, competence, relevance, target)
   )
 ```
+
+
+## Plots for ELM2
+Plot predictor ratings against inference strength ratings by trigger:
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+# add the prior predictor categorization to wide df
+df_by_predictor_4_plotting %>% select(title, predictors, prior_class) %>% 
+  mutate(
+    predictors = tolower(predictors)
+    ) -> df_predictors_prior_classes
+
+d_critical_raw_wPrior <- d_critical_zScored_wide %>% 
+  pivot_longer(
+    cols = c(relevance, prior, competence),
+    names_to = "predictors",
+    values_to = "predictor_response"
+  ) %>%
+  left_join(., df_predictors_prior_classes, by = c("title", "predictors"))
+
+  d_critical_raw_wPrior_4plot <- d_critical_raw_wPrior %>%
+    mutate(
+      `Prior categorization` = factor(prior_class, levels = c(0,1),
+                                         labels=c("low", "high")),
+         Trigger = factor(main_type, levels = c("some", "xor"), 
+                            labels = c("Some", "Or")),
+         predictors = factor(predictors, levels = c("relevance", "competence", "prior"),
+                             labels = c("Relevance", "Competence", "Prior"))
+    )
+```
+
+```{r}
+d_critical_raw_wPrior_4plot %>%  
+  ggplot(., aes(x = predictor_response, y = target)) +
+  geom_point(aes(color = `Prior categorization`), size = 2, alpha = 0.8) +
+  geom_smooth(method = "lm") +
+  ylab("") +
+  facet_grid(cols=vars(predictors), rows=vars(Trigger)) +
+  theme_bw() +
+  labs(x = "Participants' factor ratings", y = "Participants' inference likelihood ratings", color = "Prior categorization of vignettes") +
+  theme(legend.position = "top",
+        legend.title = element_text(size = 13),
+        legend.text = element_text(size = 13),
+        axis.title = element_text(size = 13),
+        strip.text.x = element_text(size = 13),
+        strip.text.y = element_text(size = 13)) 
+
+ggsave("../../writing/ELM2/byFactor-byPrior-raw-scatter.pdf", width = 9, height = 7)
+```
