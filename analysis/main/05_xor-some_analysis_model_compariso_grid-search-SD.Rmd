@@ -1,7 +1,7 @@
 ---
-title: "Xor-Some Preregistered Study: Analyses"
+title: "Xor-Some Exploratory Analyses for Preregistered Study: Model comparison SD grid search"
 author: "Polina Tsvilodub"
-date: "8/31/2021"
+date: "12/1/2021"
 output: github_document
 ---
 
@@ -27,9 +27,9 @@ d_critical_zScored_wide_xor <- d_critical_zScored_wide %>% filter(main_type == "
 
 ## Comparison of prior and relevance effects 
 
-Since we observed potential colinearity effects in the main preregistered analysis for the trigger "or", we further explore the effects of this colinearity on the strength of the individual effects in the regression models. 
+Since we observed potential collinearity effects in the main preregistered analysis for the trigger "or", we further explore the effects of this collinearity on the strength of the individual effects in the regression models. 
 
-To do so, we compute individual models omitting one of the factors on the "or" data, and compute the Bayes Factor (BF) of the model omitting one of the colinear predictors, relative to the full model.
+To do so, we compute individual models omitting one of the factors on the "or" data, and compute the Bayes Factor (BF) of the model omitting one of the collinear predictors, relative to the full model.
 
 Upon the [first comparison](https://github.com/magpie-ea/magpie-xor-experiment/blob/master/analysis/main/04_xor-some_analysis_model_comparison.md) of different models, we decide to focus on pitting the addition of the relevance effect against the addition of the prior effect to the competence effect. For more stable results, we conduct a little grid search over the SD parameter of the prior for the main effect regression coefficients, since the BF might be quite sensitive to a particular configuration. The range of the SD parameter is motivated by the theoretically informed expected effect size.
 
@@ -112,7 +112,9 @@ ggplot(., aes(x = SD, y = BF, color = `model in favor`)) +
 ggsave("BF_vs_SD_rel-comp_pri-comp.pdf", width = 6, height = 4)
 ```
 
-For exploration, we also compute the BF in favor of a model with an interaction between the two effects against the same model without interaction estimates.
+## Exploration of interaction effects
+
+For exploration, we also compute the BF in favor of a model with an interaction between the two effects against the same model without interaction estimates. This is to estimate whether the additional complexity resulting from adding an additional estimate is benefitial in terms of model fit an hence beneficial as an exploratory factor.
 ```{r, results='hide', message=FALSE, warning=FALSE}
 # use rather tight prior
 priors <- set_prior("student_t(1, 0, 0.1)", class = "b")
@@ -235,130 +237,71 @@ results_ints %>% write_csv(., "../../data/main/bf_interactions_comparisons.csv")
 
 
 ## Model comparisons with grid search for final paper
-Below, we conduct a similar grid search over more models. More specifically, we compute the BF in favor of a more complex model over the intercept-only baseline model. We compute these pairwise comparisons for each iteratively added explaantory factor. This results in 7 model comparisons. For each comparison, we perform a small grid search over the SD parameter of the prior t-distribution over the fixed effects regression coefficients, using the values [0.05, 0.1, 0.15]. For each model, 40.000 samples are extracted.
+
+Below, we conduct a similar grid search over more models. More specifically, we compute the BF in favor of a more complex model over the intercept-only baseline model. We compute these pairwise comparisons for each possible combination of factors over the intercept-only model, always adding the full interaction structure to the main effects. This results in 7 model comparisons. For each comparison, we perform a small grid search over the SD parameter of the prior t-distribution for the fixed effects regression coefficients, using the values [0.05, 0.1, 0.15]. For each model, 40.000 samples are extracted. These grid searches are performed separately for "or" and "some".
 ```{r}
 # define a convenience function for iterating over the SDs and critical models
 models_grid_search_SD_full = function(sd_vec, iter, trigger) {
   # create output df
   results <- tribble(
-    ~"model in favor", ~"model against", "~trigger", ~"SD", ~"BF"
+    ~"model in favor", ~"model against", ~"trigger", ~"SD", ~"BF", ~"log(BF)"
   )
   # filter data by trigger
   data <- d_critical_zScored_wide %>% filter(main_type == trigger)
+  # models of interest
+  formula_baseline <- "target ~ 1 + (1 | submission_id) + (1 | title)"
+  formulas <- c(
+    "target ~ prior + (1 + prior || submission_id) + (1 | title)",
+    "target ~ relevance + (1 + relevance || submission_id) + (1 | title)",
+    "target ~ competence + (1 + competence || submission_id) + (1 | title)",
+    "target ~ relevance*competence + (1 + relevance + competence || submission_id) + (1 | title)",
+    "target ~ prior*competence + (1 + prior + competence || submission_id) + (1 | title)",
+    "target ~ prior*relevance + (1 + prior + relevance || submission_id) + (1 | title)",
+    "target ~ prior*competence*relevance + (1 + prior + competence + relevance || submission_id) + (1 | title)"
+  )
+  model_name_list <- c("model_pri", "model_rel", "model_comp", "model_rel_comp", "model_pri_comp", "model_rel_pri", "model_pri_rel_comp")
   # set priors
   for (i in sd_vec) {
     dist <- paste("student_t(1, 0, ", i, ")", sep = "")
     prior <- set_prior(dist, class = "b")
     # fit the baseline intercept only model with same prior SD
     prior_int <- set_prior(dist, class = "Intercept")
-    model_int <- brm(target ~ 1 +
-                   (1 | submission_id) +
-                   (1 | title),
+    model_int <- brm(as.formula(formula_baseline),
                  data = data,
                  prior = prior_int,
                  sample_prior = T,
                  control = list(adapt_delta = 0.97),
                  cores = 4,
                  iter = iter,
-                 save_all_pars = TRUE
+                 save_all_pars = TRUE,
+                 silent = TRUE
                  )
-    # fit the single predictor models
-    model_pri <- brm(target ~ prior + 
-                   (1 + prior || submission_id) +
-                   (1 | title),
+    # fit all the models
+    for (f in 1:length(formulas)) {
+      print(formulas[f])
+      model_target <- brm(as.formula(formulas[f]),
                  data = data,
                  prior = prior,
                  sample_prior = T,
                  control = list(adapt_delta = 0.97),
                  cores = 4,
                  iter = iter,
-                 save_all_pars = TRUE
+                 save_all_pars = TRUE,
+                 silent = TRUE
                  )
-    model_rel <- brm(target ~ relevance + 
-                   (1 + relevance || submission_id) +
-                   (1 | title),
-                 data = data,
-                 prior = prior,
-                 sample_prior = T,
-                 control = list(adapt_delta = 0.97),
-                 cores = 4,
-                 iter = iter,
-                 save_all_pars = TRUE
-                 )
-    model_comp <- brm(target ~ competence + 
-                   (1 + competence || submission_id) +
-                   (1 | title),
-                 data = data,
-                 prior = prior,
-                 sample_prior = T,
-                 control = list(adapt_delta = 0.97),
-                 cores = 4,
-                 iter = iter,
-                 save_all_pars = TRUE
-                 )
-    # fit rel * comp model with specific prior
-    model_rel_comp <- brm(target ~ relevance*competence +
-                   (1 + relevance + competence || submission_id) +
-                   (1 | title),
-                 data = data,
-                 prior = prior,
-                 sample_prior = T,
-                 control = list(adapt_delta = 0.97),
-                 cores = 4,
-                 iter = iter,
-                 save_all_pars = TRUE
-                 )
-    # fit prior * comp model with specific prior
-    model_pri_comp <- brm(target ~ prior*competence +
-                   (1 + prior + competence || submission_id) +
-                   (1 | title),
-                 data = data,
-                 prior = prior,
-                 sample_prior = T,
-                 control = list(adapt_delta = 0.97),
-                 cores = 4,
-                 iter = iter,
-                 save_all_pars = TRUE
-                 )
-    # rel*pri model
-    model_rel_pri <- brm(target ~ prior*relevance +
-                   (1 + prior + relevance || submission_id) +
-                   (1 | title),
-                 data = data,
-                 prior = prior,
-                 sample_prior = T,
-                 control = list(adapt_delta = 0.97),
-                 cores = 4,
-                 iter = iter,
-                 save_all_pars = TRUE
-                 )
-    # fit full model
-    model_pri_rel_comp <- brm(target ~ prior*competence*relevance +
-                   (1 + prior + competence + relevance || submission_id) +
-                   (1 | title),
-                 data = data,
-                 prior = prior,
-                 sample_prior = T,
-                 control = list(adapt_delta = 0.97),
-                 cores = 4,
-                 iter = iter,
-                 save_all_pars = TRUE
-                 )
-    # compute BF
-    # iterate over list of models 
-    model_list <- c("model_rel", "model_pri", "model_comp", "model_rel_comp", "model_pri_comp", "model_rel_pri", "model_pri_rel_comp")
-    for (m in model_list) {
-      bf <- bayes_factor(m, model_int, silent = TRUE)
+      # compute the BF
       print(paste("SD: ", i, sep=""))
-      print(paste("Model in favor: ", m, sep=""))
+      bf <- bayes_factor(model_target, model_int, silent = TRUE)
+      print(paste("Model in favor: ", model_name_list[f], sep=""))
       print(paste("BF: ", bf, sep=""))
       # append to results dataframe, write out
       results <- results %>% add_row(
-        "model in favor" = m,
-        "model against" = "Int",
+        "model in favor" = model_name_list[f],
+        "model against" = "model_Int",
         "trigger" = trigger,
         SD = i,
-        BF = round(bf[1]$bf, 4)
+        BF = round(bf[1]$bf, 4),
+        "log(BF)" = round(log(bf[1]$bf), 4)
       )
     write_csv(results, 
               paste("../../data/main/grid_full_", trigger, "_SD_0_", i*100, ".csv", sep = ""))
@@ -369,15 +312,16 @@ models_grid_search_SD_full = function(sd_vec, iter, trigger) {
 }
 ```
 
+
 ```{r}
 # call the grid search for xor 
 grid_results_full_xor <- models_grid_search_SD_full(c(0.05, 0.1, 0.15), 40000, "xor")
-  
-# call the grid search for some 
-grid_results_full_some <- models_grid_search_SD_full(c(0.05, 0.1, 0.15), 40000, "some")
-
 # write out results
 write_csv(grid_results_full_xor, "../../data/main/grid_full_xor_SD_final.csv")
+
+# call the grid search for some 
+grid_results_full_some <- models_grid_search_SD_full(c(0.05, 0.1, 0.15), 40000, "some")
+# write out results
 write_csv(grid_results_full_some, "../../data/main/grid_full_some_SD_final.csv")
 
 ```
@@ -388,29 +332,58 @@ grid_results_full_xor <- read_csv("../../data/main/grid_full_xor_SD_final.csv")
 grid_results_full_some <- read_csv("../../data/main/grid_full_some_SD_final.csv")
 grid_results_both <- rbind(grid_results_full_xor, grid_results_full_some)
 
-grid_results_both %>%
-ggplot(., aes(x = SD, y = BF, color = `model in favor`)) +
+grid_results_full_xor %>%
+ggplot(., aes(x = SD, y = `log(BF)`, color = `model in favor`)) +
   geom_point() +
   geom_line() +
   facet_wrap(~trigger) + 
-  ggtitle("BF in favor of including a relevance effect over\n including a prior effect, depending on SD of prior t-distribution")
+  ggtitle("BF in favor of including certain effects over an Intercept-only model,\ndepending on SD of the prior t-distribution over betas")
 
-#ggsave("BF_vs_SD_all_vs_int.pdf", width = 8, height = 4)
+ggsave("BF_vs_SD_allModels_vs_int.pdf", width = 6.5, height = 4)
 ```
 
-```{r}
+## Additional interaction comparisons
 
-# bf <- bayes_factor(model_rel_comp, model_prior_comp, silent = TRUE)
-#     print(paste("SD: ", i, sep=""))
-#     print(paste("BF: ", bf, sep=""))
-#     # append to results dataframe, write out
-#     results <- results %>% add_row(
-#       "model in favor" = "Rel * Comp",
-#       "model against" = "Prior * Comp",
-#       SD = i,
-#       BF = round(bf[1]$bf, 4)
-#     )
-#     # dot might be a problem
-#     write_csv(results, 
-#               paste("../../data/main/grid_rel-pri_SD_0_", i*100, ".csv", sep = ""))
+Compute the critical BF for including the effect of relevance over including the effect of prior in a two-factor model when only including the simple effects, no interactions.
+```{r}
+prior <- set_prior("student_t(1, 0, 0.05)", class = "b")
+model_rel_comp_simple <- brm(target ~ competence+relevance +
+                   (1 + competence + relevance || submission_id) +
+                   (1 | title),
+                 data = d_critical_zScored_wide %>% filter(main_type == "xor"),
+                 prior = prior,
+                 sample_prior = T,
+                 control = list(adapt_delta = 0.97),
+                 cores = 4,
+                 iter = 40000,
+                 save_all_pars = TRUE,
+                 silent=TRUE
+                 )
+
+model_pri_comp_simple <- brm(target ~ competence+prior +
+                   (1 + competence + prior || submission_id) +
+                   (1 | title),
+                 data = d_critical_zScored_wide %>% filter(main_type == "xor"),
+                 prior = prior,
+                 sample_prior = T,
+                 control = list(adapt_delta = 0.97),
+                 cores = 4,
+                 iter = 40000,
+                 save_all_pars = TRUE
+                 )
+bf_rel_pri_simple <- bayes_factor(model_rel_comp_simple, model_pri_comp_simple, silent=TRUE) 
+# read old data with interaction comparisons
+df_ints <- read_csv("./../../data/main/bf_interactions_comparisons.csv")
+glimpse(df_ints)
+df_ints %>% add_row(
+  `Model in favor` = "Rel + Comp",
+  `Model against` = "Pri + Comp",
+  BF = round(bf_rel_pri_simple[1]$bf, 4),
+  SD = 0.05
+) #%>% write_csv("./../../data/main/bf_interactions_comparisons.csv")
+```
+
+
+```{r}
+# TODO: use different seeds / rerun the process for a more stable BF estimate
 ```
