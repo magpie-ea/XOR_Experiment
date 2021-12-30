@@ -320,17 +320,17 @@ grid_results_full_xor <- models_grid_search_SD_full(c(0.05, 0.1, 0.15), 40000, "
 write_csv(grid_results_full_xor, "../../data/main/grid_full_xor_SD_final.csv")
 
 # call the grid search for some 
-grid_results_full_some <- models_grid_search_SD_full(c(0.05, 0.1, 0.15), 40000, "some")
+#grid_results_full_some <- models_grid_search_SD_full(c(0.05, 0.1, 0.15), 40000, "some")
 # write out results
-write_csv(grid_results_full_some, "../../data/main/grid_full_some_SD_final.csv")
+#write_csv(grid_results_full_some, "../../data/main/grid_full_some_SD_final.csv")
 
 ```
 
 Plot the effect of SD against the BF:
 ```{r}
 grid_results_full_xor <- read_csv("../../data/main/grid_full_xor_SD_final.csv")
-grid_results_full_some <- read_csv("../../data/main/grid_full_some_SD_final.csv")
-grid_results_both <- rbind(grid_results_full_xor, grid_results_full_some)
+#grid_results_full_some <- read_csv("../../data/main/grid_full_some_SD_final.csv")
+#grid_results_both <- rbind(grid_results_full_xor, grid_results_full_some)
 
 grid_results_full_xor %>%
 ggplot(., aes(x = SD, y = `log(BF)`, color = `model in favor`)) +

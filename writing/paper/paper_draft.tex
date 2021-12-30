@@ -9,7 +9,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% customization
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\usepackage{gb4e}
+\noautomath
 \usepackage[dvipsnames]{xcolor}
 \newcommand{\mf}[1]{\textcolor{BurntOrange}{[MF: #1]}}
 \newcommand{\pt}[1]{\textcolor{Cerulean}{[PT: #1]}}
@@ -75,18 +76,59 @@ In this experiment we directly compare the interpretation of ``some'' and ``or''
 To operationalize these factors, we designed context stories (vignettes) which were judged to score either high or low with respect to each factor of interest (high/low prior probability of the more informative alternative $\times$ high/low speaker competence $\times$ high/low contextual relevance of the alternative). Combining these dichotomozed manipulations resulted in eight unique conditions. 
 
 On critical trials, participants were asked to rate four sentences, one per factor and one containing an upper-bounded (exclusive) paraphrase of the trigger. The sentences elicited judgements of how likely it is that each factor was high, and how likely the critical scalar implicature was true. The context stories and sentences manipulating the factors of interest were designed in an analogous fashion for both triggers and varied within-subjects, so the following descriptions apply for both triggers.
-\mf{I suggest to give one full example of a vignette (context, critical questions, possibly test questions) for each trigger here; similar to what is now in the appendix (but with nicer formatting)}
-\mf{it might be useful to have a graphical representation of the order of ``screens'' within each trial; e.g. similar to the example in Figure 1 here: \url{https://magpie-manual.netlify.app/00_getting_started/02_basics/}}
+%\mf{I suggest to give one full example of a vignette (context, critical questions, possibly test questions) for each trigger here; similar to what is now in the appendix (but with nicer formatting)}
+\mf{it might be useful to have a graphical representation of the order of ``screens'' within each trial; e.g. similar to the example in Figure 1 here: \url{https://magpie-manual.netlify.app/00_getting_started/02_basics/}}. Example stories for each trigger can be found below.
 
-If our factor hypotheses are true, on average, we expect higher likelihood ratings for the statements eliciting relevance, competence and prior judgements given items in the respective high conditions. Critically, we expect higher likelihood ratings for the scalar implicature, if the relevance and comptenece in the item were judged as high and the prior of the alternative as low.
+\begin{exe}
+\ex	\textbf{Example transcript of an ``or''-story and the associated statements}\newline
+\textit{Title and classification:} ``Lily's husband'' (Prior -- / Competence + / Relevance --)\newline
+\textit{Story:} ``Bill and Eric went to a bar. Eric’s wife, Lily, promised to pick them up if Eric drank any alcohol. She phones up Bill to ask about their night.''\newline
+\textit{Example comprehension statements:} ``Eric and Lily went to a bar together.'' (false), ``Eric and Bill went to see a football game.'' (false), ``Eric and Bill go out to a bar every weekend.'' (uncertain), ``Eric's wife has a driver’s licence.'' (true)\newline
+\textit{Competence statement:} ``Bill knows whether Eric drank both wine and vodka.''\newline
+\textit{Relevance statement:} ``It is important for Lily to know whether her husband drank both wine and vodka.''\newline
+\textit{Prior statements:} ``If Eric drank wine, it is likely that he drank vodka as well.'', ``If Eric drank vodka, it is likely that he drank wine as well.''\newline
+\textit{Critical utterance:} ``Bill tells Lily: 'Your husband drank wine or vodka.'''\newline
+\textit{Implicature statement:} ``From what Bill said we may conclude that Eric did not drink both wine and vodka.''
+\end{exe}
+
+\begin{exe}
+\ex \textbf{Example transcript of a “some”-story and the associated statements}\newline
+\textit{Title and classification:} ``Final exam'' (Prior -- / Competence -- / Relevance +)\newline
+\textit{Story}: ``Bernard just finished his final exam. He isn't the brightest student, but if he passes this one, he will be through to the next grade. During the break, he goes to the teacher's lounge. He cannot wait to ask his teacher whether he passed. Bernard's teacher only just started correcting his exam.''\newline
+\textit{Example comprehension statements:} ``Bernard wants to get to the next grade.'' (true), ``Bernard wants to know his grade for his college application.'' (false), ``Bernard took a final exam in biology.'' (uncertain), ``Bernard is not the best student of his class.'' (true)\newline
+\textit{Competence statement:} ``Bernard’s teacher knows whether all of the answers Bernard gave on the exam are correct.''\newline
+\textit{Prior statement:} ``If at least some of the answers Bernard gave on the exam are correct, then all of them are correct.''\newline
+\textit{Relevance statement:} ``It is important for Bernard to know whether all of the answers he gave on the exam are correct.''\newline
+\textit{Critical utterance:} ``Bernard’s teacher says: 'Some of the answers you gave are correct.'''\newline
+\textit{Implicature statement:} ``From what Bernard’s teacher said we may conclude that not all of Bernard’s answers are correct.''\newline
+\end{exe}
+
+%If our factor hypotheses are true, on average, we expect higher likelihood ratings for the statements eliciting relevance, competence and prior judgements given items in the respective high conditions. Critically, we expect higher likelihood ratings for the scalar implicature, if the relevance and comptenece in the item were judged as high and the prior of the alternative as low.
 %Participants were then asked to rate statements eliciting four judgements using a slider bar: the relevance of the “all”/“and”-alternative, the competence of the speaker about the alternative, the prior probability of ”all” / “and” being true, and, crucially, the likelihood of the exclusive reading of “or” or of the upper-bounded reading of “some”.
-\mf{Last paragraph feels redundant to me here; best repeat hypotheses in results / analyze section but not necessarily here}
+%\mf{Last paragraph feels redundant to me here; best repeat hypotheses in results / analyze section but not necessarily here}
 
 
 \subsection{Procedure and Materials}
 This study is a $ 2 \times 2 \times 2 \times 2$ within-subjects rating task (relevance $\times$ competence $\times$ prior $\times$ trigger), conducted as a web-based experiment. The study proceeds as follows.
 
-On each trial, participants read a background story, followed by a sentence presented in a blue box which is meant to elicit the likelihood rating.\mf{maybe include a screenshot?} These sentences were of the form ``It is important to X to know whether Y'' (relevance rating), ``Z knows whether Y'', ``If A, then B'' / ``If B , then A'' (disjunction prior rating), ``If some Y, then all Y'' (some prior rating), ``From what Z said we may conclude that W'', where X is the listener, Z is the speaker and Y is the target event in the background story, and W is the event under the upper bounded / exclusive reading. A and B are the disjuncts in case of disjunction. For the inference strength elicitation, participants additionally read a critical utterance of the form ``Z says to X: Y'', containing the trigger (``some'' / ``or''), presented below the background story in a red box.
+On each trial, participants read a background story, followed by a sentence presented in a blue box which is meant to elicit the likelihood rating (Fig.~\ref{screenshot-xor-comp}). These sentences were of the form ``It is important to X to know whether Y'' (relevance rating), ``Z knows whether Y'', ``If A, then B'' / ``If B , then A'' (disjunction prior rating), ``If some Y, then all Y'' (some prior rating), ``From what Z said we may conclude that W'', where X is the listener, Z is the speaker and Y is the target event in the background story, and W is the event under the upper bounded / exclusive reading. A and B are the disjuncts in case of disjunction. For the inference strength elicitation, participants additionally read a critical utterance of the form ``Z says to X: Y'', containing the trigger (``some'' / ``or''), presented below the background story in a red box (Fig.~\ref{screenshot-xor-target}).
+
+\begin{figure}[h]
+ 	\begin{center}
+ 		\includegraphics[width=0.8\linewidth]{images/screenshot_xor_comp.png}
+ 	\end{center}
+ 	\vspace{-0.3cm}
+ 	\caption{Example view of a trial eliciting the competence rating for an ``or''-vignette.}
+ 	\label{screenshot-xor-comp}
+\end{figure}
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.8\linewidth]{images/screenshot_xor_target.png}
+	\end{center}
+	\vspace{-0.3cm}
+	\caption{Example view of a trial eliciting the critical inference strength rating for an ``or''-vignette.}
+	\label{screenshot-xor-target}
+\end{figure}
  
 Below, participants read the task saying ``How likely is it that the statement is true given the story?'', followed by a slider rating bar labelled ``certainly false'' (left) and ``certainly true'' (right). The continuous ratings were converted to an integer rating between 0 and 100 in the background. For each critical vignette, participants completed a block of 10 or 11 trials, consisting of a trial with a comprehension question, trials with statements eliciting relevance, comptenece and prior ratings each (the last factor was elicited with two statements for the trigger ``or''), followed by three more comprehension questions, and the critical implicature strength elicitation trial. 
 Comprehension trials were visually identical to the critical trials, but the statement to be rated only referred to the content of the background stories, and were designed so as to be either clearly true, clearly false or uncertain given the background story. 
@@ -101,15 +143,29 @@ After the study, participants could voluntarily fill out a socio-demographic que
 The experiment can be viewed under \texttt{https://magpie-xor-some.netlify.app/}. The preregistration for the experiment can be found under \texttt{https://osf.io/v7zjp}.
 
 \subsection{Participants}
-We recruited 277 participants through the crowd-sourcing platform Prolific. Participants were restricted to those whose first language included English, who previously took part in at least five other Prolific studies, and whose approval rate was at least 0.9, according to prescreening criteria of the platform. Participants took 20 minutes on average to complete the study and were compensated \pounds2.48 for their participation. Following our preregistered exclusion criteria, we excluded 15 participants for not indicating their native language, 3 participants for completing the study in under 8 minutes, 26 participants for failing more than 20\% of the attention checks, and 27 for failing more than 20\% of the comprehension questions. Due to a coding error of the comprehension questions, 206 participants were left post applying exclusion criteria, although the preregistered target sample size post exclusions was 200 subjects. We conducted a power analysis in order to determine the minimal sample size required for a power of 0.8 of finding evidence for the conjunction of all factor hypotheses (relevance, competence and prior) predicted by the SI account, finding that at least 180 subjects were required.\mf{we should give some details about the power analysis or link to a document in the repository}
+We recruited 277 participants through the crowd-sourcing platform Prolific. Participants were restricted to those whose first language included English, who previously took part in at least five other Prolific studies, and whose approval rate was at least 0.9, according to prescreening criteria of the platform. Participants took 20 minutes on average to complete the study and were compensated \pounds2.48 for their participation. Following our preregistered exclusion criteria, we excluded 15 participants for not indicating their native language, 3 participants for completing the study in under 8 minutes, 26 participants for failing more than 20\% of the attention checks, and 27 for failing more than 20\% of the comprehension questions. Due to a coding error of the comprehension questions, 206 participants were left post applying exclusion criteria, although the preregistered target sample size post exclusions was 200 subjects (see the power analysis section below for justification details).
+%\mf{we should give some details about the power analysis or link to a document in the repository}
 In the following analyses, data from the 206 participants is analysed.\footnote{All analyses were also conducted on data from 200 subject, excluding the last six submissions. No noteworthy quantitative or qualitative differences of the results were observed.}
+
+\subsection{Sample size justification}
+We conducted a power analysis in order to determine the minimal sample size required for a power of 0.8 of finding evidence for the conjunction of all factor hypotheses (relevance, competence and prior) predicted by the SI account, finding that at least 180 subjects were required. 
+
+More specifically, we conducted a simulation-based Bayesian power analysis which aimed at determining how many participants are required in order to detect a theoretically motivated conjunctive effect of the predictors prior, relevance and competence with a confidence of at least 0.8 \citep[e.g.,][]{degen2015investigating}. The simulations were based on an assumed effect size $\beta = 0.15$ for all predictors, and a Region Of Practical Equivalence (ROPE) $\delta = 0.05$ for judging evidence for the directionality of a coefficient given the data \citep{kruschke2014doing}. The simulations were further based on the maximal desired model justified theoretically and by the design.\footnote{The maximal model in R syntax is: \texttt{rating = trigger * prior * competence * relevance}. The random effects were omitted for computational tractability reasons and due to the lack of a well-founded estimates of group-level effect sizes.}
+
+For this analysis, hypothetical experimental data representing the predictor effect rating was simulated by drawing four samples from a standard Normal distribution $\mathcal{N}(0,1)$ per simulated subject. Next, the target inference strength rating was modelled as a sample from a normal distribution with the mean computed as the sum of the simulated predictor values weighted by the assumed effect size (0.15). Then, the desired maximal Bayesian regression model was computed on the simulated data. The described steps were performed for a number of subjects ranging from 100 up to 340, increased iteratively in steps of 20. For each number of subjects, the model was re-computed on the simulated samples for $k=100$ iterations. For each iteration $i_k$, the conjunctive hypothesis of interest was tested. 
+The power for the given number of participants was calculated as the proportion of iterations for which the conjunctive hypothesis was credible (i.e., if the posterior probability ($P(\beta_X > \delta \mid D)$) was at least 0.95, for $\delta = 0.05$ was the parameter that defined our ROPE for the conjunction of all three predictor coefficients).
+
+We found that at least 180 subjects were required. To account for potential data collection artifacts, we aimed to recruit 200 participants passing our exclusion criteria.
 
 \section{Results}
 Prior to conducting statistical analyses, we preprocess the data by standardizing (or z-scoring) the responses within each factor (relevance, comptence, prior) for each participant. This is done to counterbalance possible by-participant responsiveness to particular factors, while keeping an anlysis advantageous to the scalar implicature account, since the standardization is applied across triggers. 
 
+If our factor hypotheses are true, on average, we expect higher likelihood ratings for the statements eliciting relevance, competence and prior judgements given items in the respective high conditions. Critically, we expect higher likelihood ratings for the scalar implicature, if the relevance and comptenece in the item were judged as high and the prior of the alternative as low.
+
+
 \subsection{Main analysis}
 We analysed the results using a Bayesian linear mixed effects model, regressing the target implicature likelihood rating against the fixed effects of predictor ratings (i.e., the relevance, comptence and prior ratings elicited by the same participant for that vignette), the effect of trigger and their two-, three-, and four-way interactions. Maximal computationally tractable random effects structure justified by the experimental design was included: we included random intercepts and random slope effects for the main effects of trigger, relevance, competence and prior by-subject, as well as random intercepts by-vignette.\footnote{Model in R syntax style: \texttt{inference-rating $\sim$ trigger * relevance * competence * prior + (1 + trigger + relevance + competence + prior || subjectID) + (1 | vignette)}. For computational tractability reasons, the correlation of random effects by-subject was set to 0.} 
-The categorical effect of trigger was dummy coded, using ``some'' as the reference level. For all regression coefficients we used a wide and uninformative prior given by a $t$-distribution with mean 0, standard deviation of 2 and 1 degree of freedom. The model was fitted using the R \texttt{brms} package \citep{burkner2017brms}.\footnote{The data and the analyses can be found under \texttt{https://github.com/magpie-ea/magpie-xor-experiment}}
+The categorical effect of trigger was dummy coded, using ``some'' as the reference level. For all regression coefficients we used a wide and uninformative prior given by a $t$-distribution with mean 0, standard deviation of 2 and 1 degree of freedom. The model was fitted using the R \texttt{brms} package \citep{burkner2017brms}.\footnote{The data and the analyses can be found under\newline \texttt{https://github.com/magpie-ea/magpie-xor-experiment}}
 
 We focus on six slope coefficients of the regression model, for the effects of relevance, competence and prior, respectively, once for ``some'' and once for ``or''. We check whether the posterior estimate of each effect is in either one of three intervals: (1) negative effect (<= -0.05), (2) no effect (between -0.05 and 0.05), or (3) positive effect (>= 0.05). 
 We interpret the data as providing evidence in favor of an effect (positive, negative, no effect) if the posterior probability of the effect being true is >= 0.95 (i.e., 95\% of posterior samples are in the corresponding interval). In particular, we speak of evidence in favor of the scalar implicature account of the exclusive disjunction interpretation if the posterior probability of the prior effect being negative, the relevance and competence effects being positive is >= 0.95. 
