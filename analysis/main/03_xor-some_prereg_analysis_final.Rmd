@@ -87,6 +87,21 @@ posterior_hypotheses <- model_SI_posteriors %>%
 posterior_hypotheses
 ```
 
+For the paper: Investigate whether we get the same results (qualitatively) if we set the ROPE to 0:
+```{r}
+posterior_hypotheses_nullROPE <- model_SI_posteriors %>% 
+  select(prior_xor, prior_some, 
+         competence_xor, competence_some,
+         relevance_xor, relevance_some) %>%
+  gather(key, val) %>%
+  group_by(key) %>% mutate(positive = mean(val > 0),
+                           negative = mean(val < 0)) %>% # no = mean(val = 0)
+  summarise(positive_eff = mean(positive),
+            negative_eff = mean(negative) # no_eff = mean(no)
+            )
+posterior_hypotheses_nullROPE
+```
+
 #### Perform BF analysis
 
 We want to address a conjunctive hypothesis, one triplet for each trigger word, namely:
@@ -143,7 +158,7 @@ model_SI_posteriors_long %>%
         strip.text.x = element_text(size = 13),
         strip.text.y = element_text(size = 13))
 
-ggsave("../../writing/ELM2/posterior-effects.pdf", width=7, height=5)
+# ggsave("../../writing/ELM2/posterior-effects.pdf", width=7, height=5)
 ```
 
 ## Exploratory analyses
@@ -223,6 +238,7 @@ posterior_hypotheses_cat <- model_xor_cat_zScored_posteriors %>%
             no_eff = mean(no))
 posterior_hypotheses_cat
 ```
+
 ```{r}
 test_conjunction_of_all_hypotheses(posterior_hypotheses_cat)
 ```
@@ -235,6 +251,9 @@ model_xor_cat_zScored_posteriors %>% select(prior_xor, prior_some,
 
 
 model_xor_cat_posteriors_long %>%
+  mutate(effect = factor(effect, 
+                         levels = c("relevance_xor", "relevance_some", "prior_xor", "prior_some", "competence_xor", "competence_some"), 
+                         labels = c("Relevance (or)", "Relevance (some)", "Prior (or)", "Prior (some)", "Competence (or)", "Competence (some)"))) %>%
   ggplot(.) + # 
   stat_halfeye(aes(y = effect, x = value, 
                    fill = stat(case_when(x %>% between(-0.05, 0.05) ~ "no effect", x < -0.05 ~ "negative effect", x > 0.05 ~ "positive effect"))
@@ -242,8 +261,15 @@ model_xor_cat_posteriors_long %>%
                alpha = .7) +
   geom_vline(xintercept = c(-.05, .05), linetype = "dashed") +
   scale_fill_manual(name = "Direction of effect", values = c("coral", "yellow3", "mediumseagreen")) +
-  ggtitle("Posterior effect distributions. Points indicate posterior means\nThick lines indicate 66% CrIs, thin lines 95% CrIs.")
+  labs(x = "Effect size", y = "Effect") +
+  theme(legend.position = "top",
+        legend.title = element_text(size = 12),
+        legend.text = element_text(size = 12),
+        axis.title = element_text(size = 13),
+        strip.text.x = element_text(size = 13),
+        strip.text.y = element_text(size = 13))
 
+#ggsave("../../writing/paper/images/posterior-effects-categorical.pdf", width=7, height=5)
 ```
 
 
@@ -321,6 +347,9 @@ model_means_posteriors %>% select(prior_xor, prior_some,
 
 
 model_mean_posteriors_long %>%
+  mutate(effect = factor(effect, 
+                         levels = c("relevance_xor", "relevance_some", "prior_xor", "prior_some", "competence_xor", "competence_some"), 
+                         labels = c("Relevance (or)", "Relevance (some)", "Prior (or)", "Prior (some)", "Competence (or)", "Competence (some)"))) %>%
   ggplot(.) + # 
   stat_halfeye(aes(y = effect, x = value, 
                    fill = stat(case_when(x %>% between(-0.05, 0.05) ~ "no effect", x < -0.05 ~ "negative effect", x > 0.05 ~ "positive effect"))
@@ -328,7 +357,13 @@ model_mean_posteriors_long %>%
                alpha = .7) +
   geom_vline(xintercept = c(-.05, .05), linetype = "dashed") +
   scale_fill_manual(name = "Direction of effect", values = c("coral", "yellow3", "mediumseagreen")) +
-  ggtitle("Posterior effect distributions. Points indicate posterior means\nThick lines indicate 66% CrIs, thin lines 95% CrIs.")
+  labs(x = "Effect size", y = "Effect") +
+  theme(legend.position = "top",
+        legend.title = element_text(size = 12),
+        legend.text = element_text(size = 12),
+        axis.title = element_text(size = 13),
+        strip.text.x = element_text(size = 13),
+        strip.text.y = element_text(size = 13))
 
 ```
 

@@ -339,7 +339,7 @@ ggplot(., aes(x = SD, y = `log(BF)`, color = `model in favor`)) +
   facet_wrap(~trigger) + 
   ggtitle("BF in favor of including certain effects over an Intercept-only model,\ndepending on SD of the prior t-distribution over betas")
 
-ggsave("BF_vs_SD_allModels_vs_int.pdf", width = 6.5, height = 4)
+#ggsave("BF_vs_SD_allModels_vs_int.pdf", width = 6.5, height = 4)
 ```
 
 ## Additional interaction comparisons
