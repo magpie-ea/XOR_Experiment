@@ -364,7 +364,7 @@ model_mean_posteriors_long %>%
         axis.title = element_text(size = 13),
         strip.text.x = element_text(size = 13),
         strip.text.y = element_text(size = 13))
-
+#ggsave("../../writing/paper/images/posterior-effects-means.pdf", width=7, height=5)
 ```
 
 A non-preregistered, but nevertheless possibly interesting exploratory analysis including the two individual prior ratings of the conditionals in the xor condition as predictors (as opposed to the mean of the two used in the preceding models):
