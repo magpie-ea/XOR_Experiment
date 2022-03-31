@@ -12,6 +12,7 @@
 \usepackage{gb4e}
 \noautomath
 \usepackage[dvipsnames]{xcolor}
+\usepackage{multirow,booktabs}
 \newcommand{\mf}[1]{\textcolor{BurntOrange}{[MF: #1]}}
 \newcommand{\pt}[1]{\textcolor{Cerulean}{[PT: #1]}}
 \newcommand{\bvt}[1]{\textcolor{ForestGreen}{[BvT: #1]}}
@@ -24,9 +25,9 @@
 % Optional short author inside square brackets, for the running headers.
 % If no short author is given, no authors print in the headers.
 \author[]{% As many authors as you like, each separated by \AND.
-  \spauthor{Michael Franke \\ \institute{Institute1}} \AND
-  \spauthor{Bob van Tiel \\ \institute{Institute2}} \AND
-  \spauthor{Polina Tsvilodub \\ \institute{Institute3}}}
+  \spauthor{Polina Tsvilodub \\ \institute{Institute}} \AND
+  \spauthor{Bob van Tiel \\ \institute{Institute}} \AND
+  \spauthor{Michael Franke \\ \institute{Department of Linguistics \\ University of Tübigen}}}
 
 \begin{document}
 
@@ -34,7 +35,7 @@
 
 \begin{abstract}
   
-  Sentences containing disjunctions like ``Donald ate a pretzel or a donut'' are often taken as conveying that Donald ate a pretzel or a donut, but not both. That is, the listener might infer an \textit{exclusive reading of the disjunction}. Current standard accounts of disjunction interpretation posit that the exclusive interpretation of disjunctions is an instance of \textit{scalar implicature}. Prior work suggests that, among others, three factors influence the robustness of scalar implicatures: (1) \textit{relevance} of the stronger alternative to the listener, (2) the \textit{competence} of the speaker about the truth of the stronger alternative, and (3) the \textit{prior probability} that the stronger alternative is true. While their influence was investigated experimentally for the interpretation of ``some'', the evidence is less conclusive in the case of disjunction interpretation. Therefore, we compare experimentally the interpretation of ``some'' and ``or'', while manipulating the three factors with respect to the stronger alternatives “all”, and “and”, respectively. Our results indicate that competence has a consistent effect of the robustness of the implicature generation for both triggers, while prior and relevance exhibit different, more intricate, effects varying between the triggers.
+  Sentences containing disjunctions like ``Donald ate a pretzel or a donut'' are often taken as conveying that Donald ate a pretzel or a donut, but not both. That is, the listener might infer an \textit{exclusive reading of the disjunction}. Current standard accounts of disjunction interpretation posit that the exclusive interpretation of disjunctions is an instance of \textit{scalar implicature}. Prior work suggests that, among others, three factors influence the robustness of scalar implicatures: (i) \textit{relevance} of the stronger alternative to the listener, (ii) the \textit{competence} of the speaker about the truth of the stronger alternative, and (iii) the \textit{prior probability} that the stronger alternative is true. While their influence was investigated experimentally for the interpretation of ``some'', the evidence is less conclusive in the case of disjunction interpretation. Therefore, we compare experimentally the interpretation of ``some'' and ``or'', while manipulating the three factors with respect to the stronger alternatives “all”, and “and”, respectively. Our results indicate that competence has a consistent effect of the robustness of the implicature generation for both triggers, while prior and relevance exhibit different, more intricate, effects varying between the triggers.
   
 \end{abstract}
 
@@ -48,7 +49,7 @@
 
 If someone says “Anna ate some cookies”, the hearer might infer the upper-bounded reading that Anna ate some, but not all cookies. Modern theories usually treat this inference as one of the prime examples of \textit{scalar implicature} (SI) \citep{horn1972semantic}. More specifically, the SI relies on a lexical scale consisting of words ordered in terms of informativeness (or, strength), like $\langle$some, all$\rangle$. When interlocutors encounter the weaker expression ``some'', the stronger ``all'' functions as a salient alternative \citep{matsumoto1995conversational}. 
 
-Theories of pragmatics suggest that interlocutors reason about these scales, guided by conversational pronciples introduced by \citet{grice1975logic}.
+Theories of pragmatics suggest that interlocutors reason about these scales, guided by conversational principles introduced by \citet{grice1975logic}.
 According to \citet{grice1975logic}, natural conversation is governed by
 the assumption that speakers are cooperative; that is, they attempt to further the purpose
 of the discourse by means of their utterances. Speakers are cooperative by adhering
@@ -57,7 +58,7 @@ and clear. Sometimes hearers have to make ancillary assumptions in order to alig
 speaker’s utterance with the assumption of cooperativity. Such ancillary assumptions
 are called conversational implicatures.
 %Recent theories of pragmatics suggest that cooperative interlocutors reason about each other's utterances, guided by certain \textit{conversational maximes} \citep{grice1975logic}. 
-That is, in case of ``some'', assuming a rational speaker who wishes to be maximally cooperative, the listener of the utterance would infer that if the stronger alternative (i.e., ``all'') was true, the speaker would have used the stronger utterance; but since she did not, she must have lacked the evidence for using ``all'' \citep{grice1975logic, goodman2016pragmatic}.
+That is, in case of ``some'', assuming a rational speaker who wishes to be maximally cooperative, the listener of the utterance would infer that if the stronger alternative (i.e., ``all'') was true, the speaker would have used the stronger utterance; but since she did not, she must have lacked the evidence for using ``all''P.
 
 Similarly to the first example, given the utterance “Donald ate a donut or a pretzel.”, the listener might infer that Donald ate either the donut or the pretzel, but not both (i.e., an \textit{exclusive} interpretation).
 %This inference can also be explained as a variety of scalar implicature, relying on the scale $\langle$or, and$\rangle$. If a speaker uses an informationally weaker term (e.g., “some”), they may imply that the corresponding stronger alternative (e.g., “and”) is false [3,5]. 
@@ -128,7 +129,7 @@ Literature on the effects of these factors on SIs \citep{sperber1986relevance, g
 \subsection{Prior probability}
 
 \subsection{Predictions}
-Prior research has shown that the robustness of implicatures from ``some'' to ``some, but not all''  predicted by the standard scalar implicature (SI) account is influenced by three factors. First, high contextual relevance of the stronger alternative ``all'' to the listener is predicted to render more robust scalar implicatures. Second, high speaker competence about the truth of the stronger alternative is predicted to lead to more robust scalar implicature generation. Lastly, high prior probability of the stronger ``all'' being true is assumed to \textit{decrease} the scalar implicature rate. \pt{If the framing is okay, add some motivation and predictions regarding investigating the conjunction of these factors.}
+Prior research has shown that the robustness of implicatures from ``some'' to ``some, but not all''  predicted by the standard scalar implicature (SI) account is influenced by three factors. First, high contextual relevance of the stronger alternative ``all'' to the listener is predicted to render more robust scalar implicatures. Second, high speaker competence about the truth of the stronger alternative is predicted to lead to more robust scalar implicature generation. Lastly, high prior probability of the stronger ``all'' being true is assumed to \textit{decrease} the scalar implicature rate. \pt{If the framing is okay, add some motivation and predictions regarding investigating the conjunction of these factors.} \mf{yes, good idea}
 If the currently standard scalar implicature account also holds for the interpretation of disjunctions, analogous predictions for the robustness of the implicature from ``A or B'' to ``A or B, but not both'' can be derived. In case of disjunction, the relevant stronger alternative is ``and''.
 
 We hypothesize that all three factors influence the robustness of scalar implicatures for both triggers. That is, we expect a higher rate of endorsements for sentences containing the upper-bounded (exclusive, in case of ``or'') paraphrases of the respective triggers when the three factors are intuitively judged to be high or low, as described above. We, therefore, test six hypotheses, one concerning the effect of each factor for each trigger. 
@@ -136,7 +137,9 @@ Simultaneously,  we also address the \textit{identity hypothesis} that exclusive
 
 \section{Experiment}
 
-In this experiment we directly compare the interpretation of ``some'' and ``or'', so as to directly explore if the predictions generated by the scalar implicature account are borne out comparably for both triggers. Specifically, we manipulate the \textit{contextual relevance of the stronger alternative to the listener}, the \textit{speaker's competence about the truth of ``all'' / ``and''}, and the \textit{prior probability of ``all'' / ``and'' being true}, to investigate the robustness of an exclusive reading of ``or'' (``A or B, but not both'') under these manipulations, in direct comparison to the upper-bounded reading of “some” (``some but not all'').
+In this experiment we directly compare the interpretation of ``some'' and ``or'', so as to explore if the predictions generated by the scalar implicature account are borne out comparably for both triggers. Specifically, we manipulate the \textit{contextual relevance of the stronger alternative to the listener}, the \textit{speaker's competence about the truth of ``all'' / ``and''}, and the \textit{prior probability of ``all'' / ``and'' being true}, to investigate the robustness of an exclusive reading of ``or'' (``A or B, but not both'') under these manipulations, in direct comparison to the upper-bounded reading of “some” (``some but not all'').
+
+\mf{The exposition of the experiment meanders quite a bit between high-level description, materials and procedure. I would advocate a tidier organization: high-level, materials, then procedure.}
 
 To operationalize these factors, we designed context stories (vignettes) which were judged to score either high or low with respect to each factor of interest (high/low prior probability of the more informative alternative $\times$ high/low speaker competence $\times$ high/low contextual relevance of the alternative). Combining these dichotomozed manipulations resulted in eight unique conditions. 
 
@@ -213,9 +216,10 @@ We recruited 277 participants through the crowd-sourcing platform Prolific. Part
 In the following analyses, data from the 206 participants is analysed.\footnote{All analyses were also conducted on data from 200 subject, excluding the last six submissions. No noteworthy quantitative or qualitative differences of the results were observed.}
 
 \subsection{Sample size justification}
+\mf{I suggest to move this paragraph to the appendix}
 We conducted a power analysis in order to determine the minimal sample size required for a power of 0.8 of finding evidence for the conjunction of all factor hypotheses (relevance, competence and prior) predicted by the SI account, finding that at least 180 subjects were required. 
 
-More specifically, we conducted a simulation-based Bayesian power analysis which aimed at determining how many participants are required in order to detect a theoretically motivated conjunctive effect of the predictors prior, relevance and competence with a confidence of at least 0.8. The simulations were based on an assumed effect size $\beta = 0.15$ for all predictors \citep[e.g.,][]{degen2015investigating}, and a Region Of Practical Equivalence (ROPE) $\delta = 0.05$ for judging evidence for the directionality of a coefficient given the data \citep{kruschke2014doing}. That is, we determined how many participants would be necessary such that the regression coefficients |$\beta_X$| for the three predictors would be larger than $\delta$.
+More specifically, we conducted a simulation-based Bayesian power analysis which aimed at determining how many participants are required in order to detect a theoretically motivated conjunctive effect of the predictors prior, relevance and competence with a confidence of at least 0.8. The simulations were based on an assumed effect size $\beta = 0.15$ for all predictors assuming $z$-scored data \citep[e.g.,][]{degen2015investigating}, and a Region Of Practical Equivalence (ROPE) $\delta = 0.05$ for judging evidence for the directionality of a coefficient given the data \citep{kruschke2014doing}. That is, we determined how many participants would be necessary such that for each factor $X$ the absolute value of the regression coefficients |$\beta_X$| for main factor $X$ would be larger than $\delta$.
 The simulations were further based on the maximal desired model justified theoretically and by the design.\footnote{The maximal model in R syntax is: \texttt{rating = trigger * prior * competence * relevance}. The random effects were omitted for computational tractability reasons and due to the lack of well-founded estimates of group-level effect sizes.}
 
 For this analysis, hypothetical experimental data representing the predictor effect rating was simulated by drawing four samples from a standard Normal distribution $\mathcal{N}(0,1)$ per simulated subject per trigger. Next, the target inference strength rating was modelled as a sample from a normal distribution with the mean computed as the sum of the simulated predictor values weighted by the assumed effect size (0.15). Then, the desired maximal Bayesian regression model was computed on the simulated data. The described steps were performed for a number of subjects ranging from 100 up to 340, increased iteratively in steps of 20. For each number of subjects, the model was re-computed on the simulated samples for $k=100$ iterations. For each iteration $i_k$, the conjunctive hypothesis of interest was tested. 
@@ -228,8 +232,11 @@ Prior to conducting statistical analyses, we preprocess the data by standardizin
 
 If our factor hypotheses are true, on average, we expect higher likelihood ratings for the statements eliciting relevance, competence and prior judgements given items in the respective high conditions. Critically, we expect higher likelihood ratings for the scalar implicature, if the relevance and comptenece in the item were judged as high and the prior of the alternative as low.
 
+\mf{Give section overview: 4.1 plots and descriptive stats, 4.2 Confirmatory analyses following preregistration; 4.3 additional exploratory analyses (some of which preregistered?)}
+
 \subsection{Predictor ratings}
 
+\mf{I think that it would be great to have a plot, accompanying Figure~\ref{main-raw-ratings}, which shows ``idealized data according to assumed hypotheses''. So, how would the plot in the Figure look like if all of our predictions were borne out precisely? We could sample ``fictitious'' data and make a plot exactly like in Figure~\ref{posteriors-main}.}
 
 \begin{figure}[h]
 	\begin{center}
@@ -240,15 +247,15 @@ If our factor hypotheses are true, on average, we expect higher likelihood ratin
 	\label{main-raw-ratings}
 \end{figure}
 
-Participants’ factor ratings by-story agreed well with the designed classification of the stories (Fig. \ref{main-raw-ratings}, red vs. blue color on x-axis). That is, the ratings for the relevance, comptence and prior statements were not distributed uniformly across the stories, but align with the prior categorization of the story for the respective factor (Fig. \ref{main-raw-ratings}, columns). This provides validation for our experimental manipulation of the explanatory factors.
+Participants’ factor ratings by-story agreed well with the designed classification of the stories (Fig. \ref{main-raw-ratings}, red vs. blue color on $x$-axis). That is, the ratings for the relevance, comptence and prior statements were not distributed uniformly across the stories, but align with the prior categorization of the story for the respective factor (Fig. \ref{main-raw-ratings}). This provides validation for our experimental manipulation of the explanatory factors.
 
-\subsection{Main analysis}
+\subsection{Confirmatory analyses following preregistration}
 
-We analysed the results using a Bayesian linear mixed effects model, regressing the target implicature likelihood rating against the fixed effects of predictor ratings (i.e., the relevance, comptence and prior ratings elicited by the same participant for that vignette), the effect of trigger and their two-, three-, and four-way interactions. Maximal computationally tractable random effects structure justified by the experimental design was included: we included random intercepts and random slope effects for the main effects of trigger, relevance, competence and prior by-subject, as well as random intercepts by-vignette.\footnote{Model in R syntax style: \texttt{inference-rating $\sim$ trigger * relevance * competence * prior + (1 + trigger + relevance + competence + prior || subjectID) + (1 | vignette)}. For computational tractability reasons, the correlation of random effects by-subject was set to 0.} 
+We analysed the results using a Bayesian linear mixed effects model, regressing the target implicature rating against the fixed effects of predictor ratings (i.e., the relevance, comptence and prior ratings elicited by the same participant for that vignette), the effect of trigger and their two-, three-, and four-way interactions. Maximal computationally tractable random effects structure justified by the experimental design was included: we included random intercepts and random slope effects for the main effects of trigger, relevance, competence and prior by-subject, as well as random intercepts by-vignette.\footnote{Model in R syntax style: \texttt{inference-rating $\sim$ trigger * relevance * competence * prior + (1 + trigger + relevance + competence + prior || subjectID) + (1 | vignette)}. For computational tractability reasons, the correlation of random effects by-subject was set to 0.}
 The categorical effect of trigger was dummy coded, using ``some'' as the reference level. For all regression coefficients we used a wide and uninformative prior given by a $t$-distribution with mean 0, standard deviation of 2 and 1 degree of freedom. The model was fitted using the R \texttt{brms} package \citep{burkner2017brms}.\footnote{The data and the analyses can be found under\newline \texttt{https://github.com/magpie-ea/magpie-xor-experiment}}
 
-We focus on six slope coefficients of the regression model, for the effects of relevance, competence and prior, respectively, once for ``some'' and once for ``or''. We check whether the posterior estimate of each effect is in either one of three intervals: (1) negative effect (<= -0.05), (2) no effect (between -0.05 and 0.05), or (3) positive effect (>= 0.05). We set the threshold for considering an effect as positive or negative to ±0.05 because we consider 0.05 to be the Region of Practical Equivalence (ROPE) for the effect sizes we expect based on literature \citep{kruschke2014doing}.
-We interpret the data as providing evidence in favor of an effect (positive, negative, no effect) if the posterior probability of the effect being true is >= 0.95 (i.e., 95\% of posterior samples are in the corresponding interval). The probabilities of the respective coefficients lying in a particular interval are reported below (i.e., for instance, if $P=0.95$ is reported, it means that 95\% of the posterior samples of the given coefficient are in the respective interval). In particular, we speak of evidence in favor of the scalar implicature account of the exclusive disjunction interpretation if the posterior probability of the prior effect being negative, the relevance and competence effects being positive is >= 0.95. 
+We focus on six slope coefficients of the regression model, for the effects of relevance, competence and prior, respectively, once for ``some'' and once for ``or''. We check whether the posterior estimate of each effect is in either one of three intervals: (1) negative effect ($\le$ -0.05), (2) no effect (between -0.05 and 0.05), or (3) positive effect ($\ge$ 0.05). We set the threshold for considering an effect as positive or negative to ±0.05 because we consider 0.05 to be the Region of Practical Equivalence (ROPE) for the effect sizes we expect \citep{kruschke2014doing}.
+We interpret the data as providing evidence in favor of an effect (positive, negative, no effect) if the posterior probability of the effect being true is >= 0.95 (i.e., 95\% of posterior samples are in the corresponding interval). The probabilities of the respective coefficients lying in a particular interval are reported below (i.e., for instance, if $P=0.95$ is reported, it means that 95\% of the posterior samples of the given coefficient are in the respective interval). In particular, we speak of evidence in favor of the scalar implicature account of the exclusive disjunction interpretation if the posterior probability of the prior effect being negative, the relevance and competence effects being positive is $\ge$ 0.95.
 
 \begin{figure}[h]
 	\begin{center}
@@ -259,13 +266,32 @@ We interpret the data as providing evidence in favor of an effect (positive, neg
 	\label{posteriors-main}
 \end{figure}
 
+\begin{table}
+  \centering
+   \begin{tabular}{llccc}
+           &            & negative & no effect & positive \\ \midrule
+    {some} & relevance  & ...      & ...       & ...      \\
+           & competence & 0        & 0         & 1        \\
+           & prior      & 0        & 0.001     & 0.999    \\
+    {or}   & relevance  & ...      & ...       & ...      \\
+           & competence & ...      & ...       & ...      \\
+           & prior      & ...      & ...       & ...      \\
+   \end{tabular}
+  \caption{Results of confirmatory analysis. \mf{Fill me, please.}}
+  \label{tab:results-confirmatory}
+\end{table}
+
+Results from this analysis are summarized in Table
 Consistent with predictions, for the trigger ``some'', we find a clear negative prior probabilty effect of the stronger alternative ``all'' being true, as inidcated by the probability of the negative effect of prior being $P = 0.999$ (Fig.\ref{posteriors-main}, \texttt{Prior~(some)} line, orange color). Similarly, we find a clear positive effect for speaker competence ($P =  1$, Fig.\ref{posteriors-main}, \texttt{Competence~(some)} line, green color). However, we do not find any clear effects of relevance (Fig.\ref{posteriors-main}, \texttt{Relevance~(some)} line, split colors). If anything, the data supports the hypothesis that the effect is not negative.
+
 
 For the trigger ``or'', in contrast, we only find a positive effect of competence ($P =  0.993$, Fig.\ref{posteriors-main}, \texttt{Competence~(or)} line, green color).  We find no comprehensive effects for relevance or competence. While the reason for the former might be the same as for ``some'', we suggest that these results might also be influenced by collinearity of the effects. We turn to this conjecture in light of the exploratory analyses, described below. 
 Overall, these results would provide evidence against the scalar implicature hypothesis because not all factors yielded an effect on the robustness of scalar implicatures generated from ``some'' and ``or''. Similarly, the results would provide evidence against the identity hypothesis, as an effect of prior was observed for ``some'', but not for ``or''.
 
-\subsection{Exploratory analysis}
+\subsection{Exploratory analyses}
+
 \subsubsection{Models with alternative predictors}
+
 \begin{figure}[h]
 	\begin{center}
 		\includegraphics[width=1\linewidth]{images/posterior-effects-categorical.pdf}
@@ -275,7 +301,9 @@ Overall, these results would provide evidence against the scalar implicature hyp
 	\label{posteriors-cat}
 \end{figure}
 
-In addition to the main analysis, we conducted three exploratory regression analyses. First, we fit a model using categorical predictors only. That is, we fit a Bayesian linear mixed effects regression model, regressing the inference rating against our prior intuitive classifications of the vignettes on the dimensions relevance, competence and prior (high or low, respectively), the effect of trigger, and their interactions. The random effects structure and the priors were identical to the main model. The factors were sum-coded, -1 representing the low condition, 1 representing the high condition. 
+In order to further investigate the relevance effects and potential collinarity concerns, we computed exploratory pairwise correlations of all the predictors. Interestingly, we find a significant correlation between the prior and the relevance effects for the trigger ``or'' ($R^2 = -0.106$). We also found a significant correlation between competence and relevance ($R^2 = 0.127$) for ``or''. \pt{We should talk about the latter correlation in more detail at some point.} No correlations were found for ``some''. These intriguing results might indicate that these effects are closely related for disjunction. Intuitively, a negative correlation between prior and relevance of the stronger alternative ``and'' makes sense: the more likely the conjunction is a priori, the more likely it is that the listener might know about it already, yielding the implicature irrelevant to the listener. Similarly, competence might be connected to relevance indirectly via the prior: the more likely the stronger alternative is a priori, the more likely it is that a speaker knows about it, while the irrelevance still persists for the listener. However, these speculations call for further research. \mf{I suggest removing the last sentence here and to pick this up in the general discussion, together with Bob's worry that we lack an explanation for why there is no such correlation in the case of ``some''.}
+
+In addition to the main analysis, we conducted three exploratory regression analyses, which shed more light on the concerns of collinearity. First, we fit a model using categorical predictors only. That is, we fit a Bayesian linear mixed effects regression model, regressing the inference rating against our prior intuitive classifications of the vignettes on the dimensions relevance, competence and prior (high or low, respectively), the effect of trigger, and their interactions. The random effects structure and the priors were identical to the main model. The factors were sum-coded, -1 representing the low condition, 1 representing the high condition.
 This model decouples the predictors by dichotomizing their classification and, therefore, addresses the potential collinearty issue. Furthermore, it provides a comparison between participants' judgements and our intuitive prior classifications of the vignettes. 
 
 Given this model and the data, we found very similar results for both triggers: We observe a negative effect of prior and a positive effect of competence, in line with predictions of the scalar implicature hypothesis (Fig.~\ref{posteriors-cat}). However, we again observe no effects of relevance. If anything, the relevance effect tends in the direction opposite to predictions of the SI account for the trigger ``or''. 
@@ -291,12 +319,11 @@ Given this model and the data, we found very similar results for both triggers: 
 
 These results match the second exploratory analysis, whereby the ratings were used as predictors in the linear model, but the ratings were averaged for each vignette across participants. In this second  exploratory model, we again find similar effects for ``some'' and ``or'': a positive effect of competence, negative for prior, and an indefinite relevance effect (Fig.~\ref{posteriors-mean}). By averaging over single participant ratings, this model indicates that the absent competence effect for the disjunction in the main model might be due to by-participant variation.
 
-In order to further investigate the relevance effects and potential collinarity concerns, we computed exploratory pairwise correlations of all the predictors. Interestingly, we find a significant correlation between the prior and the relevance effects for the trigger ``or'' ($R^2 = -0.106$). We also found a significant correlation between competence and relevance ($R^2 = 0.127$) for ``or''. \pt{We should talk about the latter correlation in more detail at some point.} No correlations were found for ``some''. These intriguing results might indicate that these effects are closely related for disjunction. Intuitively, a negative correlation between prior and relevance of the stronger alternative ``and'' makes sense: the more likely the conjunction is a priori, the more likely it is that the listener might know about it already, yielding the implicature irrelevant to the listener. Similarly, competence might be connected to relevance indirectly via the prior: the more likely the stronger alternative is a priori, the more likely it is that a speaker knows about it, while the irrelevance still persists for the listener. However, these speculations call for further research.
 
 Finally, we conduct an exploratory analysis when setting the ROPE to 0. That is, we investigate whether the posterior estimates for the regression coefficients of interest are positive ($>0$) or negative ($<0$) and interpret the data as providing evidence in favor of a particular direction if at least 95\% of posterior samples for the respective coefficent are positive or negative. As in the main analysis, we find credible positive effects of competence for both ``some'' ($P = 1$) and ``or'' ($P = 1$), and a credible negative effect of prior for ``some'' ($P = 1$), but not for ``or'' ($P=0.91$). However, in contrast to the main analysis, we do find a credible positive effect of relevance for ``or'' ($P=0.978$), but not for ``some'' ($P=0.829$). \pt{We should include justification for using a ROPE in the first place here. Some more discussion needs to be added too.} 
 
 \subsubsection{Model comparisons}
-Because the correlations hint at possible collinearity effects between relevance and prior for the trigger ``or'', we conduct exploratory model comparisons. That is, in order to check whether certain factors among relevance, competence and prior have a stronger influence on the inference stength ratings than other, we compare regression models of different complexity. We take a Bayesian approach to model comparison here in terms of their Bayes factors \citep{rouder2012default}. 
+Because the correlations hint at possible collinearity effects between relevance and prior for the trigger ``or'', we conduct exploratory model comparisons. That is, in order to check whether certain factors among relevance, competence and prior have a stronger influence on the inference stength ratings than others, we compare regression models of different complexity. We take a Bayesian approach to model comparison here in terms of their Bayes factors \citep{rouder2012default}.
 We compare all regression models that can be built with the three explanatory factors as main factors against a baseline intercept-only model.\footnote{If the model contains more than one main effect, all interactions between main effects are always included in the model, as well. All justified and computationally tractable random effects are added to each model, respectively.}
 Following literature, we interpret the evidence in favor of a particular model as strong if the odds (i.e., the Bayes Factor) are above 10 or below 1/10; as mild, if they are between 3 and 10 or 1/3 and 1/10; and as absent if the odds are between 3 and 1/3 \citep[e.g.,][]{lodewyckx2011tutorial}. 
 
@@ -309,7 +336,7 @@ Following literature, we interpret the evidence in favor of a particular model a
 	\label{bf-grid-search}
 \end{figure}
 
-To investigate the stability of the Bayes factors of a certain model over the baseline, we conduct a grid search over the standard deviation parameter of the prior student-$t$ distribution over the main effect regression coefficients. More precisely, given that, based on prior experimental work, the expected effect size for the main factors was around $\beta=0.15$, the standard deviation parameters considered in the grid search included {0.05, 0.1, 0.15}. Figure \ref{bf-grid-search} shows the Bayes factors against the intercept-only model of all the regression models plotted against the different standard deviation parameters of the priors. It indicates that, in general, the Bayes factor does not change strongly dependent on the tightness of the prior distribution. It further suggests that the intercept-only model is a better fit to the data than all of the explored regression models, but more so for models containing both relevance and prior as explanatory factors. This corroborates the finding based on the correlation, indicating that relevance and prior might be co-dependent and explain each other away. We also observe that models containing the effect of relevance are slightly less likely given the data than models containing the effect of prior, but the difference is negligible. However, these results might also be due to the fact that additional model complexity of the regression models overpowers potential improvement in model fit.
+To investigate the stability of the Bayes factors of a certain model over the baseline, we conduct a grid search over the standard deviation parameter of the prior $t$-distribution over the main effect regression coefficients. More precisely, given that the expected effect size for the main factors was around $\beta=0.15$, the standard deviation parameters considered in the grid search included {0.05, 0.1, 0.15}. Figure \ref{bf-grid-search} shows the Bayes factors against the intercept-only model of all the regression models plotted against the different standard deviation parameters of the priors. It indicates that, in general, the Bayes factor does not change strongly dependent on the tightness of the prior distribution. It further suggests that the intercept-only model is a better fit to the data than all of the explored regression models, but more so for models containing both relevance and prior as explanatory factors. This corroborates the finding based on the correlation, indicating that relevance and prior might be co-dependent and explain each other away. We also observe that models containing the effect of relevance are slightly less likely given the data than models containing the effect of prior, but the difference is negligible. However, these results might also be due to the fact that additional model complexity of the regression models overpowers potential improvement in model fit.
 
 \begin{figure}[h]
 	\begin{center}
@@ -320,7 +347,7 @@ To investigate the stability of the Bayes factors of a certain model over the ba
 	\label{bf-rel-pri}
 \end{figure}
 
-Therefore, to zoom in on the comparison between the effects of relevance and prior on inference strength ratings we conduct further exploratory model comparisons. Specifically, we compare two-factor models, comparing relevance over prior, each combined with competence, respectively. As can be seen in Figure \ref{bf-rel-pri}, the Bayes factor varies more strongly depending on the standard deviation parameter of the prior distribution over the main regression coefficients. For $SD=0.05$, we find $BF=0.27$, indicating that the model containing  the predictors \texttt{prior*competence } is around three times more likely than the \texttt{relevance*competence} model, which can we consider mild evidence in favor of prior being the better predictor for the inference strength of exclusive disjunctions. 
+Therefore, to zoom in on the comparison between the effects of relevance and prior on inference strength ratings we conduct further exploratory model comparisons. Specifically, we compare two-factor models, comparing relevance over prior, each combined with competence, respectively. As can be seen in Figure \ref{bf-rel-pri}, the Bayes factor varies more strongly depending on the standard deviation parameter of the prior distribution over the main regression coefficients. For $SD=0.05$, we find $BF=0.27$, indicating that the model containing  the predictors \texttt{prior*competence } is made around three times more likely than the \texttt{relevance*competence} model, which can we consider mild evidence in favor of prior being the better predictor for the inference strength of exclusive disjunctions.
 Yet further investigation of the interaction between relavance and competence effects with respect to their influence on exclusive disjunctions is needed.
  
 \section{Discussion}
