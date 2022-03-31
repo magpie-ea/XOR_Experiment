@@ -226,37 +226,89 @@ d_full_clean %>% filter(condition == "critical") %>% group_by(submission_id) %>%
 ## Transformations
 
 ```{r, echo=FALSE}
-d_critical_clean <- d_full_clean %>% filter(condition == "critical")
+d_critical_clean <- d_full_clean %>% filter(condition == "critical") %>% 
+  mutate(
+    block = case_when(
+      block == "comp" ~ "competence", 
+      block == "rel"  ~ "relevance", 
+      block == "pri"  ~ "prior",
+      T ~ block) ,
+    block_extended = case_when(
+      block == "some" ~ "target", 
+      block == "xor"  ~ "target", 
+      T ~ block) )
+
+# write_csv(d_critical_clean, "../../data/main/results_prereg_final_tidy-MF.csv")
+
+
+# MF: Careful! This step introduces tripling each individual `response` measure
+
 d_critical_long <- d_critical_clean %>% 
   pivot_longer(c(competence, relevance, prior), 
                names_to = "class_condition", 
                values_to = "prior_class")
 
-
-d_critical_long <- d_critical_long %>% 
-  mutate(block = ifelse(block == "comp", "competence", 
-                        ifelse(block == "rel", "relevance", ifelse(block == "pri", "prior", block) )))
 ```
 
-Create more extensive condition labels.
-
-``` {r}
-# extending 'conditions' labels to include whether the utterance was present or not
-d_critical_long <- d_critical_long %>% 
-  mutate(
-    block_extended =  ifelse(block %in% c("some", "xor"), "target", block)
-  )
-```
 
 Z-scoring:
+
+MF: Here is a problem. The `d_critical_long` contains every `response` measure three times.
+    This is unproblematic for the mean, but not of the SD.
+
 ```{r}
+# MF: ooriginal code 
+
 d_critical_zScored <- d_critical_long %>% group_by(submission_id, block_extended) %>%
   mutate(block_mean = mean(response),
          block_sd = sd(response),
          response_centered = (response - block_mean)/block_sd,
          # catch the cases where sd is 0 
          response_centered = ifelse(is.na(response_centered), 0, response_centered))
+```
 
+
+MF: To see this problem, compare the following (the first is wrong and what we used so far, the second correct):
+
+```{r}
+
+d_critical_long %>% 
+  select(submission_id, block_extended, response) %>% 
+  group_by(submission_id, block_extended) %>%
+  summarize(mean = mean(response),
+            sd = sd(response)) %>% 
+  mutate(data_used = 'long') %>% 
+  arrange(submission_id, block_extended)
+```
+
+
+```{r}
+d_critical_clean %>% 
+  select(submission_id, block_extended, response) %>% 
+  group_by(submission_id, block_extended) %>%
+  summarize(mean = mean(response),
+            sd = sd(response)) %>% 
+  mutate(data_used = 'short') %>% 
+  arrange(submission_id, block_extended)
+```
+
+We should therefore use the following (but now the table doesn't contain the high/low classifications as individual rows):
+
+
+```{r, eval = F}
+# MF: corrected code; not executed
+
+d_critical_zScored <- d_critical_clean %>% group_by(submission_id, block_extended) %>%
+  mutate(block_mean = mean(response),
+         block_sd = sd(response),
+         response_centered = (response - block_mean)/block_sd,
+         # catch the cases where sd is 0 
+         response_centered = ifelse(is.na(response_centered), 0, response_centered))
+```
+
+Wrangling into wide format.
+
+```{r}
 d_critical_zScored_wide <- d_critical_zScored %>% 
   select(submission_id, title, main_type, block_extended, response_centered) %>% 
   unique() %>% 
