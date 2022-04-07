@@ -171,6 +171,27 @@ d_main_fail <- d_main %>% group_by(submission_id) %>%
   mutate(passed_main = case_when(max(response) - min(response) <= 10 ~ FALSE,
                                  TRUE ~ TRUE)
          ) %>% filter(passed_main == F)
+# now check for critical trials only
+d_main_critical_fail <- d_main %>% group_by(submission_id) %>% 
+  filter(condition == "critical") %>%
+  mutate(passed_main = case_when(max(response) - min(response) <= 10 ~ FALSE,
+                                 TRUE ~ TRUE)
+         ) %>% filter(passed_main == F)
+# now check implicature trials only 
+d_main_implicature_fail <- d_main %>% group_by(submission_id) %>% 
+  filter((block == "xor") | (block == "some")) %>%
+  mutate(passed_main = case_when(max(response) - min(response) <= 10 ~ FALSE,
+                                 TRUE ~ TRUE)
+         ) %>% filter(passed_main == F)
+# check if this failure is the case for certain vignettes more often then for others
+d_main_implicature_fail %>% ungroup() %>% group_by(ID, block) %>% count() %>% View()
+# --> it seems that the vignettes 28 (xor) and 45 (some) have this issue the most
+# check how often the single participants do this
+d_main_implicature_fail %>% count() %>% View()
+# --> all of them do this on all of the trials - these are 15 people 
+# write out a csv with their IDs for an exploratory exclusion
+#d_main_implicature_fail %>% count() %>% write_csv("./../../data/main/submission-ids_implicature_fails.csv")
+
 cat(" Subjects providing the same ratings throughout the trials: ", d_main_fail %>% distinct(submission_id) %>% pull() %>% length())
 
 # get participants failing comprehension questions
@@ -203,7 +224,13 @@ d_full_clean <- anti_join(d_main, d_main_fail, by = "submission_id")
 d_full_clean <- anti_join(d_full_clean, d_exmpl_fail, d_test, by = "submission_id")
 d_full_clean <- anti_join(d_full_clean, d_test_fail, by = "submission_id")
 
+# write out tidy data without the participants providing only 100 ratings on the critical trials
+d_clean_exclude_implicatureFails <- anti_join(d_full_clean, d_main_implicature_fail, by = "submission_id")
+
 cat(" Nr. of participants left after cleaning: ", d_full_clean %>% distinct(submission_id) %>% pull() %>% length())
+
+cat(" Nr. of participants left after excluding participants failing implicature manipulations: ", d_clean_exclude_implicatureFails %>% distinct(submission_id) %>% pull() %>% length())
+
 ```
 [-Exclude the 201st participant for target N=200-]
 The exclusion of the last participant isn't necessary anymore, since we only have 200 subjects left upon exclusions due to the initially incorrect native language check.
@@ -212,6 +239,8 @@ The exclusion of the last participant isn't necessary anymore, since we only hav
 Write out tidy data:
 ```{r}
 d_full_clean %>% write_csv("./../../data/main/results_prereg_final_tidy.csv")
+
+d_clean_exclude_implicatureFails %>% write_csv("./../../data/main/results_prereg_final_tidy_exclude_implcatureFailures.csv")
 ```
 
 ```{r clean}
@@ -256,7 +285,7 @@ d_critical_zScored <- d_critical_long %>% group_by(submission_id, block_extended
          response_centered = (response - block_mean)/block_sd,
          # catch the cases where sd is 0 
          response_centered = ifelse(is.na(response_centered), 0, response_centered))
-
+        # response_centered = ifelse(is.na(response_centered), (response-block_mean), response_centered)
 d_critical_zScored_wide <- d_critical_zScored %>% 
   select(submission_id, title, main_type, block_extended, response_centered) %>% 
   unique() %>% 
@@ -265,6 +294,18 @@ d_critical_zScored_wide <- d_critical_zScored %>%
     values_from = response_centered, 
     values_fn = mean # getting means for double prior measurement in "xor"
   ) 
+
+# assume that the mistake in the z-scoring is the absence of dropping the duplicates
+# or is it the point where the 0 SDs are caught?
+d_critical_zScored_noDuplicates <- d_critical_long %>% 
+  filter((block_extended == class_condition) | (class_condition =="relevance" & block_extended == "target") ) 
+
+d_critical_noDuplicates_zScored <- d_critical_zScored_noDuplicates %>% group_by(submission_id, block_extended) %>%
+  mutate(block_mean = mean(response),
+         block_sd = sd(response),
+         response_centered = (response - block_mean)/block_sd,
+         # catch the cases where sd is 0 
+         response_centered = ifelse(is.na(response_centered), 0, response_centered))
 
 ```
 
@@ -328,6 +369,8 @@ Write out z-scored data:
 ```{r}
 d_critical_zScored %>% write_csv("./../../data/main/results_prereg_tidy_final_zScored_long.csv")
 d_critical_zScored_wide %>% write_csv("./../../data/main/results_prereg_tidy_final_zScored_wide.csv")
+d_critical_noDuplicates_zScored %>% write_csv("./../../data/main/results_prereg_tidy_noDuplicates_zScored_long.csv")
+
 
 # write out dataframes wth xor priors
 d_critical_zScored_wide_xor_prior_order %>% write_csv("./../../data/main/results_prereg_tidy_final_zScored_wide_xor_priors-order.csv")
