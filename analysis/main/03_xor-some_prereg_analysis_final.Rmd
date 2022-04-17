@@ -652,3 +652,82 @@ posterior_hypotheses_xor_priors_type <- model_xor_priors_posteriors %>%
             no_eff = mean(no))
 posterior_hypotheses_xor_priors_type
 ```
+
+### Analysis on fake simulated data for visualization purposes
+No random effects here since none were simulated.
+```{r}
+fake_data <- read_csv("../../data/main/idealized_simulation_long_N200_B025.csv")
+
+# Full model 
+fake_data_wide <- fake_data %>% select(-prior_categorization, -`Prior categorization`, -Trigger ) %>% pivot_wider(
+  names_from = Predictors, values_from = Predictor_response
+) %>% 
+  mutate(
+    pri = Prior,
+    comp = Competence,
+    rel = Relevance,
+  main_type = factor(trigger, levels=c("some", "or"))
+)
+
+# some = 0, xor = 1
+contrasts(fake_data_wide$main_type) 
+
+# set priors
+priors <- set_prior("student_t(1, 0, 2)", class = "b")
+
+model_fake <- brm(target ~ pri*comp*rel* main_type,
+                 data = fake_data_wide,
+                 prior = priors,
+                 sample_prior = T,
+                 control = list(adapt_delta = 0.9),
+                 cores = 4,
+                 iter = 3000)
+
+# posteriors
+model_fake %>% spread_draws(b_Intercept, b_pri, b_comp, b_rel,
+                          b_main_typeor, `b_pri:comp`,
+                          `b_pri:rel`, `b_comp:rel`,
+                          `b_pri:main_typeor`, `b_comp:main_typeor`,
+                          `b_rel:main_typeor`, `b_pri:comp:rel`, 
+                          `b_pri:comp:main_typeor`, `b_pri:rel:main_typeor`,
+                          `b_comp:rel:main_typeor`, 
+                          `b_pri:comp:rel:main_typeor`) %>% 
+  mutate(
+    prior_xor = b_pri+ `b_pri:main_typeor`,
+    prior_some = b_pri,
+    competence_xor = b_comp + `b_comp:main_typeor`,
+    competence_some = b_comp,
+    relevance_xor =  b_rel + `b_rel:main_typeor`,
+    relevance_some = b_rel
+  ) -> model_fake_posteriors
+
+```
+
+```{r}
+model_fake_posteriors %>% select(prior_xor, prior_some,
+                               competence_xor, competence_some,
+                               relevance_xor, relevance_some) %>%
+  pivot_longer(cols = everything(), names_to = "effect", values_to = "value") -> model_fake_posteriors_long
+
+
+model_fake_posteriors_long %>%
+  mutate(effect = factor(effect, 
+                         levels = c("relevance_xor", "relevance_some", "prior_xor", "prior_some", "competence_xor", "competence_some"), 
+                         labels = c("Relevance (or)", "Relevance (some)", "Prior (or)", "Prior (some)", "Competence (or)", "Competence (some)"))) %>%
+  ggplot(.) + # 
+  stat_halfeye(aes(y = effect, x = value, 
+                   fill = stat(case_when(x %>% between(-0.05, 0.05) ~ "no effect", x < -0.05 ~ "negative effect", x > 0.05 ~ "positive effect"))
+                   ), 
+               alpha = .7) +
+  geom_vline(xintercept = c(-.05, .05), linetype = "dashed") +
+  scale_fill_manual(name = "Direction of effect", values = c("coral", "mediumseagreen")) + # , "yellow3"
+  labs(x = "Effect size", y = "Effect") +
+  theme(legend.position = "top",
+        legend.title = element_text(size = 12),
+        legend.text = element_text(size = 12),
+        axis.title = element_text(size = 13),
+        strip.text.x = element_text(size = 13),
+        strip.text.y = element_text(size = 13))
+
+#ggsave("../../writing/paper/images/posterior-effects-idealized-sim.pdf", width=7, height=5)
+```

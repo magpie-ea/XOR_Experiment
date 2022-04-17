@@ -326,4 +326,77 @@ d_critical_raw_wPrior_4plot %>%
 
 ### Simulated plots for the paper
 
-Below, some simulations are conducted to create plots for the paper.
+Below, some simulations are conducted to create plots for the paper. Simulate data similarly to the power analysis, assuming an idealized effect size of 0.2 (somewhat larger than in power analysis, for better visibility). Modify the sampling a little to create low and high condition data.
+```{r}
+# simulate data from 200 participants with the function from the power analysis
+create_fake_data <- function(N = 100, seed = 1) {
+  set.seed(seed)
+  # optionally changed to 0.25
+  beta_rel  <- 0.25
+  beta_comp <- 0.25
+  beta_pri  <- -0.25
+  map_df(
+    1:N, 
+    function(i) {
+      tibble(
+        subj    = rep(str_c("subj_",i), times = 8),
+        trigger = rep(c('or', 'some'), times= 4), 
+        rel     = rnorm(8),
+        comp    = rnorm(8),
+        pri     = rnorm(8)
+      ) %>% 
+        group_by(subj) %>% 
+        mutate(
+          rel     = (rel-mean(rel)) / sd(rel),
+          comp    = (comp-mean(comp)) / sd(comp),
+          pri     = (pri-mean(pri)) / sd(pri)
+        ) %>% 
+        ungroup() %>% 
+        mutate(
+          target  = rnorm(8, beta_rel * rel + beta_comp * comp + beta_pri * pri)
+        )
+    }
+  )
+}
+
+fake_data_scatter <- create_fake_data(200, 1234)
+```
+
+```{r}
+fake_data_long <- fake_data_scatter %>% pivot_longer(
+  c(comp, rel, pri), 
+               names_to = "Predictors", 
+               values_to = "Predictor_response"
+) %>%
+  mutate(
+    prior_categorization = ifelse(Predictor_response <= 0, 0, 1),
+    prior_categorization = as.factor(prior_categorization)
+  ) %>%
+    mutate(
+      `Prior categorization` = factor(prior_categorization, levels = c(0,1),
+                                         labels=c("low", "high")),
+         Trigger = factor(trigger, levels = c("some", "or"), 
+                            labels = c("Some", "Or")),
+         Predictors = factor(Predictors, levels = c("rel", "comp", "pri"),
+                             labels = c("Relevance", "Competence", "Prior"))
+    )
+
+# write out for fitting the idealized model in the analysis script
+#fake_data_long %>% write_csv("../../data/main/idealized_simulation_long_N200_B025.csv")
+
+fake_data_long %>%
+  ggplot(., aes(x = Predictor_response, y = target)) +
+  geom_point(aes(color = `Prior categorization`), size = 2, alpha = 0.8) +
+  geom_smooth(method = "lm") +
+  ylab("") +
+  facet_grid(cols=vars(Predictors), rows=vars(Trigger)) +
+  theme_bw() +
+  labs(x = "Participants' factor ratings", y = "Participants' inference likelihood ratings", color = "Prior categorization of vignettes") +
+  theme(legend.position = "top",
+        legend.title = element_text(size = 13),
+        legend.text = element_text(size = 13),
+        axis.title = element_text(size = 13),
+        strip.text.x = element_text(size = 13),
+        strip.text.y = element_text(size = 13)) 
+#ggsave("../../writing/paper/images/idealized_data_N200_b025.pdf",  width = 9, height = 7)
+```
