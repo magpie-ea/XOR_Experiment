@@ -184,10 +184,10 @@ d_main_implicature_fail <- d_main %>% group_by(submission_id) %>%
                                  TRUE ~ TRUE)
          ) %>% filter(passed_main == F)
 # check if this failure is the case for certain vignettes more often then for others
-d_main_implicature_fail %>% ungroup() %>% group_by(ID, block) %>% count() %>% View()
+d_main_implicature_fail %>% ungroup() %>% group_by(ID, block) %>% count() %>% arrange(., desc(n)) # View()
 # --> it seems that the vignettes 28 (xor) and 45 (some) have this issue the most
 # check how often the single participants do this
-d_main_implicature_fail %>% count() %>% View()
+d_main_implicature_fail %>% count() # %>% View()
 # --> all of them do this on all of the trials - these are 15 people 
 # write out a csv with their IDs for an exploratory exclusion
 #d_main_implicature_fail %>% count() %>% write_csv("./../../data/main/submission-ids_implicature_fails.csv")
@@ -307,7 +307,55 @@ d_critical_noDuplicates_zScored <- d_critical_zScored_noDuplicates %>% group_by(
          # catch the cases where sd is 0 
          response_centered = ifelse(is.na(response_centered), 0, response_centered))
 
+d_critical_noDuplicates_zScored_wide <- d_critical_noDuplicates_zScored %>% 
+  select(submission_id, title, main_type, block_extended, response_centered) %>% 
+  unique() %>% 
+  pivot_wider(
+    names_from = block_extended, 
+    values_from = response_centered, 
+    values_fn = mean # getting means for double prior measurement in "xor"
+  ) 
 ```
+
+Z-score data when excluding participants who failed the implicature ratings: 
+```{r}
+d_critical_clean_noImplFails <- d_clean_exclude_implicatureFails %>% filter(condition == "critical")
+d_critical_long_noImplFails <- d_critical_clean_noImplFails %>% 
+  pivot_longer(c(competence, relevance, prior), 
+               names_to = "class_condition", 
+               values_to = "prior_class")
+
+
+d_critical_long_noImplFails <- d_critical_long_noImplFails %>% 
+  mutate(block = ifelse(block == "comp", "competence", 
+                        ifelse(block == "rel", "relevance", ifelse(block == "pri", "prior", block) )))
+
+d_critical_long_noImplFails <- d_critical_long_noImplFails %>% 
+  mutate(
+    block_extended =  ifelse(block %in% c("some", "xor"), "target", block)
+  )
+
+# z-scoring, excluding duplicates
+d_critical_zScored_noImplFails_noDuplicates <- d_critical_long_noImplFails %>% 
+  filter((block_extended == class_condition) | (class_condition =="relevance" & block_extended == "target") ) 
+
+d_critical_noImplFails_noDuplicates_zScored <- d_critical_zScored_noImplFails_noDuplicates %>% group_by(submission_id, block_extended) %>%
+  mutate(block_mean = mean(response),
+         block_sd = sd(response),
+         response_centered = (response - block_mean)/block_sd,
+         # catch the cases where sd is 0 
+         response_centered = ifelse(is.na(response_centered), 0, response_centered))
+
+d_critical_noImplFails_noDuplicates_zScored_wide <- d_critical_noImplFails_noDuplicates_zScored %>% 
+  select(submission_id, title, main_type, block_extended, response_centered) %>% 
+  unique() %>% 
+  pivot_wider(
+    names_from = block_extended, 
+    values_from = response_centered, 
+    values_fn = mean # getting means for double prior measurement in "xor"
+  ) 
+```
+
 
 ```{r}
 # create labels for first vs second prior question, order-based 
@@ -370,7 +418,11 @@ Write out z-scored data:
 d_critical_zScored %>% write_csv("./../../data/main/results_prereg_tidy_final_zScored_long.csv")
 d_critical_zScored_wide %>% write_csv("./../../data/main/results_prereg_tidy_final_zScored_wide.csv")
 d_critical_noDuplicates_zScored %>% write_csv("./../../data/main/results_prereg_tidy_noDuplicates_zScored_long.csv")
-
+d_critical_noDuplicates_zScored_wide %>% write_csv("./../../data/main/results_prereg_tidy_noDuplicates_zScored_wide.csv")
+d_critical_noImplFails_noDuplicates_zScored %>%
+  write_csv("./../../data/main/results_prereg_tidy_noDuplicates_noImplFails_zScored_long.csv")
+d_critical_noImplFails_noDuplicates_zScored_wide %>%
+  write_csv("./../../data/main/results_prereg_tidy_noDuplicates_noImplFails_zScored_wide.csv")
 
 # write out dataframes wth xor priors
 d_critical_zScored_wide_xor_prior_order %>% write_csv("./../../data/main/results_prereg_tidy_final_zScored_wide_xor_priors-order.csv")

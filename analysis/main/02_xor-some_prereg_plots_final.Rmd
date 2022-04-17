@@ -12,8 +12,10 @@ library(tidyboot)
 
 Read data created in preprocessing script:
 ```{r, warning=FALSE, message=FALSE, results='hide'}
-d_critical_zScored_wide <- read_csv("./../../data/main/results_prereg_tidy_final_zScored_wide.csv")
-d_critical_zScored <- read_csv("./../../data/main/results_prereg_tidy_final_zScored_long.csv")
+d_critical_zScored_wide <- read_csv("./../../data/main/results_prereg_tidy_noDuplicates_zScored_wide.csv")
+#d_critical_zScored_wide <- read_csv("./../../data/main/results_prereg_tidy_final_zScored_wide.csv")
+d_critical_zScored <- read_csv("./../../data/main/results_prereg_tidy_noDuplicates_zScored_long.csv")
+#d_critical_zScored <- read_csv("./../../data/main/results_prereg_tidy_final_zScored_long.csv")
 d_test <- read_csv("./../../data/main/results_prereg_raw_final_test.csv")
 d_critical_zScored_wide_xor_priors_order <- read_csv("./../../data/main/results_prereg_tidy_final_zScored_wide_xor_priors-order.csv")
 d_critical_zScored_wide_xor_priors_type <- read_csv("./../../data/main/results_prereg_tidy_final_zScored_wide_xor_priors-type.csv")
@@ -244,7 +246,7 @@ df_by_predictor_4_plotting %>%
         strip.text.x = element_text(size = 15),
         strip.text.y = element_text(size = 15)) 
   
-ggsave("../../writing/ELM2/byItem-scatter-wTitles.pdf", width = 9, height = 7)
+#ggsave("../../writing/ELM2/byItem-scatter-wTitles.pdf", width = 9, height = 7)
 
 ```
 
@@ -319,5 +321,9 @@ d_critical_raw_wPrior_4plot %>%
         strip.text.x = element_text(size = 13),
         strip.text.y = element_text(size = 13)) 
 
-ggsave("../../writing/ELM2/byFactor-byPrior-raw-scatter.pdf", width = 9, height = 7)
+#ggsave("../../writing/ELM2/byFactor-byPrior-raw-scatter.pdf", width = 9, height = 7)
 ```
+
+### Simulated plots for the paper
+
+Below, some simulations are conducted to create plots for the paper.
