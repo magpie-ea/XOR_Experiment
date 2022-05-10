@@ -1,7 +1,0 @@
-key,positive_eff,negative_eff
-competence_some,1,0
-competence_xor,1,0
-prior_some,0,1
-prior_xor,0.085,0.915
-relevance_some,0.8253333333333334,0.17466666666666666
-relevance_xor,0.9775,0.0225

@@ -17,15 +17,6 @@ Read data created in preprocessing script:
 d_critical_zScored_wide <- read_csv("./../../data/main/results_prereg_tidy_final_zScored_wide.csv")
 d_critical_zScored <- read_csv("./../../data/main/results_prereg_tidy_final_zScored_long.csv")
 
-# add correctly filtered dataframes 
-d_critical_noDuplicates_zScored <- read_csv("./../../data/main/results_prereg_tidy_noDuplicates_zScored_long.csv")
-d_critical_noDuplicates_zScored_wide <- read_csv("./../../data/main/results_prereg_tidy_noDuplicates_zScored_wide.csv")
-d_critical_noImplFails_noDuplicates_zScored <-
-  read_csv("./../../data/main/results_prereg_tidy_noDuplicates_noImplFails_zScored_long.csv")
-d_critical_noImplFails_noDuplicates_zScored_wide <-
-  read_csv("./../../data/main/results_prereg_tidy_noDuplicates_noImplFails_zScored_wide.csv")
-
-
 d_critical_zScored_wide_xor_prior_order <- read_csv("./../../data/main/results_prereg_tidy_final_zScored_wide_xor_priors-order.csv")
 
 d_critical_zScored_wide_xor_prior_type <- read_csv("./../../data/main/results_prereg_tidy_final_zScored_wide_xor_priors-type.csv")
@@ -111,162 +102,6 @@ posterior_hypotheses_nullROPE <- model_SI_posteriors %>%
 posterior_hypotheses_nullROPE
 ```
 
-Now perform the main confirmatory analysis on correctly z-scored data (no duplicates), to double-check that the results don't change qualitatively.
-```{r, results='hide', message=FALSE, warning=FALSE}
-# Full model 
-d_critical_noDuplicates_zScored_wide <- d_critical_noDuplicates_zScored_wide %>% mutate(
-  main_type = as.factor(main_type)
-)
-# some = 0, xor = 1
-contrasts(d_critical_noDuplicates_zScored_wide$main_type) 
-
-# set priors
-priors <- set_prior("student_t(1, 0, 2)", class = "b")
-
-model_SI_no_dupl <- brm(target ~ prior*competence*relevance* main_type +
-                   (1 + prior + competence + relevance + main_type || submission_id) +
-                   (1 | title),
-                 data = d_critical_noDuplicates_zScored_wide,
-                 prior = priors,
-                 sample_prior = T,
-                 control = list(adapt_delta = 0.95),
-                 cores = 4,
-                 iter = 3000)
-```
-
-```{r}
-summary(model_SI_no_dupl)
-```
-
-Extract contrasts:
-```{r}
-model_SI_no_dupl %>% spread_draws(b_Intercept, b_prior, b_competence, b_relevance,
-                          b_main_typexor, `b_prior:competence`,
-                          `b_prior:relevance`, `b_competence:relevance`,
-                          `b_prior:main_typexor`, `b_competence:main_typexor`,
-                          `b_relevance:main_typexor`, `b_prior:competence:relevance`, 
-                          `b_prior:competence:main_typexor`, `b_prior:relevance:main_typexor`,
-                          `b_competence:relevance:main_typexor`, 
-                          `b_prior:competence:relevance:main_typexor`) %>% 
-  mutate(
-    prior_xor = b_prior + `b_prior:main_typexor`,
-    prior_some = b_prior,
-    competence_xor = b_competence + `b_competence:main_typexor`,
-    competence_some = b_competence,
-    relevance_xor =  b_relevance + `b_relevance:main_typexor`,
-    relevance_some = b_relevance
-  ) -> model_SI_no_dupl_posteriors
-
-# check P that the effects are positive / negative / no effect present
-posterior_hypotheses_no_dupl <- model_SI_no_dupl_posteriors %>% 
-  select(prior_xor, prior_some, 
-         competence_xor, competence_some,
-         relevance_xor, relevance_some) %>%
-  gather(key, val) %>%
-  group_by(key) %>% mutate(positive = mean(val > 0.05),
-                           negative = mean(val < -0.05),
-                           no = mean(val %>% between(-0.05, 0.05))) %>%
-  summarise(negative_eff = mean(negative),
-            no_eff = mean(no),
-            positive_eff = mean(positive)
-            )
-posterior_hypotheses_no_dupl
-
-# write out for reading values in paper
-#posterior_hypotheses_no_dupl %>% write_csv("./../../writing/paper/data/posterior_h_confirmatory.csv")
-```
-Also check if the 0 ROPE results change on the correctly z-scored data:
-```{r}
-posterior_hypotheses_nullROPE_no_dupl <- model_SI_no_dupl_posteriors %>% 
-  select(prior_xor, prior_some, 
-         competence_xor, competence_some,
-         relevance_xor, relevance_some) %>%
-  gather(key, val) %>%
-  group_by(key) %>% mutate(positive = mean(val > 0),
-                           negative = mean(val < 0)) %>% # no = mean(val = 0)
-  summarise(positive_eff = mean(positive),
-            negative_eff = mean(negative) # no_eff = mean(no)
-            )
-posterior_hypotheses_nullROPE_no_dupl
-#posterior_hypotheses_nullROPE_no_dupl %>% write_csv("./../../writing/paper/data/posterior_h_confirmatory_0-ROPE.csv")
-```
-
-Now investigate if the confirmatory results change if excluding participants who were resilient to contextual manipulations:
-```{r, results='hide', message=FALSE, warning=FALSE}
-# Full model 
-d_critical_noImplFails_noDuplicates_zScored_wide <- d_critical_noImplFails_noDuplicates_zScored_wide %>% mutate(
-  main_type = as.factor(main_type)
-)
-# some = 0, xor = 1
-contrasts(d_critical_noImplFails_noDuplicates_zScored_wide$main_type) 
-
-# set priors
-priors <- set_prior("student_t(1, 0, 2)", class = "b")
-
-model_SI_no_dupl_no_impl <- brm(target ~ prior*competence*relevance* main_type +
-                   (1 + prior + competence + relevance + main_type || submission_id) +
-                   (1 | title),
-                 data = d_critical_noImplFails_noDuplicates_zScored_wide,
-                 prior = priors,
-                 sample_prior = T,
-                 control = list(adapt_delta = 0.95),
-                 cores = 4,
-                 iter = 3000)
-```
-
-```{r}
-summary(model_SI_no_dupl_no_impl)
-```
-
-Contrasts:
-```{r}
-model_SI_no_dupl_no_impl %>% spread_draws(b_Intercept, b_prior, b_competence, b_relevance,
-                          b_main_typexor, `b_prior:competence`,
-                          `b_prior:relevance`, `b_competence:relevance`,
-                          `b_prior:main_typexor`, `b_competence:main_typexor`,
-                          `b_relevance:main_typexor`, `b_prior:competence:relevance`, 
-                          `b_prior:competence:main_typexor`, `b_prior:relevance:main_typexor`,
-                          `b_competence:relevance:main_typexor`, 
-                          `b_prior:competence:relevance:main_typexor`) %>% 
-  mutate(
-    prior_xor = b_prior + `b_prior:main_typexor`,
-    prior_some = b_prior,
-    competence_xor = b_competence + `b_competence:main_typexor`,
-    competence_some = b_competence,
-    relevance_xor =  b_relevance + `b_relevance:main_typexor`,
-    relevance_some = b_relevance
-  ) -> model_SI_no_dupl_no_impl_posteriors
-
-# check P that the effects are positive / negative / no effect present
-posterior_hypotheses_no_dupl_no_impl <- model_SI_no_dupl_no_impl_posteriors %>% 
-  select(prior_xor, prior_some, 
-         competence_xor, competence_some,
-         relevance_xor, relevance_some) %>%
-  gather(key, val) %>%
-  group_by(key) %>% mutate(positive = mean(val > 0.05),
-                           negative = mean(val < -0.05),
-                           no = mean(val %>% between(-0.05, 0.05))) %>%
-  summarise(positive_eff = mean(positive),
-            negative_eff = mean(negative),
-            no_eff = mean(no))
-posterior_hypotheses_no_dupl_no_impl
-```
-
-0 ROPE:
-```{r}
-posterior_hypotheses_nullROPE_no_dupl_no_impl <- model_SI_no_dupl_no_impl_posteriors %>% 
-  select(prior_xor, prior_some, 
-         competence_xor, competence_some,
-         relevance_xor, relevance_some) %>%
-  gather(key, val) %>%
-  group_by(key) %>% mutate(positive = mean(val > 0),
-                           negative = mean(val < 0)) %>% # no = mean(val = 0)
-  summarise(positive_eff = mean(positive),
-            negative_eff = mean(negative) # no_eff = mean(no)
-            )
-posterior_hypotheses_nullROPE_no_dupl_no_impl
-```
-
 #### Perform BF analysis
 
 We want to address a conjunctive hypothesis, one triplet for each trigger word, namely:
@@ -294,17 +129,11 @@ test_conjunction_of_all_hypotheses <-  function(posterior_hypotheses) {
 }
 # applied to the pilot data
 test_conjunction_of_all_hypotheses(posterior_hypotheses)
-
-# applied to correctly z-scored data
-test_conjunction_of_all_hypotheses(posterior_hypotheses_no_dupl)
-test_conjunction_of_all_hypotheses(posterior_hypotheses_no_dupl_no_impl)
-
 ```
 ### Plot posterior distributions
 
 ```{r, fig.height = 6, fig.width=9}
-# model_SI_posteriors
-model_SI_no_dupl_posteriors %>% select(prior_xor, prior_some,
+model_SI_posteriors %>% select(prior_xor, prior_some,
                                competence_xor, competence_some,
                                relevance_xor, relevance_some) %>%
   pivot_longer(cols = everything(), names_to = "effect", values_to = "value") -> model_SI_posteriors_long
@@ -340,35 +169,18 @@ model_SI_posteriors_long %>%
 
 Model with binary predictors:
 ```{r, results='hide', message=FALSE, warning=FALSE}
-#d_critical_zScored %>% 
-d_critical_noDuplicates_zScored %>%
-  select(submission_id, title, main_type, response_centered, prior_class, class_condition, block_extended) %>% # ,
+d_critical_zScored %>% 
+  select(submission_id, title, main_type, block_extended, response_centered, prior_class, class_condition) %>% 
   unique() %>% 
   pivot_wider(
     names_from = class_condition, 
     values_from = prior_class
-  )  -> d_critical_wide_cat_zScored 
-
-# wrangle prior categorization of the items for the correctly z-scored data 
-d_critical_wide_cat_zScored %>%
-  replace_na(list(relevance = 0, competence = 0, prior = 0)) %>%
-  group_by(submission_id, title) %>%
-  filter(block_extended != "target") %>%
-  summarise_at(c( "relevance", "competence", "prior"), funs(sum)) %>%
-  mutate(prior = ifelse(prior == 2, 1, prior)) -> d_critical_wide_cat_zScored_priors
-
-d_critical_wide_cat_zScored_targets <- d_critical_wide_cat_zScored %>%
-  select(submission_id, title, main_type, block_extended, response_centered) %>%
-  filter(block_extended == "target") %>% select(-block_extended)
-
-d_critical_wide_cat_zScored_full <- left_join(d_critical_wide_cat_zScored_priors, d_critical_wide_cat_zScored_targets, by = c("submission_id", "title") )
-
-d_critical_wide_cat_zScored_full %>%
+  )  %>%
   mutate(relevance = factor(relevance, levels = c(1, 0)),
          competence = factor(competence, levels = c(1, 0)),
          prior = factor(prior, levels = c(1, 0)),
-         main_type = as.factor(main_type)) -> d_critical_wide_cat_zScored #%>% 
-#  filter(block_extended == "target") -> d_critical_wide_cat_zScored
+         main_type = as.factor(main_type)) %>% 
+  filter(block_extended == "target") -> d_critical_wide_cat_zScored
 # sum code predictors
 # low prior: -1, high prior:: 1 
 contrasts(d_critical_wide_cat_zScored$prior) <- contr.sum(2)
@@ -393,7 +205,6 @@ model_xor_cat_zScored <- brm(
 )
 
 ```
-
 ```{r}
 summary(model_xor_cat_zScored)
 ```
@@ -430,7 +241,6 @@ posterior_hypotheses_cat <- model_xor_cat_zScored_posteriors %>%
             negative_eff = mean(negative),
             no_eff = mean(no))
 posterior_hypotheses_cat
-#posterior_hypotheses_cat %>% write_csv("./../../writing/paper/data/posterior_h_exploratory_categorical.csv")
 ```
 
 ```{r}
@@ -464,14 +274,13 @@ model_xor_cat_posteriors_long %>%
         strip.text.y = element_text(size = 13))
 
 #ggsave("../../writing/paper/images/posterior-effects-categorical.pdf", width=7, height=5)
-#ggsave("../../writing/paper/images/posterior-effects-categorical-noDupl.pdf", width=7, height=5)
 ```
 
 
 
 Model with aggregated by-story ratings:
 ```{r, results='hide', message=FALSE, warning=FALSE}
-d_critical_zScored_wide_byItem <- d_critical_noDuplicates_zScored_wide %>% ungroup() %>%
+d_critical_zScored_wide_byItem <- d_critical_zScored_wide %>% ungroup() %>%
   group_by(title, main_type) %>%
   summarize(mean_response = mean(target),
             mean_prior = mean(prior),
@@ -528,7 +337,6 @@ posterior_hypotheses_means <- model_means_posteriors %>%
             negative_eff = mean(negative),
             no_eff = mean(no))
 posterior_hypotheses_means
-#posterior_hypotheses_means %>% write_csv("./../../writing/paper/data/posterior_h_exploratory_means.csv")
 ```
 
 ```{r}
@@ -561,10 +369,8 @@ model_mean_posteriors_long %>%
         strip.text.x = element_text(size = 13),
         strip.text.y = element_text(size = 13))
 #ggsave("../../writing/paper/images/posterior-effects-means.pdf", width=7, height=5)
-#ggsave("../../writing/paper/images/posterior-effects-means-noDupl.pdf", width=7, height=5)
 ```
 
-[NOTE: Analyses below are not replicated on data z-scored correctly.]
 A non-preregistered, but nevertheless possibly interesting exploratory analysis including the two individual prior ratings of the conditionals in the xor condition as predictors (as opposed to the mean of the two used in the preceding models):
 Analysis based on the order of appearance of the questions:
 ```{r, results='hide', message=FALSE, warning=FALSE}
