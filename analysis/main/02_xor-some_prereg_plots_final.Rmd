@@ -256,6 +256,14 @@ GGally::ggpairs(
 )
 ```
 
+Plot the pairwise correlations of the predictors and the inference rating for "or": 
+```{r, message=FALSE, warning=FALSE}
+GGally::ggpairs(
+  filter(d_critical_zScored_wide, main_type == "xor") %>% ungroup() %>%  
+    select(prior, competence, relevance, target)
+)
+```
+
 Plot the pairwise correlations of the predictors and the inference rating for "or", by order of presentation of the two prior questions:
 ```{r, message=FALSE, warning=FALSE}
 # correlation plot for "or"
