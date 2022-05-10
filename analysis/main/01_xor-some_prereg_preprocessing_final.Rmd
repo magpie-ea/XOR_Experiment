@@ -316,6 +316,22 @@ d_critical_noDuplicates_zScored_wide <- d_critical_noDuplicates_zScored %>%
     values_fn = mean # getting means for double prior measurement in "xor"
   ) 
 ```
+```{r}
+# look at raw ratings
+# df to be used before applying z-scoring in cell above 
+d_critical_zScored_noDuplicates %>%
+  filter(block_extended != "target") %>%
+  ungroup() %>%
+  group_by(block, prior_class, main_type) %>%
+  summarize(mean_rating = mean(response)) -> by_type_factor_means
+
+d_critical_zScored_noDuplicates %>%
+  filter(block_extended!="target") %>%
+  ggplot(., aes(x=main_type, y = response)) +
+  geom_jitter(aes(color=prior_class)) +
+  geom_point(data = by_type_factor_means, aes(x=main_type, y = mean_rating), color="red") +
+  facet_grid(prior_class~block)
+```
 
 Z-score data when excluding participants who failed the implicature ratings: 
 ```{r}

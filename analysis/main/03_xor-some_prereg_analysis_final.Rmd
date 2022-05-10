@@ -321,6 +321,7 @@ model_SI_posteriors_long %>%
                alpha = .7) +
   geom_vline(xintercept = c(-.05, .05), linetype = "dashed") +
   scale_fill_manual(name = "Direction of effect", values = c("coral", "yellow3", "mediumseagreen")) +
+  scale_x_continuous(breaks=c(-0.25, 0, 0.25)) +
   labs(x = "Effect size", y = "Effect") +
   theme(legend.position = "top",
         legend.title = element_text(size = 12),
@@ -331,6 +332,8 @@ model_SI_posteriors_long %>%
 
 #ggsave("../../writing/ELM2/posterior-effects.pdf", width=7, height=5)
 #ggsave("../../writing/ELM2/posterior-effects-noDupl.pdf", width=7, height=5)
+#ggsave("../../writing/paper/images/posterior-effects-noDupl-breaks.png", width=7, height=5)
+
 ```
 
 ## Exploratory analyses
@@ -720,7 +723,8 @@ model_fake_posteriors_long %>%
                    ), 
                alpha = .7) +
   geom_vline(xintercept = c(-.05, .05), linetype = "dashed") +
-  scale_fill_manual(name = "Direction of effect", values = c("coral", "mediumseagreen")) + # , "yellow3"
+  scale_fill_manual(name = "Direction of effect", values = c("coral", "yellow3", "mediumseagreen")) + 
+  scale_x_continuous( breaks=c(-0.25, 0, 0.25)) +
   labs(x = "Effect size", y = "Effect") +
   theme(legend.position = "top",
         legend.title = element_text(size = 12),
@@ -729,5 +733,17 @@ model_fake_posteriors_long %>%
         strip.text.x = element_text(size = 13),
         strip.text.y = element_text(size = 13))
 
-#ggsave("../../writing/paper/images/posterior-effects-idealized-sim.pdf", width=7, height=5)
+model_fake_posteriors %>% 
+  select(prior_xor, prior_some, 
+         competence_xor, competence_some,
+         relevance_xor, relevance_some) %>%
+  gather(key, val) %>%
+  group_by(key) %>% mutate(positive = mean(val > 0.05),
+                           negative = mean(val < -0.05),
+                           no = mean(val %>% between(-0.05, 0.05))) %>%
+  summarise(positive_eff = mean(positive),
+            negative_eff = mean(negative),
+            no_eff = mean(no))
+
+#ggsave("../../writing/paper/images/posterior-effects-idealized-sim-015.pdf", width=7, height=5)
 ```

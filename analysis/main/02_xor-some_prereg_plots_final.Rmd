@@ -341,9 +341,13 @@ create_fake_data <- function(N = 100, seed = 1) {
       tibble(
         subj    = rep(str_c("subj_",i), times = 8),
         trigger = rep(c('or', 'some'), times= 4), 
-        rel     = rnorm(8),
-        comp    = rnorm(8),
-        pri     = rnorm(8)
+        prior = rep(c("low", "high"), each=4),
+        rel     = c(rnorm(4, mean=-1), rnorm(4, mean =1)),
+       # rel_high = rnorm(4, mean = 0.15),
+        comp    = c(rnorm(4, mean=-1), rnorm(4, mean=1)),
+       # comp_high=rnorm(4, mean=0.15),
+        pri     = c(rnorm(4, mean=1), rnorm(4, mean=-1))
+    #    pri_high= rnorm(4, mean=0.15)
       ) %>% 
         group_by(subj) %>% 
         mutate(
@@ -358,6 +362,7 @@ create_fake_data <- function(N = 100, seed = 1) {
     }
   )
 }
+
 
 fake_data_scatter <- create_fake_data(200, 1234)
 ```
@@ -382,11 +387,11 @@ fake_data_long <- fake_data_scatter %>% pivot_longer(
     )
 
 # write out for fitting the idealized model in the analysis script
-#fake_data_long %>% write_csv("../../data/main/idealized_simulation_long_N200_B025.csv")
+# fake_data_long %>% write_csv("../../data/main/idealized_simulation_long_N200_B025.csv")
 
 fake_data_long %>%
   ggplot(., aes(x = Predictor_response, y = target)) +
-  geom_point(aes(color = `Prior categorization`), size = 2, alpha = 0.8) +
+  geom_point(aes(color = prior), size = 2, alpha = 0.8) +
   geom_smooth(method = "lm") +
   ylab("") +
   facet_grid(cols=vars(Predictors), rows=vars(Trigger)) +
