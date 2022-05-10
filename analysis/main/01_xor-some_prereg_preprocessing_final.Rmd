@@ -295,6 +295,7 @@ d_critical_zScored_wide <- d_critical_zScored %>%
     values_fn = mean # getting means for double prior measurement in "xor"
   ) 
 
+
 # assume that the mistake in the z-scoring is the absence of dropping the duplicates
 # or is it the point where the 0 SDs are caught?
 d_critical_zScored_noDuplicates <- d_critical_long %>% 
@@ -306,6 +307,37 @@ d_critical_noDuplicates_zScored <- d_critical_zScored_noDuplicates %>% group_by(
          response_centered = (response - block_mean)/block_sd,
          # catch the cases where sd is 0 
          response_centered = ifelse(is.na(response_centered), 0, response_centered))
+
+# perform the conceptually cleaner procedure: average over prior ratings first, then z-score
+d_critical_zScored_noDuplicates %>% unique() %>% 
+  select(submission_id, title, main_type, block_extended, response) %>%
+  pivot_wider(
+    names_from = block_extended, 
+    values_from = response, 
+    values_fn = mean # getting means for double prior measurement in "xor"
+  ) %>%
+  pivot_longer(
+    cols=c(relevance, competence, prior, target),
+    names_to = "block_extended",
+    values_to = "response"
+  ) -> d_critical_zScored_meanFirst_noDupl
+
+d_critical_zScored_meanFirst_noDupl_zScored <- d_critical_zScored_meanFirst_noDupl %>%  
+  group_by(submission_id, block_extended) %>%
+  mutate(block_mean = mean(response),
+         block_sd = sd(response),
+         response_centered = (response - block_mean)/block_sd,
+         # catch the cases where sd is 0 
+         response_centered = ifelse(is.na(response_centered), 0, response_centered))
+
+d_critical_zScored_meanFirst_noDupl_zScored_wide <- d_critical_zScored_meanFirst_noDupl_zScored %>% 
+  select(submission_id, title, main_type, block_extended, response_centered) %>% 
+  unique() %>% 
+  pivot_wider(
+    names_from = block_extended, 
+    values_from = response_centered, 
+    values_fn = mean # getting means for double prior measurement in "xor"
+  ) 
 
 d_critical_noDuplicates_zScored_wide <- d_critical_noDuplicates_zScored %>% 
   select(submission_id, title, main_type, block_extended, response_centered) %>% 
@@ -445,4 +477,8 @@ d_critical_zScored_wide_xor_prior_order %>% write_csv("./../../data/main/results
 
 d_critical_zScored_wide_xor_prior_type %>% write_csv("./../../data/main/results_prereg_tidy_final_zScored_wide_xor_priors-type.csv")
 
+d_critical_zScored_meanFirst_noDupl_zScored %>%
+  write_csv("./../../data/main/results_prereg_tidy_noDuplicates_zScored_meansFirst_long.csv")
+d_critical_zScored_meanFirst_noDupl_zScored_wide %>%
+  write_csv("./../../data/main/results_prereg_tidy_noDuplicates_zScored_meansFirst_wide.csv")
 ```
