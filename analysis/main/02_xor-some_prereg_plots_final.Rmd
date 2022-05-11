@@ -17,6 +17,10 @@ d_critical_zScored <- read_csv("./../../data/main/results_prereg_tidy_final_zSco
 d_test <- read_csv("./../../data/main/results_prereg_raw_final_test.csv")
 d_critical_zScored_wide_xor_priors_order <- read_csv("./../../data/main/results_prereg_tidy_final_zScored_wide_xor_priors-order.csv")
 d_critical_zScored_wide_xor_priors_type <- read_csv("./../../data/main/results_prereg_tidy_final_zScored_wide_xor_priors-type.csv")
+
+d_critical_zScored_meanFirst_noDupl_zScored_wide <- 
+  read_csv("./../../data/main/results_prereg_tidy_noDuplicates_zScored_meansFirst_wide.csv")
+
 ```
 
 ## Plots
@@ -51,6 +55,31 @@ d_critical_zScored_wide %>%
   facet_wrap(~main_type, ncol = 1) -> p.comp.z
 
 d_critical_zScored_wide %>%
+  ggplot(., aes(x = prior, y = target)) +
+  geom_point(size = 2, alpha = 0.7) +
+  geom_smooth(method = "lm") +
+  ylab("") +
+  facet_wrap(~main_type, ncol = 1) -> p.pri.z
+
+gridExtra::grid.arrange(p.rel.z, p.comp.z, p.pri.z, ncol = 3) 
+```
+Replicate plot above on data where means were computed over the prior ratings for or before z-scoring:
+```{r}
+d_critical_zScored_meanFirst_noDupl_zScored_wide %>%
+  ggplot(., aes(x = relevance, y = target)) +
+  geom_point(size = 2, alpha = 0.7) +
+  ylab("Inference strength ratings") +
+  geom_smooth(method = "lm") +
+  facet_wrap(~main_type, ncol = 1) -> p.rel.z
+
+d_critical_zScored_meanFirst_noDupl_zScored_wide %>%
+  ggplot(., aes(x = competence, y = target)) +
+  geom_point(size = 2, alpha = 0.7) +
+  geom_smooth(method = "lm") +
+  ylab("") +
+  facet_wrap(~main_type, ncol = 1) -> p.comp.z
+
+d_critical_zScored_meanFirst_noDupl_zScored_wide %>%
   ggplot(., aes(x = prior, y = target)) +
   geom_point(size = 2, alpha = 0.7) +
   geom_smooth(method = "lm") +
