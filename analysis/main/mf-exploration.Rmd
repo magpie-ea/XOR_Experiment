@@ -1,0 +1,232 @@
+---
+title: "Exploring influence of REs on models fits"
+author: "Michael Franke"
+date: "12/05/2022"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache = F, message = FALSE, warning = FALSE, error = FALSE, fig.width = 5, fig.align = "center")
+```
+
+```{r libraries, message = FALSE, warning = FALSE, include = FALSE}
+library(tidyverse)
+library(brms)
+library(tidyboot)
+library(tidybayes)
+```
+
+# Data
+
+We use the data with the "new" z-scoring for the prior data for 'or'.
+
+```{r}
+d_critical_clean <- read_csv("../../data/main/results_prereg_tidy_noDuplicates_zScored_meansFirst_wide.csv") %>% 
+  mutate(main_type = factor(main_type))
+head(d_critical_clean)
+```
+
+We also want additional information about the vignettes, i.e., their intuitive pre-classifications.
+
+```{r }
+vignettes <- read_csv("./../../data/main/results_73_xor-some-Prolific-main_N275_anonym.csv") %>% 
+  select(title, main_type, relevance, competence, prior) %>% 
+  unique() %>% 
+  filter(! is.na(main_type)) %>% 
+  rename(relCat = relevance,
+         compCat = competence,
+         priCat = prior)
+head(vignettes)
+```
+
+# Functions for fitting models
+
+We are interested in comparing the following models, specified here in terms of `brms` formulas:
+
+```{r }
+## full model with REs for subjects and items
+f_full <- formula(
+  target ~ prior * competence * relevance * main_type +
+    (1 + prior + competence + relevance + main_type || submission_id) +
+    (1 | title)
+)
+
+## model with RE for 'title' only (by-item random intercepts)
+f_RETitle <- formula(
+  target ~ prior * competence * relevance * main_type +
+    (1 | title)
+)
+
+## RE for 'submject_id' only (by-subj random intercepts)
+f_RESubj <- formula(
+  target ~ prior * competence * relevance * main_type +
+    (1 + prior + competence + relevance + main_type || submission_id)
+)
+
+## model without REs; fixed effects only 
+f_noREs <- formula(
+  target ~ prior * competence * relevance * main_type
+)
+```
+
+Here's a function for running the models:
+
+```{r }
+
+run_model <- function(form, data){
+
+  ## some = 0, xor = 1
+  contrasts(data$main_type) 
+
+  ## set priors
+  priors <- set_prior("student_t(1, 0, 2)", class = "b")
+
+  ## run and return model
+  brm(
+    formula      = form,
+    data         = data,
+    prior        = priors,
+    sample_prior = T,
+    control      = list(adapt_delta = 0.95),
+    cores        = 4,
+    iter         = 3000
+  )
+  
+} 
+```
+
+And here is a function for returning the relevant result summary from a fitted model:
+
+```{r }
+## function to get prediction for a model fit
+get_predictions <- function(model_SI) {
+  model_SI %>% spread_draws(b_Intercept, b_prior, b_competence, b_relevance,
+                            b_main_typexor, `b_prior:competence`,
+                            `b_prior:relevance`, `b_competence:relevance`,
+                            `b_prior:main_typexor`, `b_competence:main_typexor`,
+                            `b_relevance:main_typexor`, `b_prior:competence:relevance`, 
+                            `b_prior:competence:main_typexor`, `b_prior:relevance:main_typexor`,
+                            `b_competence:relevance:main_typexor`, 
+                            `b_prior:competence:relevance:main_typexor`) %>% 
+    mutate(
+      prior_xor = b_prior + `b_prior:main_typexor`,
+      prior_some = b_prior,
+      competence_xor = b_competence + `b_competence:main_typexor`,
+      competence_some = b_competence,
+      relevance_xor =  b_relevance + `b_relevance:main_typexor`,
+      relevance_some = b_relevance
+    ) -> model_SI_posteriors
+  
+  # check P that the effects are positive / negative / no effect present
+  posterior_hypotheses <- model_SI_posteriors %>% 
+    select(prior_xor, prior_some, 
+           competence_xor, competence_some,
+           relevance_xor, relevance_some) %>%
+    gather(key, val) %>%
+    group_by(key) %>% mutate(positive = mean(val > 0.05),
+                             negative = mean(val < -0.05),
+                             no = mean(val %>% between(-0.05, 0.05))) %>%
+    summarise(positive_eff = mean(positive),
+              no_eff = mean(no),
+              negative_eff = mean(negative))
+  posterior_hypotheses
+}
+```
+
+# Fitting and inspecting the relevant models
+
+Model fits:
+
+```{r results = 'hide'}
+model_SI         <- run_model(f_full,d_critical_clean) 
+model_SI_RETitle <- run_model(f_RETitle,d_critical_clean)
+model_SI_RESubj  <- run_model(f_RESubj,d_critical_clean)
+model_SI_noREs   <- run_model(f_noREs,d_critical_clean)
+```
+
+We can now inspect the results for each model, and find that **including by-item random intercepts determines whether we see a main effect of prior for the 'or' items, irrespective of whether we include or omit the by-subject random effects**.
+We may conclude from this that it is really the by-item random effects that "explain away" the main effect of prior on 'or' items.
+
+```{r }
+## We compare the results for three model which differ only in the random effects
+## they take into account. We care about a potential main effect of 'prior' in the
+## 'or' condition.
+
+## (i)  full REs (subj. & item)  -> no effect 
+get_predictions(model_SI)
+
+## (ii) no subj., just item REs  -> no effect 
+get_predictions(model_SI_RETitle)
+
+## (iii) just subj., no item REs -> strong effect 
+get_predictions(model_SI_RESubj)
+
+## (iv) no REs                   -> strong effect 
+get_predictions(model_SI_noREs)
+```
+
+# Probing which vignettes are most influential in producing/hiding the effect
+
+Which vignettes does the model estimate large random by-item effect for?
+Here's a function that prints the top 6 most extreme estimates for the random effects in question.
+
+```{r}
+
+extract_REs <- function(model_fit) {
+  randEff <- brms::ranef(model_fit)$title %>% as.data.frame() %>% 
+    as_tibble(rownames = "title")
+  vignettes  %>% 
+    full_join(randEff, by= 'title')
+}
+
+```
+
+Applying this function to both model with by-item random effects, we see that these top six do not differ much between whether we include the by-subject random effects or not.
+
+```{r}
+## full model
+extract_REs(model_SI) %>% arrange(Estimate.Intercept)
+extract_REs(model_SI) %>% arrange(-Estimate.Intercept)
+
+## model without by-subject REs
+extract_REs(model_SI_RETitle) %>% arrange(Estimate.Intercept)
+extract_REs(model_SI_RETitle) %>% arrange(-Estimate.Intercept)
+
+```
+
+To further find out how the addition of by-item REs affects the model fit, we can try fittin a model *with* by-item REs, but omitting vignettes which receive rather high/low estimates for their RE.
+Here we gather the titles of the top-$n$ highest or lowest ranked vignettes for each trigger word.
+
+```{r}
+get_extreme_vignettes <- function(model = model_SI, n=5, trigger_type = 'some', high = T) {
+  extract_REs(model) %>% arrange(Estimate.Intercept * ifelse(high, 1, -1)) %>% 
+    filter(main_type == trigger_type) %>% 
+    pull(title) %>% .[1:n]
+}
+
+hi_some <- get_extreme_vignettes(trigger_type = 'some', high = T)
+lo_some <- get_extreme_vignettes(trigger_type = 'some', high = F)
+hi_or   <- get_extreme_vignettes(trigger_type = 'xor', high = T)
+lo_or   <- get_extreme_vignettes(trigger_type = 'xor', high = F)
+```
+
+So, let's fit some model on reduced data sets, excluding "extreme vignettes".
+
+```{r, results = 'hide'}
+
+predictions_for_reduced_data <- function(excluded_vignettes) {
+  run_model(
+    f_full, 
+    d_critical_clean %>% filter(! title %in% excluded_vignettes)
+  ) %>% get_predictions()  
+}
+
+predictions_for_reduced_data(hi_some)
+predictions_for_reduced_data(lo_some)
+predictions_for_reduced_data(hi_or)
+predictions_for_reduced_data(lo_or)
+
+
+```
+
+It seems that the vignettes for 'some' which are estimated to have particularly high random intercepts are most conducive for whether the main effect shows or not.
