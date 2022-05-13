@@ -67,6 +67,13 @@ f_RESubj <- formula(
 f_noREs <- formula(
   target ~ prior * competence * relevance * main_type
 )
+
+## full model with RE ineractions by-subject
+f_full_inters <- formula(
+  target ~ prior * competence * relevance * main_type +
+    (1 + prior * competence * relevance * main_type || submission_id) +
+    (1 | title)
+)
 ```
 
 Here's a function for running the models:
@@ -142,6 +149,7 @@ model_SI         <- run_model(f_full,d_critical_clean)
 model_SI_RETitle <- run_model(f_RETitle,d_critical_clean)
 model_SI_RESubj  <- run_model(f_RESubj,d_critical_clean)
 model_SI_noREs   <- run_model(f_noREs,d_critical_clean)
+model_SI_fullREs <- run_model(f_full_inters, d_critical_clean)
 ```
 
 We can now inspect the results for each model, and find that **including by-item random intercepts determines whether we see a main effect of prior for the 'or' items, irrespective of whether we include or omit the by-subject random effects**.
@@ -230,3 +238,97 @@ predictions_for_reduced_data(lo_or)
 ```
 
 It seems that the vignettes for 'some' which are estimated to have particularly high random intercepts are most conducive for whether the main effect shows or not.
+
+## Polina's shenanigans
+
+Check the joint posterior of fixed and random effects, to investigate which of them might cause the pattern of results that we observe. Analysis suggested by Roger.
+The following plots shows the joint posterior of fixed and random effects in the xor and some conditions, respectively.
+
+``` {r}
+# extract posterior contrast of interest of fixed effects
+posteriors <- model_SI_fullREs %>%
+  spread_draws(b_prior, `b_prior:main_typexor`, b_relevance, `b_relevance:main_typexor`, b_competence, `b_competence:main_typexor`,
+               sd_submission_id__prior, `sd_submission_id__prior:main_typexor`,
+               sd_submission_id__Intercept, sd_title__Intercept, 
+               sd_submission_id__relevance, `sd_submission_id__relevance:main_typexor`) %>%
+    # extract contrasts of interest, especially effect of syntax by-trial
+    mutate(prior_xor = b_prior + `b_prior:main_typexor`,
+           prior_some = b_prior,
+           relevance_xor = b_relevance + `b_relevance:main_typexor`,
+           relevance_some = b_relevance,
+           competence_xor = b_competence + `b_competence:main_typexor`,
+           competence_some = b_competence,
+           random_prior_xor = sd_submission_id__prior + `sd_submission_id__prior:main_typexor`,
+           random_prior_some = sd_submission_id__prior,
+           random_relevance_xor = sd_submission_id__relevance + `sd_submission_id__relevance:main_typexor`,
+           random_relevance_some = sd_submission_id__relevance
+           ) %>% # subject vs predicate syntax
+    select(prior_xor, prior_some, relevance_xor, relevance_some, competence_xor, competence_some,
+           random_prior_xor, random_prior_some, sd_submission_id__Intercept, sd_title__Intercept, random_relevance_xor, random_relevance_some) %>%
+    gather(key, val)
+
+```
+
+Helper function for extracting and plotting a heat map of two effects, given a df containing all relevant posterior samples / effects, the effects and a title for the plot. 
+```{r}
+get_and_plot_2d_posterior <- function(posteriors, fe, re, title) {
+  fe_selected <- posteriors %>% filter(key == fe) %>% rename(fe = val)
+  re_selected <- posteriors %>% filter(key == re) %>% rename(re = val) %>% select(-key)
+  
+  df <- tibble(fe_selected, re_selected)
+  
+  p <- ggplot(df, aes(x = fe, y = re)) +
+  stat_bin2d(aes(fill = after_stat(density))) +
+  ggtitle(title)
+  
+  return (p)
+}
+```
+
+First, we explore how the fixed effects of prior behave against by-title random intercepts and by-subject random slope effects of prior.
+```{r}
+get_and_plot_2d_posterior(posteriors, "prior_xor", "sd_title__Intercept", "FE of prior for XOR against by-story random intercepts")
+#ggsave("FE_prior_RE_story_xor.pdf", width=7, height=5)
+
+get_and_plot_2d_posterior(posteriors, "prior_some", "sd_title__Intercept", "FE of prior for SOME against by-story random intercepts")
+
+get_and_plot_2d_posterior(posteriors, "prior_xor", "random_prior_xor", "FE of prior for XOR against by-subj prior RE")
+
+get_and_plot_2d_posterior(posteriors, "prior_some", "random_prior_some", "FE of prior for SOME against by-subj prior RE")
+```
+
+Now, double check if there is a "credit assignment" problem for other factors.
+```{r}
+get_and_plot_2d_posterior(posteriors, "competence_xor", "sd_title__Intercept", "FE of competence for XOR against by-story random intercepts")
+
+get_and_plot_2d_posterior(posteriors, "competence_some", "sd_title__Intercept", "FE of competence for SOME against by-story random intercepts")
+
+get_and_plot_2d_posterior(posteriors, "relevance_xor", "sd_title__Intercept", "FE of relevance for XOR against by-story random intercepts")
+
+get_and_plot_2d_posterior(posteriors, "relevance_some", "sd_title__Intercept", "FE of relevance for SOME against by-story random intercepts")
+```
+
+Explore an xor-only model.
+```{r}
+f_xor <- formula(
+  target ~ prior * competence * relevance +
+    (1 + prior + competence + relevance || submission_id) +
+    (1 | title)
+)
+model_xor<- run_model(f_xor, d_critical_clean %>% filter(main_type == "xor")) 
+summary(model_xor)
+```
+
+```{r}
+# get the probability of a negative effect for or
+model_xor %>% spread_draws(b_prior) %>%
+  select(b_prior) %>%
+  gather(key, val) %>%
+  group_by(key) %>% mutate(positive = mean(val > 0.05),
+                             negative = mean(val < -0.05),
+                             no = mean(val %>% between(-0.05, 0.05))) %>%
+    summarise(positive_eff = mean(positive),
+              no_eff = mean(no),
+              negative_eff = mean(negative))
+
+```
